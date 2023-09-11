@@ -1,4 +1,9 @@
+"use client";
+
 import { Poppins, Inter } from "next/font/google";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { useEffect } from "react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -12,12 +17,30 @@ const inter = Inter({
 });
 
 export default function page() {
+  useEffect(() => {
+    // const southWest = L.latLng(40, -75); // Koordinat sudut barat daya (latitude, longitude)
+    // const northEast = L.latLng(45, -70); // Koordinat sudut timur laut (latitude, longitude)
+    // const batas = L.latLngBounds(southWest, northEast);
+    const map = L.map("map", {
+      crs: L.CRS.Simple,
+      maxZoom: 2,
+      minZoom: 0,
+      // maxBounds: batas, // Mengatur batas maksimum peta
+    });
+    const bounds = [
+      [-26.5, -25],
+      [1021.5, 1023],
+    ];
+    L.imageOverlay("map2.png", bounds).addTo(map);
+    map.fitBounds(bounds);
+  }, []);
+
   return (
     <div className="py-[100px] w-full relative">
-      <div className="w-1/3 h-fit mx-auto">
-        <img src="/map.png" className="w-full" alt="" />
-        <div className="w-[20px] rounded-full bg-white"></div>
-      </div>
+      <div
+        className="w-[500px] h-[500px] bg-red-500 mx-auto relative cursor-move"
+        id="map"
+      ></div>
       <div className="flex flex-wrap gap-[5px] py-[90px] w-[70%] mx-auto justify-center">
         <img src="/agent/astra.svg" className="w-[60px]" alt="" />
         <img src="/agent/breach.svg" className="w-[60px]" alt="" />
