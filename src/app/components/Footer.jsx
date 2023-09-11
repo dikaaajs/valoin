@@ -39,10 +39,12 @@ export default function Footer() {
             <p className={`${poppins.className} text-[1.2rem] text-slate-800`}>
               support me on saweria here
             </p>
-            <img
-              src="/saweria.png"
-              className="w-[30px] mx-auto py-[10px] md:w-[40px]"
-            />
+            <a href="https://saweria.co/dikaaajs">
+              <img
+                src="/saweria.png"
+                className="w-[30px] mx-auto py-[10px] md:w-[40px]"
+              />
+            </a>
           </div>
         </div>
       </div>

@@ -34,11 +34,13 @@ export default function Navbar() {
       </div>
 
       <div className="w-fit flex justify-end items-center relative">
-        <img
-          src="/ikuyo.gif"
-          className="w-[30px] mdLw-[50px] rounded-full border-solid border-[2px] border-[#7F5AF0] cursor-pointer"
-          alt="ikuyoooo"
-        />
+        <a href="https://saweria.co/dikaaajs">
+          <img
+            src="/ikuyo.gif"
+            className="w-[30px] mdLw-[50px] rounded-full border-solid border-[2px] border-[#7F5AF0] cursor-pointer"
+            alt="ikuyoooo"
+          />
+        </a>
       </div>
       <img
         src="/message.png"
