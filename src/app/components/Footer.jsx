@@ -3,7 +3,6 @@ import { Poppins, Inter } from "next/font/google";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: "800",
-  preload: true,
 });
 
 const inter = Inter({
@@ -14,41 +13,40 @@ const inter = Inter({
 export default function Footer() {
   return (
     <>
-      <div className="px-[100px] bg-white relative h-[300px]">
-        <img
-          src="/topography.png"
-          className="absolute right-0 h-[300px]"
-          alt=""
-        />
-        <div className="flex gap-[50px] justify-center items-center py-[50px]">
-          <div className="w-1/2 relative">
-            <img src="/purple.svg" className="h-[210px]" alt="" />
-
-            <div className="w-[70%] left-5 top-10 leading-9 absolute text-white">
-              <p className={`${poppins.className}  text-[1.8rem]`}>
+      <div className="px-[20px] md:px-[100px] bg-white relative h-fit overflow-hidden">
+        <img src="/topography.png" className="absolute right-0 h-full" alt="" />
+        <div className="flex flex-col lg:flex-row lg:gap-[70px] gap-[20px]  justify-center items-center py-[30px]">
+          <div className="w-full md:w-full lg:w-[55%] xl:w-[40%] relative h-[150px] md:h-[200px] bg-gradient-to-r from-[#9778F6] to-[#7F5AF0]">
+            <div className="w-[70%] top-5 left-2 md:left-5 md:top-10 md:leading-9 leading-5 absolute text-white">
+              <p
+                className={`${poppins.className} text-[1.2rem md:text-[1.8rem]`}
+              >
                 thank you for visiting my website
               </p>
-              <p className={`${inter.className} text-[.8rem] `}>
+              <p className={`${inter.className} text-[.5rem] md:text-[.8rem] `}>
                 I hope this website can be useful for you
               </p>
             </div>
 
             <img
               src="/baal.png"
-              className="absolute bottom-0 h-full right-[0px]"
+              className="absolute bottom-0 h-full right-[-50px]"
               alt="baal raiden shogun"
             />
           </div>
 
-          <div className="w-fit relative">
-            <p className={`${poppins.className} text-[1.7rem] text-slate-800`}>
+          <div className="w-fit relative md:leading-9 leading-5">
+            <p className={`${poppins.className} text-[1.2rem] text-slate-800`}>
               support me on saweria here
             </p>
-            <img src="/saweria.png" className="w-[40px]" />
+            <img
+              src="/saweria.png"
+              className="w-[30px] mx-auto py-[10px] md:w-[40px]"
+            />
           </div>
         </div>
       </div>
-      <div className="py-[5px] text-center bg-slate-950 text-white text-[.8rem]">
+      <div className="py-[5px] text-center text-[.5rem] bg-slate-950 text-white md:text-[.8rem]">
         2023, dikaaa.tech
       </div>
     </>

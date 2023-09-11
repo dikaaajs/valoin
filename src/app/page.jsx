@@ -1,11 +1,19 @@
 import Image from "next/image";
 import { Poppins, Roboto, Roboto_Mono, Inter } from "next/font/google";
+import Link from "next/link";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: "700",
-  preload: true,
+  // preload: true,
+});
+
+const PoppinsText = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  // preload: true,
 });
 
 const inter = Inter({
@@ -27,18 +35,22 @@ const robotoMono = Roboto_Mono({
   preload: true,
 });
 
+export const metadata = {
+  title: "VALOIN dulu aja",
+};
+
 export default function Home() {
   return (
-    <main>
-      <div className="flex items-center px-[5%] justify-center py-[150px]">
-        <div className="w-1/2">
+    <main className="overflow-hidden">
+      <div className="flex flex-col lg:flex-row gap-y-[100px] items-center px-[5%] justify-center py-[150px]">
+        <div className="w-full lg:w-1/2">
           <span
             className={`text-center ${PoppinsJudul.className} text-[3rem] text-white`}
           >
             VALO<span className="text-[#7F5AF0]">IN </span>
           </span>
           <p
-            className={`${inter.className} text-[#94A1B2] text-[1rem] opacity-70 leading-6`}
+            className={`${inter.className} text-[#94A1B2] text-[.8rem] md:text-[1rem] opacity-70 leading-[18px] md:leading-6`}
           >
             adalah website yang bisa memudahkan player valorant untuk
             mendapatkan trik trik valorant, contohnya seperti lineup untuk
@@ -52,7 +64,7 @@ export default function Home() {
               className="absolute bottom-[-30px] right-[-40px]"
               alt=""
             />
-            <p>try now</p>
+            <Link href={"/main"}>try now</Link>
           </div>
         </div>
 
@@ -61,24 +73,26 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="py-[180px] bg-[#242629] text-white relative flex px-[100px] items-center">
-        <div className="w-[50%] mx-auto">
-          <h1 className={`${PoppinsJudul.className} text-[2.5rem]`}>
+      <div className="py-[100px] md:py-[180px] bg-[#242629] text-white relative flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left">
+        <div className="w-full lg:w-2/5 mx-auto">
+          <h1
+            className={`${PoppinsJudul.className} text-[2rem] md:text-[2.5rem] leading-[35px]`}
+          >
             Agent in <span className="text-red-600">Valorant</span>
           </h1>
           <p
-            className={`${inter.className} text-[#94A1B2] text-[1rem] opacity-70 leading-6`}
+            className={`${PoppinsText.className} text-[.7rem] opacity-70 leading-5 pt-[15px]`}
           >
             kamu pemain baru, dan bingung dengan banyaknya ability tiap agent
             yang berbeda beda ? eitss tenang. Disini kamu bisa memahami ability
             tiap agent dengan mudah
           </p>
         </div>
-        <div className="w-1/2">
+        <div className="w-full lg:w-3/5 xl:w-[50%]">
           <img
             src="/valorantCharacter.jpg"
             alt=""
-            className="mx-auto w-[80%] mt-[80px] rounded-[3px]"
+            className="w-full rounded-[3px]"
           />
         </div>
       </div>
