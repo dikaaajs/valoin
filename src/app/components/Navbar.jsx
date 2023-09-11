@@ -6,12 +6,14 @@ const PoppinsJudul = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: "700",
+  preload: true,
 });
 
 const PoppinsP = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: "600",
+  preload: true,
 });
 
 export default function Navbar() {
