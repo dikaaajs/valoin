@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import { Poppins, Inter } from "next/font/google";
 const Map = dynamic(() => import("./map"), { ssr: false });
@@ -17,8 +19,7 @@ export default function page() {
   return (
     <div className="py-[100px] w-full relative">
       <div
-        className="w-[500px] h-[500px] mx-auto relative cursor-move"
-        id="map"
+        className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move`}
       >
         <Map />
       </div>
@@ -54,6 +55,36 @@ export default function page() {
         >
           <button>attacking</button>
           <button className="text-blue-300">defending</button>
+        </div>
+        <div className="flex gap-[10px] pt-[20px]">
+          <button>
+            <img
+              src="/image/displayicon (1) 1.png"
+              className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+              alt=""
+            />
+          </button>
+          <button>
+            <img
+              src="/image/displayicon (2) 1.png"
+              className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+              alt=""
+            />
+          </button>
+          <button>
+            <img
+              src="/image/displayicon (3) 1.png"
+              className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+              alt=""
+            />
+          </button>
+          <button>
+            <img
+              src="/image/displayicon 1.png"
+              className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+              alt=""
+            />
+          </button>
         </div>
       </div>
     </div>

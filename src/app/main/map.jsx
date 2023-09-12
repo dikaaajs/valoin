@@ -16,7 +16,7 @@ const Map = () => {
       [-26.5, -25],
       [1021.5, 1023],
     ];
-    L.imageOverlay("map2.png", bounds).addTo(map);
+    L.imageOverlay("map2 1.png", bounds).addTo(map);
     map.fitBounds(bounds);
   }, []);
   return <div id="map" ref={locationMap} className="w-full h-full"></div>;
