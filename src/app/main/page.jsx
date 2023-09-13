@@ -24,28 +24,28 @@ export default function page() {
         <Map />
       </div>
       <div className="flex flex-wrap gap-[5px] py-[90px] w-[70%] mx-auto justify-center">
-        <img src="/agent/astra.svg" className="w-[60px]" alt="" />
-        <img src="/agent/breach.svg" className="w-[60px]" alt="" />
-        <img src="/agent/brimstone.svg" className="w-[60px]" alt="" />
-        <img src="/agent/chamber.svg" className="w-[60px]" alt="" />
-        <img src="/agent/cyper.svg" className="w-[60px]" alt="" />
-        <img src="/agent/deadlock.svg" className="w-[60px]" alt="" />
-        <img src="/agent/fade.svg" className="w-[60px]" alt="" />
-        <img src="/agent/gekko.svg" className="w-[60px]" alt="" />
-        <img src="/agent/harbor.svg" className="w-[60px]" alt="" />
-        <img src="/agent/jett.svg" className="w-[60px]" alt="" />
-        <img src="/agent/kayo.svg" className="w-[60px]" alt="" />
-        <img src="/agent/killjoy.svg" className="w-[60px]" alt="" />
-        <img src="/agent/neon.svg" className="w-[60px]" alt="" />
-        <img src="/agent/omen.svg" className="w-[60px]" alt="" />
-        <img src="/agent/phonix.svg" className="w-[60px]" alt="" />
-        <img src="/agent/raze.svg" className="w-[60px]" alt="" />
-        <img src="/agent/reyna.svg" className="w-[60px]" alt="" />
-        <img src="/agent/sage.svg" className="w-[60px]" alt="" />
-        <img src="/agent/sky.svg" className="w-[60px]" alt="" />
-        <img src="/agent/sova.svg" className="w-[60px]" alt="" />
-        <img src="/agent/viper.svg" className="w-[60px]" alt="" />
-        <img src="/agent/yoru.svg" className="w-[60px]" alt="" />
+        <img src="/agent/astra/astra.svg" className="w-[60px]" alt="" />
+        <img src="/agent/breach/breach.svg" className="w-[60px]" alt="" />
+        <img src="/agent/brimstone/brimstone.svg" className="w-[60px]" alt="" />
+        <img src="/agent/chamber/chamber.svg" className="w-[60px]" alt="" />
+        <img src="/agent/cyper/cyper.svg" className="w-[60px]" alt="" />
+        <img src="/agent/deadlock/deadlock.svg" className="w-[60px]" alt="" />
+        <img src="/agent/fade/fade.svg" className="w-[60px]" alt="" />
+        <img src="/agent/gekko/gekko.svg" className="w-[60px]" alt="" />
+        <img src="/agent/harbor/harbor.svg" className="w-[60px]" alt="" />
+        <img src="/agent/jett/jett.svg" className="w-[60px]" alt="" />
+        <img src="/agent/kayo/kayo.svg" className="w-[60px]" alt="" />
+        <img src="/agent/killjoy/killjoy.svg" className="w-[60px]" alt="" />
+        <img src="/agent/neon/neon.svg" className="w-[60px]" alt="" />
+        <img src="/agent/omen/omen.svg" className="w-[60px]" alt="" />
+        <img src="/agent/phonix/phonix.svg" className="w-[60px]" alt="" />
+        <img src="/agent/raze/raze.svg" className="w-[60px]" alt="" />
+        <img src="/agent/reyna/reyna.svg" className="w-[60px]" alt="" />
+        <img src="/agent/sage/sage.svg" className="w-[60px]" alt="" />
+        <img src="/agent/sky/sky.svg" className="w-[60px]" alt="" />
+        <img src="/agent/sova/sova.svg" className="w-[60px]" alt="" />
+        <img src="/agent/viper/viper.svg" className="w-[60px]" alt="" />
+        <img src="/agent/yoru/yoru.svg" className="w-[60px]" alt="" />
       </div>
 
       <div className="absolute top-[50px] left-[50px] text-white">
