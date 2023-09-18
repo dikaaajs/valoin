@@ -6,14 +6,14 @@ const PoppinsJudul = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: "700",
-  // preload: true,
+  preload: true,
 });
 
 const PoppinsText = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: "400",
-  // preload: true,
+  preload: true,
 });
 
 const inter = Inter({
