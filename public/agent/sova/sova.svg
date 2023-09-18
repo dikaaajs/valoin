@@ -1,7 +1,6 @@
 <svg width="81" height="81" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g filter="url(#filter0_d_79_313)">
 <path d="M2 2H78V78H2V2Z" fill="url(#pattern0)" shape-rendering="crispEdges"/>
-<path d="M2 2H78V78H2V2Z" fill="white" fill-opacity="0.2" shape-rendering="crispEdges"/>
 </g>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H80V80H0V0ZM2 2V78H78V2H2Z" fill="white"/>
 <defs>

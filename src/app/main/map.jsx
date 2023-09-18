@@ -17,7 +17,6 @@ const Map = (e) => {
 
   // init map
   useEffect(() => {
-    console.log("map created");
     var southWest = L.latLng(-26, -25);
     var northEast = L.latLng(1025.5, 1023);
 
@@ -38,11 +37,9 @@ const Map = (e) => {
     overlay.push(newMap);
   }
 
-  console.log(overlay);
   if (overlay[overlay.length - 2] !== undefined) {
     overlay[overlay.length - 2].remove();
   }
-  console.log(overlay[overlay.length - 2]);
   useEffect(() => {
     // L.imageOverlay(selectedMap, bounds).addTo(map);
   }, [e]);
