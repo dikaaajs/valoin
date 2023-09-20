@@ -41,7 +41,7 @@ const inter = Inter({
 });
 
 export default function Page() {
-  const [state, setState] = useState(1);
+  const [page, setPage] = useState(1);
   const [agent, setAgent] = useState("");
   const [dataAgent, setDataAgent] = useState(null);
   const [ability, setAbility] = useState("");
@@ -55,15 +55,21 @@ export default function Page() {
     setAgent(e.target.alt)
   };
 
+  const handleClick1 = () => {
+    if(!agent && !ability){
+      return alert("pilih agent dan ability")
+    }
+  }
+
   return (
     <div className="py-[100px]">
-      {state === 1 && (
+      {page === 1 && (
         <div className="w-full relative py-[100px]">
 
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
-            Agent Pick
+            select agent & ability
           </h1>
 
           <div className="flex flex-wrap gap-[5px] pt-[90px] w-[70%] mx-auto justify-center">
@@ -128,9 +134,20 @@ export default function Page() {
             </div>
 
             }
-          <button className={`bg-white py-[10px] px-[25px] absolute bottom-0 right-[5%]`} >next</button>
+          // <button className={`bg-white py-[10px] px-[25px] absolute bottom-0 right-[5%]`} onClick={handleClick1} >next</button>
         </div>
       )}
+
+      {
+        page === 2 &&
+        <div>
+          <h1
+            className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
+          >
+            select map & location
+          </h1>
+        </div>
+      }
     </div>
   );
 }
