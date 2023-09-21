@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-[#16161A]
+  @apply bg-[#16161A] min-h-[100vh]
 }
 
 /*.agent-active {

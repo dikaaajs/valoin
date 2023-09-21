@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
-import { Poppins, Inter } from "next/font/google";
-import axios from "axios"
+import { Poppins, Inter, Roboto_Mono } from "next/font/google";
+import axios from "axios";
 
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  preload: true,
+});
 
 const allAgent = [
   { name: "astra", uuid: "41fb69c1-4189-7b37-f117-bcaf1e96f1bf" },
@@ -44,34 +50,44 @@ export default function Page() {
   const [page, setPage] = useState(1);
   const [agent, setAgent] = useState("");
   const [dataAgent, setDataAgent] = useState(null);
+  const [loadAbility, setloadAbility] = useState(false);
   const [ability, setAbility] = useState("");
   const [map, setMap] = useState("");
 
   const selectAgentHandle = async (e) => {
-    axios.get(`https://valorant-api.com/v1/agents/${e.target.id}`).then((response) => {
-      setDataAgent(response.data)
-    })
-    console.log(e.target.id)
-    setAgent(e.target.alt)
+    setloadAbility(true);
+    axios
+      .get(`https://valorant-api.com/v1/agents/${e.target.id}`)
+      .then((response) => {
+        setDataAgent(response.data);
+        setAgent(e.target.alt);
+        setloadAbility(false);
+      });
   };
 
-  const handleClick1 = () => {
-    if(!agent && !ability){
-      return alert("pilih agent dan ability")
+  const selectAbilityHandle = (i) => {
+    setAbility(i);
+  };
+
+  const handleNextButton = () => {
+    if (page === 1) {
+      if (!agent || !ability) {
+        return alert("pilih agent dan ability");
+      } else {
+        setPage(page + 1);
+      }
     }
-  }
+  };
 
   return (
-    <div className="py-[100px]">
+    <div className="py-[100px] relative">
       {page === 1 && (
         <div className="w-full relative py-[100px]">
-
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
             select agent & ability
           </h1>
-
           <div className="flex flex-wrap gap-[5px] pt-[90px] w-[70%] mx-auto justify-center">
             {allAgent.map((e, index) => {
               return (
@@ -84,10 +100,16 @@ export default function Page() {
                   key={index}
                 >
                   <div
-                    className={`w-[60px] h-[60px] bg-white opacity-20 z-[1] absolute ${
+                    className={`w-[60px] h-[60px] bg-white opacity-20 z-[1] absolute text-center ${
                       agent === e.name ? "" : "hidden"
                     }`}
                   ></div>
+                  <img
+                    src="/check.png"
+                    className={`w-[30px] h-[30px] z-[10] absolute top-[-13px] right-[-13px] ${
+                      agent === e.name ? "" : "hidden"
+                    }`}
+                  />
                   <img
                     src={`/agent/${e.name}/${e.name}.svg`}
                     className="w-full"
@@ -98,48 +120,50 @@ export default function Page() {
               );
             })}
           </div>
-
-          {
-
-          dataAgent &&
-            <div className="flex gap-[10px] pt-[20px] justify-center">
-              <button>
-                <img
-                  src={dataAgent.data.abilities[0].displayIcon}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                  alt=""
-                />
-              </button>
-              <button>
-                <img
-                  src={dataAgent.data.abilities[1].displayIcon}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                  alt=""
-                />
-              </button>
-              <button>
-                <img
-                  src={dataAgent.data.abilities[2].displayIcon}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                  alt=""
-                />
-              </button>
-              <button>
-                <img
-                  src={dataAgent.data.abilities[3].displayIcon}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                  alt=""
-                />
-              </button>
-            </div>
-
-            }
-          // <button className={`bg-white py-[10px] px-[25px] absolute bottom-0 right-[5%]`} onClick={handleClick1} >next</button>
+          {dataAgent && (
+            <>
+              <div className="flex gap-[10px] pt-[20px] justify-center">
+                {loadAbility ? (
+                  <h1
+                    className={`text-white text-center text-[1.5rem] ${robotoMono.className}`}
+                  >
+                    loading ...
+                  </h1>
+                ) : (
+                  <>
+                    {Array.from({ length: 4 }, (_, i) => (
+                      <button
+                        key={i}
+                        className="relative w-[50px] h-[50px] border-solid border-white border-[1px]"
+                      >
+                        <div
+                          className={`w-[50px] h-[50px] bg-white opacity-20 z-[1] absolute text-center ${
+                            ability === i ? "" : "hidden"
+                          }`}
+                        ></div>
+                        <img
+                          src="/check.png"
+                          className={`w-[25px] h-[25px] z-[10] absolute top-[-13px] right-[-13px] ${
+                            ability === i ? "" : "hidden"
+                          }`}
+                        />
+                        <img
+                          src={dataAgent.data.abilities[i].displayIcon}
+                          className="w-full h-full"
+                          alt=""
+                          onClick={() => selectAbilityHandle(i)}
+                        />
+                      </button>
+                    ))}
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </div>
       )}
 
-      {
-        page === 2 &&
+      {page === 2 && (
         <div>
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
@@ -147,7 +171,13 @@ export default function Page() {
             select map & location
           </h1>
         </div>
-      }
+      )}
+      <button
+        className={`bg-white py-[10px] px-[25px] absolute bottom-0 right-[5%]`}
+        onClick={handleNextButton}
+      >
+        next
+      </button>
     </div>
   );
 }

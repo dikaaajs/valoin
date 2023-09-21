@@ -12,8 +12,8 @@ const inter = Inter({
 
 export default function Footer() {
   return (
-    <>
-      <div className="px-[20px] md:px-[100px] bg-white relative h-fit overflow-hidden">
+    <div className="absolute bottom-0 w-full">
+      <div className="px-[20px] md:px-[100px] bg-white relative h-fit overflow-hidden bottom-0">
         <img src="/topography.png" className="absolute right-0 h-full" alt="" />
         <div className="flex flex-col lg:flex-row lg:gap-[70px] gap-[20px]  justify-center items-center py-[30px]">
           <div className="w-full md:w-full lg:w-[55%] xl:w-[40%] relative h-[150px] md:h-[200px] bg-gradient-to-r from-[#9778F6] to-[#7F5AF0]">
@@ -51,6 +51,6 @@ export default function Footer() {
       <div className="py-[5px] text-center text-[.5rem] bg-slate-950 text-white md:text-[.8rem]">
         2023, dikaaa.tech
       </div>
-    </>
+    </div>
   );
 }
