@@ -1,7 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Poppins, Inter, Roboto_Mono } from "next/font/google";
 import axios from "axios";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("../map"), { ssr: false });
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -48,11 +50,20 @@ const inter = Inter({
 
 export default function Page() {
   const [page, setPage] = useState(1);
-  const [agent, setAgent] = useState("");
-  const [dataAgent, setDataAgent] = useState(null);
   const [loadAbility, setloadAbility] = useState(false);
+  const [dataAgent, setDataAgent] = useState(null);
+
+  // data for section1
+  const [agent, setAgent] = useState("");
   const [ability, setAbility] = useState("");
-  const [map, setMap] = useState("");
+
+  // data for section2
+  const [map, setMap] = useState("ascent");
+  const [lineUpCondition, setLineUpCondition] = useState("from");
+  const coordinate = {
+    from: localStorage.getItem("coordinatFrom"),
+    for: localStorage.getItem("coordinatFor"),
+  };
 
   const selectAgentHandle = async (e) => {
     setloadAbility(true);
@@ -63,6 +74,10 @@ export default function Page() {
         setAgent(e.target.alt);
         setloadAbility(false);
       });
+  };
+  const selectMapHandle = (e) => {
+    console.log(e.target.value);
+    setMap(e.target.value);
   };
 
   const selectAbilityHandle = (i) => {
@@ -77,8 +92,17 @@ export default function Page() {
         setPage(page + 1);
       }
     }
+    if (page === 2) {
+      console.log(coordinate.for);
+      if (coordinate.from === null || coordinate.for === null) {
+        return alert("pilih koordinatnya terlebih dahulu");
+      } else {
+        setPage(page + 1);
+      }
+    }
   };
 
+  localStorage.setItem("lineUpCondition", lineUpCondition);
   return (
     <div className="py-[100px] relative">
       {page === 1 && (
@@ -86,7 +110,7 @@ export default function Page() {
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
-            select agent & ability
+            select agent & tes
           </h1>
           <div className="flex flex-wrap gap-[5px] pt-[90px] w-[70%] mx-auto justify-center">
             {allAgent.map((e, index) => {
@@ -144,14 +168,19 @@ export default function Page() {
                         <img
                           src="/check.png"
                           className={`w-[25px] h-[25px] z-[10] absolute top-[-13px] right-[-13px] ${
-                            ability === i ? "" : "hidden"
+                            ability.key === i ? "" : "hidden"
                           }`}
                         />
                         <img
                           src={dataAgent.data.abilities[i].displayIcon}
                           className="w-full h-full"
                           alt=""
-                          onClick={() => selectAbilityHandle(i)}
+                          onClick={() =>
+                            selectAbilityHandle({
+                              key: i,
+                              asset: dataAgent.data.abilities[i].displayIcon,
+                            })
+                          }
                         />
                       </button>
                     ))}
@@ -164,16 +193,75 @@ export default function Page() {
       )}
 
       {page === 2 && (
-        <div>
+        <div className="w-full relative py-[100px]">
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
             select map & location
           </h1>
+
+          {/* select map */}
+          <div className="absolute top-[200px] right-[50px]">
+            <select
+              name="maps"
+              id="selectMap"
+              className={`${inter.className} rounded-[5px] `}
+              onChange={(e) => selectMapHandle(e)}
+            >
+              <option value="ascent">ascent</option>
+              <option value="bind">bind</option>
+              <option value="breeze">breeze</option>
+              <option value="fracture">fracture</option>
+              <option value="haven">haven</option>
+              <option value="icebox">icebox</option>
+              <option value="lotus">lotus</option>
+              <option value="pearl">pearl</option>
+              <option value="split">split</option>
+              <option value="sunset">sunset</option>
+            </select>
+          </div>
+
+          {/* map */}
+          <div
+            className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px]`}
+          >
+            <Map
+              selectedMap={map}
+              edit="true"
+              img={{
+                agentImg: `/agent/${agent}/${agent}.svg`,
+                abilityImg: ability.asset,
+              }}
+              lineUpCondition={lineUpCondition}
+            />
+          </div>
+
+          {/* select condition */}
+          <div className="mx-auto flex justify-center">
+            <button
+              onClick={(e) => setLineUpCondition(e.currentTarget.id)}
+              className={`btn w-[90px] ${
+                lineUpCondition === "from" ? "!bg-purple-500 !text-white" : ""
+              }`}
+              id="from"
+            >
+              from
+            </button>
+            <button
+              onClick={(e) => setLineUpCondition(e.currentTarget.id)}
+              className={`btn w-[90px] ${
+                lineUpCondition === "for" ? "!bg-purple-500 !text-white" : ""
+              }`}
+              id="for"
+            >
+              for
+            </button>
+          </div>
         </div>
       )}
+
       <button
-        className={`bg-white py-[10px] px-[25px] absolute bottom-0 right-[5%]`}
+        className={`btn absolute bottom-[30px] right-[5%]`}
         onClick={handleNextButton}
       >
         next

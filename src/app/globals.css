@@ -6,6 +6,11 @@ body {
   @apply bg-[#16161A] min-h-[100vh]
 }
 
+.btn {
+  @apply bg-white py-[10px] px-[25px]
+}
+
+
 /*.agent-active {
   @apply bg-[#FFFFFF]
 }*/

@@ -3,6 +3,7 @@ import Footer from "./components/Footer";
 import "./globals.css";
 
 import { Inter, Poppins } from "next/font/google";
+import { AuthProvider } from "./Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: "100" });
@@ -17,7 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className + " relative"}>
         <Navbar />
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <Footer />
       </body>
     </html>

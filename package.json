@@ -11,9 +11,11 @@
   "dependencies": {
     "autoprefixer": "10.4.15",
     "axios": "^1.5.0",
+    "bcryptjs": "^2.4.3",
     "leaflet": "^1.9.4",
-    "mongoose": "^7.5.1",
+    "mongoose": "^7.6.0",
     "next": "13.4.19",
+    "next-auth": "^4.23.2",
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -1,9 +1,9 @@
 "use client";
 
 import axios from "axios";
-import dynamic from "next/dynamic";
 import { Poppins, Inter } from "next/font/google";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 const Map = dynamic(() => import("./map"), { ssr: false });
 
 const allAgent = [
@@ -64,7 +64,7 @@ export default function page() {
   return (
     <div className="py-[100px] w-full relative">
       <div
-        className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move`}
+        className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px]`}
       >
         <Map selectedMap={map} />
       </div>

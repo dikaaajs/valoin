@@ -7,13 +7,19 @@ var overlay = [];
 
 const Map = (e) => {
   const [map, setMap] = useState(undefined);
+  const editCondition = e.edit ? true : false;
+  const img = e.img;
 
-  const selectedMap = "map/" + e.selectedMap + ".png";
+  const selectedMap = "/map/" + e.selectedMap + ".png";
   const locationMap = useRef();
   var bounds = [
     [-26.5, -25],
     [1021.5, 1023],
   ];
+
+  // variabel untuk markup
+  let markFrom = [];
+  let markFor = [];
 
   // init map
   useEffect(() => {
@@ -27,7 +33,46 @@ const Map = (e) => {
       maxBounds: L.latLngBounds(southWest, northEast),
       maxBoundsViscosity: 4.0,
     }).fitBounds(bounds);
+
+    if (editCondition) {
+      map.on("click", (event) => {
+        markLineUp(event);
+      });
+    }
+
     setMap(map);
+    const markLineUp = (event, condition) => {
+      const coordinat = event.latlng;
+      const lineUpCondition = localStorage.getItem("lineUpCondition");
+
+      if (lineUpCondition === "from") {
+        if (markFrom !== null) {
+          map.removeLayer(markFrom);
+        }
+        markFrom = L.marker([coordinat.lat, coordinat.lng], {
+          icon: L.icon({
+            iconUrl: img.agentImg,
+            iconSize: [30, 30],
+          }),
+        }).addTo(map);
+        localStorage.setItem("coordinatFrom", coordinat);
+        return;
+      }
+
+      if (lineUpCondition === "for") {
+        if (markFor !== null) {
+          map.removeLayer(markFor);
+        }
+        markFor = L.marker([coordinat.lat, coordinat.lng], {
+          icon: L.icon({
+            iconUrl: img.abilityImg,
+            iconSize: [30, 30],
+          }),
+        }).addTo(map);
+        localStorage.setItem("coordinatFor", coordinat);
+        return;
+      }
+    };
   }, []);
 
   if (map !== undefined) {
@@ -36,10 +81,11 @@ const Map = (e) => {
     );
     overlay.push(newMap);
   }
-
   if (overlay[overlay.length - 2] !== undefined) {
     overlay[overlay.length - 2].remove();
   }
+
+  // set the pin
   useEffect(() => {
     // L.imageOverlay(selectedMap, bounds).addTo(map);
   }, [e]);
