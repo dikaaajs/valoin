@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
-import Image from "next/legacy/image";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -18,6 +19,9 @@ const PoppinsP = Poppins({
 });
 
 export default function Navbar() {
+  const { data: session } = useSession();
+  console.log(session);
+
   return (
     <nav className="flex mx-[15px] md:mx-[20px] pt-[8px] pb-[10px] border-b-[1px] border-white border-opacity-50 items-center justify-between relative">
       <div className="w-1/3 flex gap-[20px] items-center">
@@ -36,18 +40,28 @@ export default function Navbar() {
       </Link>
 
       <div className="w-1/3 flex justify-end items-center relative text-[.8rem] gap-[10px]">
-        <Link
-          className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
-          href={"/auth/register"}
-        >
-          signup
-        </Link>
-        <Link
-          className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
-          href={"login"}
-        >
-          login
-        </Link>
+        {session !== null ? (
+          <img
+            src="/ikuyo.gif"
+            alt="profile picture"
+            className="w-[45px] h-[45px] bg-white rounded-full"
+          />
+        ) : (
+          <>
+            <Link
+              className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
+              href={"/auth/register"}
+            >
+              signup
+            </Link>
+            <Link
+              className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
+              href={"/auth/login"}
+            >
+              login
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

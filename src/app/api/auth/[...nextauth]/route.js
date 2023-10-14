@@ -13,8 +13,29 @@ export const authOptions = {
       credentials: {},
 
       async authorize(credentials) {
-        const user = { id: "1" };
-        return user;
+        const { username, password } = credentials;
+        try {
+          await connectMongoDB();
+          const findUser = await User.findOne({ username });
+
+          if (!findUser) {
+            return null;
+          }
+          console.log(findUser);
+          const passwordMatch = await bcrypt.compare(
+            password,
+            findUser.password
+          );
+          if (!passwordMatch) {
+            return null;
+          }
+
+          return findUser;
+        } catch (error) {
+          console.log(error);
+        }
+
+        return null;
       },
     }),
   ],

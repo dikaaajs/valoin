@@ -52,7 +52,7 @@ export default function Register() {
         email,
       });
       console.log(res);
-      router.push("/");
+      router.push("/profile");
     } catch (error) {
       setPesan("gagal mendaftar");
     }

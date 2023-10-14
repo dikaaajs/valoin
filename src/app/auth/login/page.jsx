@@ -32,7 +32,11 @@ export default function Login() {
     });
     console.log(res);
 
-    router.replace("/profile");
+    if (res.ok === true) {
+      router.replace(`/profile/${username}`);
+    }
+
+    setPesan("ada yang salah");
   };
   return (
     <div className="py-[50px]">

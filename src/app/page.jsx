@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Poppins, Roboto, Roboto_Mono, Inter } from "next/font/google";
 import Link from "next/link";
 
