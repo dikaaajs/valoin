@@ -72,13 +72,10 @@ export default function Page() {
   // data for section2
   const [map, setMap] = useState("ascent");
   const [lineUpCondition, setLineUpCondition] = useState("from");
+
   useEffect(() => {
     localStorage.setItem("lineUpCondition", lineUpCondition);
   }, [lineUpCondition]);
-  const coordinate = {
-    from: localStorage.getItem("coordinatFrom"),
-    for: localStorage.getItem("coordinatFor"),
-  };
 
   const selectAgentHandle = async (e) => {
     setloadAbility(true);
@@ -108,6 +105,10 @@ export default function Page() {
       }
     }
     if (page === 2) {
+      const coordinate = {
+        from: localStorage.getItem("coordinatFrom"),
+        for: localStorage.getItem("coordinatFor"),
+      };
       console.log(coordinate.for);
       if (coordinate.from === null || coordinate.for === null) {
         return alert("pilih koordinatnya terlebih dahulu");
