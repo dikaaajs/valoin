@@ -1,9 +1,21 @@
 "use client";
+const Map = dynamic(() => import("../map"), { ssr: false });
 import { useEffect, useState } from "react";
 import { Poppins, Inter, Roboto_Mono } from "next/font/google";
 import axios from "axios";
 import dynamic from "next/dynamic";
-const Map = dynamic(() => import("../map"), { ssr: false });
+import { storage } from "../../../../libs/firebase";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+} from "firebase/storage";
+
+export const metadata = {
+  title: "VALOIN dulu aja",
+};
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -49,7 +61,7 @@ const inter = Inter({
 });
 
 export default function Page() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(3);
   const [loadAbility, setloadAbility] = useState(false);
   const [dataAgent, setDataAgent] = useState(null);
 
@@ -60,6 +72,9 @@ export default function Page() {
   // data for section2
   const [map, setMap] = useState("ascent");
   const [lineUpCondition, setLineUpCondition] = useState("from");
+  useEffect(() => {
+    localStorage.setItem("lineUpCondition", lineUpCondition);
+  }, [lineUpCondition]);
   const coordinate = {
     from: localStorage.getItem("coordinatFrom"),
     for: localStorage.getItem("coordinatFor"),
@@ -75,8 +90,8 @@ export default function Page() {
         setloadAbility(false);
       });
   };
+
   const selectMapHandle = (e) => {
-    console.log(e.target.value);
     setMap(e.target.value);
   };
 
@@ -102,7 +117,12 @@ export default function Page() {
     }
   };
 
-  localStorage.setItem("lineUpCondition", lineUpCondition);
+  const handlePrevButton = () => {
+    if (page !== 1) {
+      setPage(page - 1);
+    }
+  };
+
   return (
     <div className="py-[100px] relative">
       {page === 1 && (
@@ -110,7 +130,7 @@ export default function Page() {
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
-            select agent & tes
+            select agent & ability
           </h1>
           <div className="flex flex-wrap gap-[5px] pt-[90px] w-[70%] mx-auto justify-center">
             {allAgent.map((e, index) => {
@@ -197,7 +217,7 @@ export default function Page() {
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
-            select map & location
+            pilih map dan pin
           </h1>
 
           {/* select map */}
@@ -260,12 +280,34 @@ export default function Page() {
         </div>
       )}
 
-      <button
-        className={`btn absolute bottom-[30px] right-[5%]`}
-        onClick={handleNextButton}
-      >
-        next
-      </button>
+      {page === 3 && (
+        <div>
+          <h1
+            className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
+          >
+            tambahkan deskripsi
+          </h1>
+          <div className="w-full flex mx-[50px]">
+            <div className="bg-white w-1/2 mx-[50px] ">
+              <h2>judul lineup</h2>
+              <img src="" alt="" />
+              <p>keterangan akan muncul disini</p>
+            </div>
+            <div className="w-1/2"></div>
+          </div>
+        </div>
+      )}
+
+      <div className="flex gap-[15px] absolute bottom-[30px] right-[5%]">
+        {page !== 1 && (
+          <button className={`btn`} onClick={handlePrevButton}>
+            prev
+          </button>
+        )}
+        <button className={`btn`} onClick={handleNextButton}>
+          next
+        </button>
+      </div>
     </div>
   );
 }
