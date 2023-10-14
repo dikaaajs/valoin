@@ -13,10 +13,6 @@ import {
   list,
 } from "firebase/storage";
 
-export const metadata = {
-  title: "VALOIN dulu aja",
-};
-
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
   display: "swap",
