@@ -12,6 +12,7 @@ import {
   listAll,
   list,
 } from "firebase/storage";
+import { v4 } from "uuid";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -69,6 +70,15 @@ export default function Page() {
   const [map, setMap] = useState("ascent");
   const [lineUpCondition, setLineUpCondition] = useState("from");
 
+  // section 3
+  const [judul, setJudul] = useState("VIPER A SITE (JUDUL LINEUP)");
+  const [keterangan, setKeterangan] = useState(
+    "default spike in a site (keterangan)"
+  );
+  const [difficult, setDifficult] = useState();
+  const [lineUpImg, setLineUpImg] = useState();
+  const [imageUrl, setImageUrl] = useState("/viperToxin.png");
+
   useEffect(() => {
     localStorage.setItem("lineUpCondition", lineUpCondition);
   }, [lineUpCondition]);
@@ -120,6 +130,24 @@ export default function Page() {
     }
   };
 
+  const uploadImg = async (e) => {
+    console.log("jalan ey");
+    console.log(e);
+    if (e == null) return;
+    const imageRef = ref(storage, `images/${e.name + v4()}`);
+    try {
+      const snapshot = await uploadBytes(imageRef, e);
+      const url = await getDownloadURL(snapshot.ref);
+      setImageUrl(url);
+    } catch (error) {}
+    uploadBytes(imageRef, e).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrl((prev) => [...prev, url]);
+      });
+    });
+  };
+
+  const tag = [difficult];
   return (
     <div className="py-[100px] relative">
       {page === 1 && (
@@ -282,15 +310,145 @@ export default function Page() {
           <h1
             className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
           >
-            tambahkan deskripsi
+            tambahkan informasi
           </h1>
-          <div className="w-full flex mx-[50px]">
-            <div className="bg-white w-1/2 mx-[50px] ">
-              <h2>judul lineup</h2>
-              <img src="" alt="" />
-              <p>keterangan akan muncul disini</p>
+          <div className="w-[80%] flex mx-[50px] my-[70px]">
+            {/* display */}
+            <div className="bg-white w-1/2 mx-[50px] px-[20px] py-[10px]">
+              <h2
+                className={`text-[.8rem] ${poppins.className} py-[10px] uppercase`}
+              >
+                {judul}
+              </h2>
+              <div className="relative">
+                <img src={imageUrl} alt="" />
+                {tag.length !== 0 && (
+                  <>
+                    {tag.map((i) => {
+                      if (i === undefined) {
+                        return;
+                      }
+                      return (
+                        <div
+                          key={i}
+                          className={`text-[.7rem] text-black bg-white rounded-[5px] px-[10px] py-[5px] absolute bottom-2 right-2`}
+                        >
+                          {i}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+              <p className={`${robotoMono.className} text-[.8rem] py-[10px]`}>
+                {keterangan}
+              </p>
+              <button
+                className={`btn !bg-blue-400 !text-white text-[.8rem] rounded-[3px] ${inter.className} ml-auto block my-[20px]`}
+              >
+                details
+              </button>
             </div>
-            <div className="w-1/2"></div>
+
+            {/* form */}
+            <div className="w-1/2">
+              <form className="text-white flex flex-col gap-[20px]">
+                {/* judul */}
+                <div className="flex flex-col gap-[5px]">
+                  <label
+                    htmlFor="judul"
+                    className={`text-[.9rem] ${inter.className}`}
+                  >
+                    judul*
+                  </label>
+                  <input
+                    type="text"
+                    name="judul"
+                    id="judul"
+                    className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                    placeholder={judul}
+                    onChange={(e) => setJudul(e.target.value)}
+                  />
+                </div>
+
+                {/* keterangan */}
+                <div className="flex flex-col gap-[5px]">
+                  <label
+                    htmlFor=""
+                    className={`text-[.9rem] ${inter.className}`}
+                  >
+                    keterangan*
+                  </label>
+                  <input
+                    type="text"
+                    className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                    placeholder={keterangan}
+                    onChange={(e) => setKeterangan(e.target.value)}
+                  />
+                </div>
+
+                {/* difficult */}
+                <div className="flex flex-col gap-[5px]">
+                  <label
+                    htmlFor=""
+                    className={`text-[.9rem] ${inter.className}`}
+                  >
+                    tags difficult*
+                  </label>
+                  <div className="flex gap-[10px]">
+                    <button
+                      type="button"
+                      className={`box-content px-[15px] py-[5px] bg-white text-black text-[.8rem] rounded-[5px] ${
+                        robotoMono.className
+                      } ${
+                        difficult === "easy"
+                          ? "border-[2px] border-blue-500"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setDifficult("easy");
+                      }}
+                    >
+                      easy
+                    </button>
+                    <button
+                      type="button"
+                      className={`box-content px-[15px] py-[5px] bg-white text-black text-[.8rem] rounded-[5px] ${
+                        robotoMono.className
+                      } ${
+                        difficult === "hard"
+                          ? "border-[2px] border-blue-500"
+                          : ""
+                      }`}
+                      onClick={() => setDifficult("hard")}
+                    >
+                      hard
+                    </button>
+                  </div>
+                </div>
+
+                {/* upload image */}
+                <div className="flex flex-col gap-[5px]">
+                  <label className={`text-[.9rem] ${inter.className}`}>
+                    display image*
+                  </label>
+                  <label
+                    htmlFor="uploadGambar"
+                    className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                  >
+                    upload image
+                  </label>
+                  <input
+                    type="file"
+                    id="uploadGambar"
+                    className="hidden"
+                    onChange={(e) => {
+                      uploadImg(e.target.files[0]);
+                    }}
+                  />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}
