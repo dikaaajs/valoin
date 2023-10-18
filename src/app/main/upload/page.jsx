@@ -132,21 +132,19 @@ export default function Page() {
 
   const uploadImg = async (e) => {
     console.log("jalan ey");
-    console.log(e);
     if (e == null) return;
     const imageRef = ref(storage, `images/${e.name + v4()}`);
     try {
       const snapshot = await uploadBytes(imageRef, e);
       const url = await getDownloadURL(snapshot.ref);
+      console.log(url);
       setImageUrl(url);
-    } catch (error) {}
-    uploadBytes(imageRef, e).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setImageUrl((prev) => [...prev, url]);
-      });
-    });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  console.log(imageUrl);
   const tag = [difficult];
   return (
     <div className="py-[100px] relative">
