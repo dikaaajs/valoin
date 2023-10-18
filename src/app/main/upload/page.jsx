@@ -58,7 +58,8 @@ const inter = Inter({
 });
 
 export default function Page() {
-  const [page, setPage] = useState(3);
+  const idPost = v4();
+  const [page, setPage] = useState(4);
   const [loadAbility, setloadAbility] = useState(false);
   const [dataAgent, setDataAgent] = useState(null);
 
@@ -77,7 +78,16 @@ export default function Page() {
   );
   const [difficult, setDifficult] = useState();
   const [lineUpImg, setLineUpImg] = useState();
-  const [imageUrl, setImageUrl] = useState("/viperToxin.png");
+  const [imageUrl, setBanner] = useState("/viperToxin.png");
+
+  // section 4
+  const [pakeVideo, setPakeVideo] = useState(false);
+  const [img1, setimg1] = useState("/viperToxin.png");
+  const [img2, setimg2] = useState("/viperToxin.png");
+  const [img3, setimg3] = useState("/viperToxin.png");
+  const [caption1, setcaption1] = useState("caption untuk gambar 1");
+  const [caption2, setcaption2] = useState("caption untuk gambar 2");
+  const [caption3, setcaption3] = useState("caption untuk gambar 3");
 
   useEffect(() => {
     localStorage.setItem("lineUpCondition", lineUpCondition);
@@ -130,15 +140,15 @@ export default function Page() {
     }
   };
 
-  const uploadImg = async (e) => {
+  const uploadImg = async (e, typeImage, fungsiSet) => {
     console.log("jalan ey");
     if (e == null) return;
-    const imageRef = ref(storage, `images/${e.name + v4()}`);
+    const imageRef = ref(storage, `images/${typeImage + "-" + idPost}`);
     try {
       const snapshot = await uploadBytes(imageRef, e);
       const url = await getDownloadURL(snapshot.ref);
       console.log(url);
-      setImageUrl(url);
+      fungsiSet(url);
     } catch (error) {
       console.log(error);
     }
@@ -148,6 +158,7 @@ export default function Page() {
   const tag = [difficult];
   return (
     <div className="py-[100px] relative">
+      {/* pilih agent dan ability */}
       {page === 1 && (
         <div className="w-full relative py-[100px]">
           <h1
@@ -235,6 +246,7 @@ export default function Page() {
         </div>
       )}
 
+      {/* pilih map dan pin */}
       {page === 2 && (
         <div className="w-full relative py-[100px]">
           <h1
@@ -303,6 +315,7 @@ export default function Page() {
         </div>
       )}
 
+      {/* tambahkan informasi */}
       {page === 3 && (
         <div>
           <h1
@@ -441,9 +454,192 @@ export default function Page() {
                     id="uploadGambar"
                     className="hidden"
                     onChange={(e) => {
-                      uploadImg(e.target.files[0]);
+                      uploadImg(e.target.files[0], "banner", setBanner);
                     }}
                   />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* tambahkan patokan */}
+      {page === 4 && (
+        <div>
+          <h1
+            className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
+          >
+            langkah langkah
+          </h1>
+
+          {/* select condition */}
+          <div>
+            <div className="mx-auto flex justify-center mt-[50px]">
+              <button
+                onClick={(e) => setLineUpCondition(e.currentTarget.id)}
+                className={`btn w-[90px] ${
+                  pakeVideo === false ? "!bg-purple-500 !text-white" : ""
+                }`}
+                id="image"
+              >
+                image
+              </button>
+              <button
+                onClick={(e) => setLineUpCondition(e.currentTarget.id)}
+                className={`btn w-[90px] ${
+                  pakeVideo === true ? "!bg-purple-500 !text-white" : ""
+                }`}
+                id="video"
+              >
+                video
+              </button>
+            </div>
+            <p
+              className={`text-white ${robotoMono.className} text-[.8rem] text-center py-[10px]`}
+            >
+              *pilih salah satu atau keduanya
+            </p>
+          </div>
+
+          <div className="flex justify-center w-[100%] px-[50px] my-[70px]">
+            {/* display */}
+            <div className="bg-white w-1/2 mx-[50px] px-[20px] py-[25px]">
+              <h2
+                className={`text-[.8rem] ${poppins.className} py-[10px] uppercase`}
+              >
+                {judul}
+              </h2>
+              <div className="flex flex-col gap-[20px] py-[20px] px-[20px]">
+                <div>
+                  <p className={`${robotoMono.className} text-[.8rem]`}>
+                    1. {caption1}
+                  </p>
+                  <img className="w-full" src={img1} />
+                </div>
+                <div>
+                  <p className={`${robotoMono.className} text-[.8rem]`}>
+                    2. {caption2}
+                  </p>
+                  <img className="w-full" src={img2} />
+                </div>
+                <div>
+                  <p className={`${robotoMono.className} text-[.8rem]`}>
+                    3. {caption3}
+                  </p>
+                  <img className="w-full" src={img3} />
+                </div>
+              </div>
+            </div>
+
+            {/* form */}
+            <div className="w-1/2">
+              <form className="text-white flex flex-col gap-[30px]">
+                {/* 1 */}
+                <div>
+                  <div className="flex flex-col gap-[5px]">
+                    <label
+                      htmlFor="caption1"
+                      className={`text-[.9rem] ${inter.className}`}
+                    >
+                      deskripsi titik berdiri*
+                    </label>
+                    <input
+                      type="text"
+                      name="caption1"
+                      id="caption1"
+                      className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                      placeholder={caption1}
+                      onChange={(e) => setcaption1(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[5px] py-[15px]">
+                    <label
+                      htmlFor="gambar1"
+                      className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                    >
+                      upload image
+                    </label>
+                    <input
+                      type="file"
+                      id="gambar1"
+                      className="hidden"
+                      onChange={(e) => {
+                        uploadImg(e.target.files[0], "img1", setimg1);
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* 2 */}
+                <div>
+                  <div className="flex flex-col gap-[5px]">
+                    <label
+                      htmlFor="caption2"
+                      className={`text-[.9rem] ${inter.className}`}
+                    >
+                      deskripsi titik kursor*
+                    </label>
+                    <input
+                      type="text"
+                      name="caption2"
+                      id="caption2"
+                      className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                      placeholder={caption2}
+                      onChange={(e) => setcaption2(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[5px] py-[15px]">
+                    <label
+                      htmlFor="gambar2"
+                      className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                    >
+                      upload image
+                    </label>
+                    <input
+                      type="file"
+                      id="gambar2"
+                      className="hidden"
+                      onChange={(e) => {
+                        uploadImg(e.target.files[0], "img2", setimg2);
+                      }}
+                    />
+                  </div>
+                </div>
+                {/* 3 */}
+                <div>
+                  <div className="flex flex-col gap-[5px]">
+                    <label
+                      htmlFor="caption2"
+                      className={`text-[.9rem] ${inter.className}`}
+                    >
+                      titik berdiri*
+                    </label>
+                    <input
+                      type="text"
+                      name="caption2"
+                      id="caption2"
+                      className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                      placeholder={caption2}
+                      onChange={(e) => setcaption2(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[5px] py-[15px]">
+                    <label
+                      htmlFor="gamabr3"
+                      className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                    >
+                      upload image
+                    </label>
+                    <input
+                      type="file"
+                      id="gamabr3"
+                      className="hidden"
+                      onChange={(e) => {
+                        uploadImg(e.target.files[0], "img3", setimg3);
+                      }}
+                    />
+                  </div>
                 </div>
               </form>
             </div>
