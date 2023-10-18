@@ -88,6 +88,8 @@ export default function Page() {
   const [caption1, setcaption1] = useState("caption untuk gambar 1");
   const [caption2, setcaption2] = useState("caption untuk gambar 2");
   const [caption3, setcaption3] = useState("caption untuk gambar 3");
+  const [linkYT, setLinkYT] = useState("8XEq1rtIloU");
+  const [videoVer, setVideoVer] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("lineUpCondition", lineUpCondition);
@@ -154,7 +156,6 @@ export default function Page() {
     }
   };
 
-  console.log(imageUrl);
   const tag = [difficult];
   return (
     <div className="py-[100px] relative">
@@ -477,7 +478,7 @@ export default function Page() {
           <div>
             <div className="mx-auto flex justify-center mt-[50px]">
               <button
-                onClick={(e) => setLineUpCondition(e.currentTarget.id)}
+                onClick={(e) => setPakeVideo(false)}
                 className={`btn w-[90px] ${
                   pakeVideo === false ? "!bg-purple-500 !text-white" : ""
                 }`}
@@ -486,7 +487,7 @@ export default function Page() {
                 image
               </button>
               <button
-                onClick={(e) => setLineUpCondition(e.currentTarget.id)}
+                onClick={(e) => setPakeVideo(true)}
                 className={`btn w-[90px] ${
                   pakeVideo === true ? "!bg-purple-500 !text-white" : ""
                 }`}
@@ -504,144 +505,224 @@ export default function Page() {
 
           <div className="flex justify-center w-[100%] px-[50px] my-[70px]">
             {/* display */}
-            <div className="bg-white w-1/2 mx-[50px] px-[20px] py-[25px]">
+            <div className="bg-white w-1/2 mx-[50px] px-[20px] py-[25px] relative">
               <h2
                 className={`text-[.8rem] ${poppins.className} py-[10px] uppercase`}
               >
                 {judul}
               </h2>
-              <div className="flex flex-col gap-[20px] py-[20px] px-[20px]">
-                <div>
-                  <p className={`${robotoMono.className} text-[.8rem]`}>
-                    1. {caption1}
-                  </p>
-                  <img className="w-full" src={img1} />
-                </div>
-                <div>
-                  <p className={`${robotoMono.className} text-[.8rem]`}>
-                    2. {caption2}
-                  </p>
-                  <img className="w-full" src={img2} />
-                </div>
-                <div>
-                  <p className={`${robotoMono.className} text-[.8rem]`}>
-                    3. {caption3}
-                  </p>
-                  <img className="w-full" src={img3} />
-                </div>
+
+              <div className="overflow-hidden w-fit flex items-center absolute top-2 right-3 border-black border-[1px] rounded-[8px]">
+                <button
+                  className={`py-[5px] px-[10px] rounded-l-[6px] flex items-center ${
+                    videoVer === false ? "bg-black" : "bg-white"
+                  }`}
+                  onClick={() => setVideoVer(false)}
+                >
+                  <span
+                    class={`${
+                      !videoVer ? "text-white" : "text-black"
+                    } material-symbols-outlined block`}
+                  >
+                    image
+                  </span>
+                </button>
+
+                <button
+                  className={`py-[5px] px-[10px] rounded-r-[6px] flex items-center ${
+                    videoVer === true ? "bg-black" : "bg-white"
+                  }`}
+                  onClick={() => setVideoVer(true)}
+                >
+                  <span
+                    class={`${
+                      videoVer ? "text-white" : "text-black"
+                    } material-symbols-outlined`}
+                  >
+                    slideshow
+                  </span>
+                </button>
               </div>
+
+              {videoVer === false && (
+                <div className="flex flex-col gap-[20px] py-[20px] px-[20px]">
+                  <div>
+                    <p className={`${robotoMono.className} text-[.8rem]`}>
+                      1. {caption1}
+                    </p>
+                    <img className="w-full" src={img1} />
+                  </div>
+                  <div>
+                    <p className={`${robotoMono.className} text-[.8rem]`}>
+                      2. {caption2}
+                    </p>
+                    <img className="w-full" src={img2} />
+                  </div>
+                  <div>
+                    <p className={`${robotoMono.className} text-[.8rem]`}>
+                      3. {caption3}
+                    </p>
+                    <img className="w-full" src={img3} />
+                  </div>
+                </div>
+              )}
+
+              {videoVer === true && (
+                <div className="flex flex-col gap-[20px] py-[20px] px-[20px]">
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${linkYT}?si=ISXsNOfFl_R0YhJV&rel=0`}
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              )}
             </div>
 
             {/* form */}
             <div className="w-1/2">
-              <form className="text-white flex flex-col gap-[30px]">
-                {/* 1 */}
-                <div>
+              {pakeVideo === false && (
+                <form className="text-white flex flex-col gap-[30px]">
+                  {/* 1 */}
+                  <div>
+                    <div className="flex flex-col gap-[5px]">
+                      <label
+                        htmlFor="caption1"
+                        className={`text-[.9rem] ${inter.className}`}
+                      >
+                        deskripsi titik berdiri*
+                      </label>
+                      <input
+                        type="text"
+                        name="caption1"
+                        id="caption1"
+                        className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                        placeholder={caption1}
+                        onChange={(e) => setcaption1(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-[5px] py-[15px]">
+                      <label
+                        htmlFor="gambar1"
+                        className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                      >
+                        upload image
+                      </label>
+                      <input
+                        type="file"
+                        id="gambar1"
+                        className="hidden"
+                        onChange={(e) => {
+                          uploadImg(e.target.files[0], "img1", setimg1);
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* 2 */}
+                  <div>
+                    <div className="flex flex-col gap-[5px]">
+                      <label
+                        htmlFor="caption2"
+                        className={`text-[.9rem] ${inter.className}`}
+                      >
+                        deskripsi titik kursor*
+                      </label>
+                      <input
+                        type="text"
+                        name="caption2"
+                        id="caption2"
+                        className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                        placeholder={caption2}
+                        onChange={(e) => setcaption2(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-[5px] py-[15px]">
+                      <label
+                        htmlFor="gambar2"
+                        className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                      >
+                        upload image
+                      </label>
+                      <input
+                        type="file"
+                        id="gambar2"
+                        className="hidden"
+                        onChange={(e) => {
+                          uploadImg(e.target.files[0], "img2", setimg2);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  {/* 3 */}
+                  <div>
+                    <div className="flex flex-col gap-[5px]">
+                      <label
+                        htmlFor="caption2"
+                        className={`text-[.9rem] ${inter.className}`}
+                      >
+                        titik berdiri*
+                      </label>
+                      <input
+                        type="text"
+                        name="caption2"
+                        id="caption2"
+                        className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
+                        placeholder={caption2}
+                        onChange={(e) => setcaption2(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-[5px] py-[15px]">
+                      <label
+                        htmlFor="gamabr3"
+                        className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
+                      >
+                        upload image
+                      </label>
+                      <input
+                        type="file"
+                        id="gamabr3"
+                        className="hidden"
+                        onChange={(e) => {
+                          uploadImg(e.target.files[0], "img3", setimg3);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </form>
+              )}
+
+              {pakeVideo === true && (
+                <form className="text-white flex flex-col gap-[30px]">
                   <div className="flex flex-col gap-[5px]">
                     <label
                       htmlFor="caption1"
                       className={`text-[.9rem] ${inter.className}`}
                     >
-                      deskripsi titik berdiri*
+                      id video youtube*
                     </label>
                     <input
                       type="text"
-                      name="caption1"
-                      id="caption1"
+                      name="linkyt"
+                      id="linkyt"
                       className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                      placeholder={caption1}
-                      onChange={(e) => setcaption1(e.target.value)}
+                      placeholder={linkYT}
+                      onChange={(e) => setLinkYT(e.target.value)}
                     />
+                    <p className={`text-[.7rem] ${inter.className}`}>
+                      https://www.youtube.com/watch?v=
+                      <span className="bg-yellow-700">b0Ho5AqgwAQ</span>
+                    </p>
+                    <p className={`text-[.7rem] ${inter.className}`}>
+                      direkomendasikan untuk menggunakan video pendek atau bisa
+                      juga menggunakan yt short
+                    </p>
                   </div>
-                  <div className="flex flex-col gap-[5px] py-[15px]">
-                    <label
-                      htmlFor="gambar1"
-                      className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
-                    >
-                      upload image
-                    </label>
-                    <input
-                      type="file"
-                      id="gambar1"
-                      className="hidden"
-                      onChange={(e) => {
-                        uploadImg(e.target.files[0], "img1", setimg1);
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* 2 */}
-                <div>
-                  <div className="flex flex-col gap-[5px]">
-                    <label
-                      htmlFor="caption2"
-                      className={`text-[.9rem] ${inter.className}`}
-                    >
-                      deskripsi titik kursor*
-                    </label>
-                    <input
-                      type="text"
-                      name="caption2"
-                      id="caption2"
-                      className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                      placeholder={caption2}
-                      onChange={(e) => setcaption2(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-[5px] py-[15px]">
-                    <label
-                      htmlFor="gambar2"
-                      className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
-                    >
-                      upload image
-                    </label>
-                    <input
-                      type="file"
-                      id="gambar2"
-                      className="hidden"
-                      onChange={(e) => {
-                        uploadImg(e.target.files[0], "img2", setimg2);
-                      }}
-                    />
-                  </div>
-                </div>
-                {/* 3 */}
-                <div>
-                  <div className="flex flex-col gap-[5px]">
-                    <label
-                      htmlFor="caption2"
-                      className={`text-[.9rem] ${inter.className}`}
-                    >
-                      titik berdiri*
-                    </label>
-                    <input
-                      type="text"
-                      name="caption2"
-                      id="caption2"
-                      className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                      placeholder={caption2}
-                      onChange={(e) => setcaption2(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-[5px] py-[15px]">
-                    <label
-                      htmlFor="gamabr3"
-                      className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
-                    >
-                      upload image
-                    </label>
-                    <input
-                      type="file"
-                      id="gamabr3"
-                      className="hidden"
-                      onChange={(e) => {
-                        uploadImg(e.target.files[0], "img3", setimg3);
-                      }}
-                    />
-                  </div>
-                </div>
-              </form>
+                </form>
+              )}
             </div>
           </div>
         </div>

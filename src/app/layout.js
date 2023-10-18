@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./globals.css";
+import "material-symbols";
 
 import { Inter, Poppins } from "next/font/google";
 import { AuthProvider } from "./Providers";
