@@ -13,6 +13,9 @@ import {
   list,
 } from "firebase/storage";
 import { v4 } from "uuid";
+import Section1 from "./section1";
+import Section2 from "./section2";
+import Section3 from "./section3";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -59,7 +62,7 @@ const inter = Inter({
 
 export default function Page() {
   const idPost = v4();
-  const [page, setPage] = useState(4);
+  const [page, setPage] = useState(3);
   const [loadAbility, setloadAbility] = useState(false);
   const [dataAgent, setDataAgent] = useState(null);
 
@@ -77,7 +80,6 @@ export default function Page() {
     "default spike in a site (keterangan)"
   );
   const [difficult, setDifficult] = useState();
-  const [lineUpImg, setLineUpImg] = useState();
   const [imageUrl, setBanner] = useState("/viperToxin.png");
 
   // section 4
@@ -161,308 +163,50 @@ export default function Page() {
     <div className="py-[100px] relative">
       {/* pilih agent dan ability */}
       {page === 1 && (
-        <div className="w-full relative py-[100px]">
-          <h1
-            className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
-          >
-            select agent & ability
-          </h1>
-          <div className="flex flex-wrap gap-[5px] pt-[90px] w-[70%] mx-auto justify-center">
-            {allAgent.map((e, index) => {
-              return (
-                <div
-                  className={`w-[60px] relative z-[10] ${
-                    agent === e.name ? "agent-active" : ""
-                  }`}
-                  onClick={(evn) => selectAgentHandle(evn)}
-                  id={e.name}
-                  key={index}
-                >
-                  <div
-                    className={`w-[60px] h-[60px] bg-white opacity-20 z-[1] absolute text-center ${
-                      agent === e.name ? "" : "hidden"
-                    }`}
-                  ></div>
-                  <img
-                    src="/check.png"
-                    className={`w-[30px] h-[30px] z-[10] absolute top-[-13px] right-[-13px] ${
-                      agent === e.name ? "" : "hidden"
-                    }`}
-                  />
-                  <img
-                    src={`/agent/${e.name}/${e.name}.svg`}
-                    className="w-full"
-                    alt={e.name}
-                    id={e.uuid}
-                  />
-                </div>
-              );
-            })}
-          </div>
-          {dataAgent && (
-            <>
-              <div className="flex gap-[10px] pt-[20px] justify-center">
-                {loadAbility ? (
-                  <h1
-                    className={`text-white text-center text-[1.5rem] ${robotoMono.className}`}
-                  >
-                    loading ...
-                  </h1>
-                ) : (
-                  <>
-                    {Array.from({ length: 4 }, (_, i) => (
-                      <button
-                        key={i}
-                        className="relative w-[50px] h-[50px] border-solid border-white border-[1px]"
-                      >
-                        <div
-                          className={`w-[50px] h-[50px] bg-white opacity-20 z-[1] absolute text-center ${
-                            ability === i ? "" : "hidden"
-                          }`}
-                        ></div>
-                        <img
-                          src="/check.png"
-                          className={`w-[25px] h-[25px] z-[10] absolute top-[-13px] right-[-13px] ${
-                            ability.key === i ? "" : "hidden"
-                          }`}
-                        />
-                        <img
-                          src={dataAgent.data.abilities[i].displayIcon}
-                          className="w-full h-full"
-                          alt=""
-                          onClick={() =>
-                            selectAbilityHandle({
-                              key: i,
-                              asset: dataAgent.data.abilities[i].displayIcon,
-                            })
-                          }
-                        />
-                      </button>
-                    ))}
-                  </>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+        <Section1
+          poppins={poppins}
+          allAgent={allAgent}
+          agent={agent}
+          selectAgentHandle={selectAgentHandle}
+          robotoMono={robotoMono}
+          selectAbilityHandle={selectAbilityHandle}
+          dataAgent={dataAgent}
+          loadAbility={loadAbility}
+          ability={ability}
+        />
       )}
 
       {/* pilih map dan pin */}
       {page === 2 && (
-        <div className="w-full relative py-[100px]">
-          <h1
-            className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
-          >
-            pilih map dan pin
-          </h1>
-
-          {/* select map */}
-          <div className="absolute top-[200px] right-[50px]">
-            <select
-              name="maps"
-              id="selectMap"
-              className={`${inter.className} rounded-[5px] `}
-              onChange={(e) => selectMapHandle(e)}
-            >
-              <option value="ascent">ascent</option>
-              <option value="bind">bind</option>
-              <option value="breeze">breeze</option>
-              <option value="fracture">fracture</option>
-              <option value="haven">haven</option>
-              <option value="icebox">icebox</option>
-              <option value="lotus">lotus</option>
-              <option value="pearl">pearl</option>
-              <option value="split">split</option>
-              <option value="sunset">sunset</option>
-            </select>
-          </div>
-
-          {/* map */}
-          <div
-            className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px]`}
-          >
-            <Map
-              selectedMap={map}
-              edit="true"
-              img={{
-                agentImg: `/agent/${agent}/${agent}.svg`,
-                abilityImg: ability.asset,
-              }}
-              lineUpCondition={lineUpCondition}
-            />
-          </div>
-
-          {/* select condition */}
-          <div className="mx-auto flex justify-center">
-            <button
-              onClick={(e) => setLineUpCondition(e.currentTarget.id)}
-              className={`btn w-[90px] ${
-                lineUpCondition === "from" ? "!bg-purple-500 !text-white" : ""
-              }`}
-              id="from"
-            >
-              from
-            </button>
-            <button
-              onClick={(e) => setLineUpCondition(e.currentTarget.id)}
-              className={`btn w-[90px] ${
-                lineUpCondition === "for" ? "!bg-purple-500 !text-white" : ""
-              }`}
-              id="for"
-            >
-              for
-            </button>
-          </div>
-        </div>
+        <Section2
+          poppins={poppins}
+          inter={inter}
+          Map={Map}
+          ability={ability}
+          setLineUpCondition={setLineUpCondition}
+          map={map}
+          agent={agent}
+          lineUpCondition={lineUpCondition}
+        />
       )}
 
       {/* tambahkan informasi */}
       {page === 3 && (
-        <div>
-          <h1
-            className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
-          >
-            tambahkan informasi
-          </h1>
-          <div className="w-[80%] flex mx-[50px] my-[70px]">
-            {/* display */}
-            <div className="bg-white w-1/2 mx-[50px] px-[20px] py-[10px]">
-              <h2
-                className={`text-[.8rem] ${poppins.className} py-[10px] uppercase`}
-              >
-                {judul}
-              </h2>
-              <div className="relative">
-                <img src={imageUrl} alt="" />
-                {tag.length !== 0 && (
-                  <>
-                    {tag.map((i) => {
-                      if (i === undefined) {
-                        return;
-                      }
-                      return (
-                        <div
-                          key={i}
-                          className={`text-[.7rem] text-black bg-white rounded-[5px] px-[10px] py-[5px] absolute bottom-2 right-2`}
-                        >
-                          {i}
-                        </div>
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-              <p className={`${robotoMono.className} text-[.8rem] py-[10px]`}>
-                {keterangan}
-              </p>
-              <button
-                className={`btn !bg-blue-400 !text-white text-[.8rem] rounded-[3px] ${inter.className} ml-auto block my-[20px]`}
-              >
-                details
-              </button>
-            </div>
-
-            {/* form */}
-            <div className="w-1/2">
-              <form className="text-white flex flex-col gap-[20px]">
-                {/* judul */}
-                <div className="flex flex-col gap-[5px]">
-                  <label
-                    htmlFor="judul"
-                    className={`text-[.9rem] ${inter.className}`}
-                  >
-                    judul*
-                  </label>
-                  <input
-                    type="text"
-                    name="judul"
-                    id="judul"
-                    className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                    placeholder={judul}
-                    onChange={(e) => setJudul(e.target.value)}
-                  />
-                </div>
-
-                {/* keterangan */}
-                <div className="flex flex-col gap-[5px]">
-                  <label
-                    htmlFor=""
-                    className={`text-[.9rem] ${inter.className}`}
-                  >
-                    keterangan*
-                  </label>
-                  <input
-                    type="text"
-                    className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                    placeholder={keterangan}
-                    onChange={(e) => setKeterangan(e.target.value)}
-                  />
-                </div>
-
-                {/* difficult */}
-                <div className="flex flex-col gap-[5px]">
-                  <label
-                    htmlFor=""
-                    className={`text-[.9rem] ${inter.className}`}
-                  >
-                    tags difficult*
-                  </label>
-                  <div className="flex gap-[10px]">
-                    <button
-                      type="button"
-                      className={`box-content px-[15px] py-[5px] bg-white text-black text-[.8rem] rounded-[5px] ${
-                        robotoMono.className
-                      } ${
-                        difficult === "easy"
-                          ? "border-[2px] border-blue-500"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        setDifficult("easy");
-                      }}
-                    >
-                      easy
-                    </button>
-                    <button
-                      type="button"
-                      className={`box-content px-[15px] py-[5px] bg-white text-black text-[.8rem] rounded-[5px] ${
-                        robotoMono.className
-                      } ${
-                        difficult === "hard"
-                          ? "border-[2px] border-blue-500"
-                          : ""
-                      }`}
-                      onClick={() => setDifficult("hard")}
-                    >
-                      hard
-                    </button>
-                  </div>
-                </div>
-
-                {/* upload image */}
-                <div className="flex flex-col gap-[5px]">
-                  <label className={`text-[.9rem] ${inter.className}`}>
-                    display image*
-                  </label>
-                  <label
-                    htmlFor="uploadGambar"
-                    className={`${robotoMono.className} text-[.8rem] text-black bg-white px-[20px] py-[10px] block w-fit rounded-[5px]`}
-                  >
-                    upload image
-                  </label>
-                  <input
-                    type="file"
-                    id="uploadGambar"
-                    className="hidden"
-                    onChange={(e) => {
-                      uploadImg(e.target.files[0], "banner", setBanner);
-                    }}
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <Section3
+          poppins={poppins}
+          imageUrl={imageUrl}
+          tag={tag}
+          robotoMono={robotoMono}
+          inter={inter}
+          setJudul={setJudul}
+          setKeterangan={setKeterangan}
+          setDifficult={setDifficult}
+          difficult={difficult}
+          uploadImg={uploadImg}
+          judul={judul}
+          keterangan={keterangan}
+          setBanner={setBanner}
+        />
       )}
 
       {/* tambahkan patokan */}
