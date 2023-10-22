@@ -15,7 +15,7 @@ export const authOptions = {
       async authorize(credentials) {
         const { username, password } = credentials;
         try {
-          await connectMongoDB();
+          await connectMongoDB("auth");
           const findUser = await User.findOne({ username });
 
           if (!findUser) {

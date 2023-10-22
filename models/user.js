@@ -14,6 +14,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    pp: {
+      type: String,
+      required: true,
+    },
+    deskripsi: {
+      type: String,
+      required: true,
+    },
+    tag: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true }
 );

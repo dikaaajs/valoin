@@ -1,0 +1,6 @@
+POST  http://localhost:3000/api/stats
+Content-Type: application/json
+
+{
+    "idUser": "6533ac4ee0818e76219c5cb9"
+}

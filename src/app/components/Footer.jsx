@@ -1,3 +1,4 @@
+"use client";
 import { Poppins, Inter } from "next/font/google";
 
 const poppins = Poppins({
@@ -10,6 +11,9 @@ const inter = Inter({
   weight: "500",
 });
 
+const interDisplay = inter.className;
+const poppinsDisplay = poppins.className;
+
 export default function Footer() {
   return (
     <div className="w-full">
@@ -20,7 +24,7 @@ export default function Footer() {
         {/* support */}
         <div className="flex flex-col lg:flex-row lg:gap-[70px] gap-[20px] py-[50px] justify-center">
           <div className="w-fit relative md:leading-7 leading-5">
-            <p className={`${poppins.className} text-[1.2rem]`}>support me</p>
+            <p className={`${poppinsDisplay} text-[1.2rem]`}>support me</p>
             <a href="https://saweria.co/dikaaajs">
               <img
                 src="/saweria.png"
@@ -32,8 +36,8 @@ export default function Footer() {
           {/* section tq */}
           <div className="w-full md:w-fit relative">
             <div className="w-fit md:leading-7 leading-5 text-black">
-              <p className={`${poppins.className} text-[1.2rem]`}>thank you</p>
-              <p className={`${inter.className} text-[.5rem] md:text-[.8rem] `}>
+              <p className={`${poppinsDisplay} text-[1.2rem]`}>thank you</p>
+              <p className={`${interDisplay} text-[.5rem] md:text-[.8rem] `}>
                 I hope this website can be useful for you
               </p>
             </div>
@@ -42,10 +46,8 @@ export default function Footer() {
           {/* valoin */}
           <div className="w-full md:w-fit relative">
             <div className="w-fit md:leading-7 leading-5 text-black">
-              <p className={`${poppins.className} text-[1.2rem]`}>valoin</p>
-              <ul
-                className={`${inter.className} text-[.5rem] md:text-[.8rem] `}
-              >
+              <p className={`${poppinsDisplay} text-[1.2rem]`}>valoin</p>
+              <ul className={`${interDisplay} text-[.5rem] md:text-[.8rem] `}>
                 <li className="underline">tentang valoin</li>
                 <li className="underline">tujuan aplikasi</li>
                 <li className="underline">lineup</li>
@@ -57,12 +59,10 @@ export default function Footer() {
           {/* bantuan */}
           <div className="w-full md:w-fit relative">
             <div className="w-fit md:leading-7 leading-5 text-black">
-              <p className={`${poppins.className} text-[1.2rem]`}>
+              <p className={`${poppinsDisplay} text-[1.2rem]`}>
                 bantuan & panduan
               </p>
-              <ul
-                className={`${inter.className} text-[.5rem] md:text-[.8rem] `}
-              >
+              <ul className={`${interDisplay} text-[.5rem] md:text-[.8rem] `}>
                 <li className="underline">cara pake</li>
                 <li className="underline">syarat dan ketentuan</li>
                 <li className="underline">kebijakan privasi</li>
@@ -73,11 +73,11 @@ export default function Footer() {
           {/* sosmed */}
           <div className="w-full md:w-fit relative">
             <div className="w-fit md:leading-7 leading-5 text-black">
-              <p className={`${poppins.className} text-[1.2rem]`}>
+              <p className={`${poppinsDisplay} text-[1.2rem]`}>
                 ikuti kami (saya)
               </p>
               <ul
-                className={`${inter.className} text-[.5rem] md:text-[.8rem] flex gap-[5px]`}
+                className={`${interDisplay} text-[.5rem] md:text-[.8rem] flex gap-[5px]`}
               >
                 <li className="underline">
                   <img src="/logo/instagram.svg" alt="" />

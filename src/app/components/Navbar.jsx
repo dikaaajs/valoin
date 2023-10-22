@@ -1,8 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUsername } from "../../../libs/redux/useSlice";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -19,8 +22,28 @@ const PoppinsP = Poppins({
 });
 
 export default function Navbar() {
-  const { data: session } = useSession();
-  console.log(session);
+  const { data: session, status, update } = useSession();
+  const [done, setDone] = useState(false);
+
+  const getData = async () => {
+    try {
+      const user = await axios.post("/api/user/byEmail", {
+        email: session.user?.email,
+      });
+      const data = user.data.user;
+      session.user.username = data.username;
+      session.user.pp = data.pp;
+      setDone(true);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "authenticated" && done === false) {
+      getData();
+    }
+  }, [session]);
 
   return (
     <nav className="flex mx-[15px] md:mx-[20px] pt-[8px] pb-[10px] border-b-[1px] border-white border-opacity-50 items-center justify-between relative">

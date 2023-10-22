@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -37,7 +38,6 @@ export default function Register() {
       const user = await axios.post("/api/user", {
         email,
       });
-      console.log(user);
 
       if (user.data === null) {
         const update = inputError;
@@ -50,9 +50,20 @@ export default function Register() {
         username,
         password,
         email,
+        pp: "/defaultpp.jpg",
+        deskripsi: "tidak bisa bicara, valo saja",
+        tag: ["pemula"],
       });
-      console.log(res);
-      router.push("/profile");
+
+      const login = await signIn("credentials", {
+        username,
+        password,
+        redirect: false,
+      });
+
+      if (login.ok === true) {
+        router.replace(`/profile/${username}`);
+      }
     } catch (error) {
       setPesan("gagal mendaftar");
     }
@@ -84,7 +95,7 @@ export default function Register() {
               className={`border-slate-500 rounded-[3px] border-opacity-50 py-[5px] text-slate-700 text-[.8rem]`}
               type="text"
               name="username"
-              onBlur={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="flex flex-col">
@@ -95,7 +106,7 @@ export default function Register() {
               className={`border-slate-500 rounded-[3px] border-opacity-50 py-[5px] text-slate-700 text-[.8rem]`}
               type="password"
               name="password"
-              onBlur={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex flex-col">
@@ -108,7 +119,7 @@ export default function Register() {
               }`}
               type="email"
               name="email"
-              onBlur={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="w-full flex flex-col gap-[3px]">

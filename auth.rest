@@ -4,5 +4,17 @@ Content-Type: application/json
 {
     "username": "andika",
     "password": "adachikawai",
-    "email": "zoneandika@gmail.com"
+    "email": "kyaruchankawai@gmail.com",
+    "deskripsi": "tidak bisa bicara, valo saja",
+    "pp": "/defaultpp.jpg",
+    "tag": ["pemula"]
+
+}
+
+###
+POST http://localhost:3000/api/user/byEmail
+Content-Type: "application/json"
+
+{
+    "email": "kyaruchankawai@gmail.com"
 }
