@@ -2,10 +2,10 @@ POST  http://localhost:3000/api/register
 Content-Type: application/json
 
 {
-    "username": "andika",
+    "username": "coki",
     "password": "adachikawai",
-    "email": "kyaruchankawai@gmail.com",
-    "deskripsi": "tidak bisa bicara, valo saja",
+    "email": "zoneandika@gmail.com",
+    "deskripsi": "sibuk",
     "pp": "/defaultpp.jpg",
     "tag": ["pemula"]
 

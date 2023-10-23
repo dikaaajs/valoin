@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUsername } from "../../../libs/redux/useSlice";
+import { useRouter } from "next/navigation";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -23,7 +24,9 @@ const PoppinsP = Poppins({
 
 export default function Navbar() {
   const { data: session, status, update } = useSession();
-  const [done, setDone] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loadingDone, setLoadingDone] = useState(false);
+  const router = useRouter();
 
   const getData = async () => {
     try {
@@ -31,19 +34,21 @@ export default function Navbar() {
         email: session.user?.email,
       });
       const data = user.data.user;
-      session.user.username = data.username;
-      session.user.pp = data.pp;
-      setDone(true);
+      setUserData(data);
+      setLoadingDone(true);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   useEffect(() => {
-    if (status === "authenticated" && done === false) {
+    if (status === "authenticated") {
       getData();
     }
   }, [session]);
+
+  if (status === "loading")
+    return <div className="text-white text-center py-[50px]">loading ...</div>;
 
   return (
     <nav className="flex mx-[15px] md:mx-[20px] pt-[8px] pb-[10px] border-b-[1px] border-white border-opacity-50 items-center justify-between relative">
@@ -63,11 +68,12 @@ export default function Navbar() {
       </Link>
 
       <div className="w-1/3 flex justify-end items-center relative text-[.8rem] gap-[10px]">
-        {session !== null ? (
+        {status === "authenticated" && loadingDone === true ? (
           <img
-            src="/ikuyo.gif"
+            src={userData.pp}
             alt="profile picture"
-            className="w-[45px] h-[45px] bg-white rounded-full"
+            onClick={() => router.push(`/profile/${userData.username}`)}
+            className="w-[45px] h-[45px] bg-white rounded-full cursor-pointer"
           />
         ) : (
           <>
