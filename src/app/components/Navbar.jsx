@@ -24,6 +24,7 @@ const PoppinsP = Poppins({
 
 export default function Navbar() {
   const { data: session, status, update } = useSession();
+  console.log(session);
   const [userData, setUserData] = useState(null);
   const [loadingDone, setLoadingDone] = useState(false);
   const router = useRouter();
