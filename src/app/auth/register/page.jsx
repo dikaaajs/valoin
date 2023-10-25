@@ -35,7 +35,7 @@ export default function Register() {
     }
 
     try {
-      const user = await axios.post("/api/user", {
+      const user = await axios.post("/api/user/byEmail", {
         email,
       });
 

@@ -25,18 +25,21 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await signIn("credentials", {
-      username,
-      password,
-      redirect: false,
-    });
-    console.log(res);
+    try {
+      const res = await signIn("credentials", {
+        username,
+        password,
+        redirect: false,
+      });
 
-    if (res.ok === true) {
-      router.replace(`/profile/${username}`);
+      console.log(res);
+      if (res.ok === true) {
+        router.replace(`/profile/${username}`);
+      }
+    } catch (error) {
+      console.log(error);
+      setPesan("ada yang salah");
     }
-
-    setPesan("ada yang salah");
   };
   return (
     <div className="py-[50px]">
