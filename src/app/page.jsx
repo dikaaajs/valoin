@@ -38,7 +38,9 @@ const robotoMono = Roboto_Mono({
  
 export default function Home() {
   const judulValoin = useRef()
+  const judulTengah = useRef()
   const judulBawah = useRef()
+  const agentSection = useRef()
   const [tinggi, setTinggi] = useState()
 
   useEffect(() => {
@@ -54,8 +56,14 @@ export default function Home() {
         judulBawah.current !== undefined && judulValoin.current !== undefined &&
         (
           <>
+          <img src="/ellipse.png" className="absolute left-[40px] z-20" style={{top: judulValoin.current.offsetTop + 15}} />
+          <img src="/ellipse.png" className="absolute left-[40px] z-20" style={{top: judulTengah.current.offsetTop + 10 }} id="tengah" />
+          {
+            console.log(judulTengah)
+          }
+          <img src="/ellipse.png" className="absolute left-[40px] z-20" style={{top: judulBawah.current.offsetTop }} />
           <div className={`z-[10] absolute top-[120px] left-[-20px] w-[80px] border-white border-b-[0px] border-[4px] bg-opacity-0 rounded-tr-[10px]`} style={{height: `${tinggi + 150}px`}}></div>
-          <div className="border-[4px] border-t-[0px] border-r-[0px] h-[50px] border-white w-full absolute rounded-bl-[10px] left-[56px]"  style={{top: `${judulBawah.current.offsetTop - 30}px`}}></div>
+          <div className="border-[4px] border-t-[0px] border-r-[0px] h-[50px] border-white w-full absolute rounded-bl-[10px] left-[56px] z-[-1]"  style={{top: `${judulBawah.current.offsetTop - 30}px`}}></div>
           </>
         )
       }
@@ -93,9 +101,9 @@ export default function Home() {
       </div>
 
       {/* agent */}
-      <div className="h-[850px] bg-[#242629] text-white relative flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left">
+      <div className="h-[850px] bg-[#242629] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left" ref={agentSection}>
         {/* stats website */}
-        <div className="bg-white h-[150px] w-[80%] lg:w-[70%] rounded-[10px] mx-auto absolute top-[-70px] left-1/2 transform -translate-x-1/2 text-black flex gap-[90px] justify-center px-[20px] items-center">
+        <div className="bg-white h-[150px] w-[80%] lg:w-[70%] rounded-[10px] mx-auto absolute top-[-70px] left-1/2 transform -translate-x-1/2 text-black flex gap-[90px] justify-center px-[20px] items-center" style={{top: agentSection?.current?.offsetTop - 70}} >
           <div className="text-center">
             <p className={`${PoppinsJudul.className} text-[1.5rem]`}>234</p>
             <h1 className={`${robotoMono.className} text-[.8rem]`}>
@@ -119,8 +127,10 @@ export default function Home() {
         <div className="w-full lg:w-2/5 mx-auto">
           <h1
             className={`${PoppinsJudul.className} text-[2rem] md:text-[2.5rem] leading-[35px]`}
+            ref={judulTengah}
+
           >
-            Agent in <span className="text-red-600">Valorant</span>
+            Agent Dalam <span className="text-red-600">Valorant</span>
           </h1>
           <p
             className={`${inter.className} text-[.8rem] md:text-[1rem] opacity-70 leading-5 pt-[15px]`}
@@ -140,14 +150,28 @@ export default function Home() {
       </div>
 
       {/* buat lineup */}
-      <div className="h-[700px] px-[20px] md:px-[50px]">
-        <div className="pt-[130px]">
+      <div className="h-[700px] px-[20px] md:px-[50px] mb-[200px]">
+        <div className="pt-[130px] w-fit px-[50px] bg-[#16161A] mx-auto">
           <h1
             className={`${PoppinsJudul.className} text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
             ref={judulBawah}
           >
             Sharing Lineup
           </h1>
+        </div>
+
+        <div className="flex py-[150px] items-center pb-[100px] gap-[30px] px-[20px] md:px-[50px] ">
+            <img src="/addLineup.png" className="w-[50%] shadow-xl shadow-[#7F5AF0]" />
+            <div className="flex flex-col gap-[10px]">
+              <p className={`${inter.className} text-[.8rem] md:text-[1rem] opacity-70 text-white`}>
+                kamu bisa sharing lineup yang kamu punya disini. dengan cara daftar terlebih dahulu
+              </p>
+              <Link
+              className={`btn rounded-[3px] ${PoppinsText.className} text-slate-800 w-fit`}
+              href={"/auth/register"}>
+              signup
+            </Link>
+            </div>
         </div>
       </div>
     </main>
