@@ -70,9 +70,9 @@ export default function Navbar() {
       <div className="w-1/3 flex justify-end items-center relative text-[.8rem] gap-[10px]">
         {status === "authenticated" && loadingDone === true ? (
           <img
-            src={userData.pp}
+            src={userData?.pp}
             alt="profile picture"
-            onClick={() => router.push(`/profile/${userData.username}`)}
+            onClick={() => router.push(`/profile/${userData?.username}`)}
             className="w-[45px] h-[45px] bg-white rounded-full cursor-pointer"
           />
         ) : (
