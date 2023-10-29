@@ -1,0 +1,27 @@
+POST  http://localhost:3000/api/lineup/upload
+Content-Type: application/json
+
+{
+    "agent": "harbor",
+    "ability": 2,
+    "map": "ascent",
+    "coordinat": ["dasd", "asdasd"],
+    "judul": "apa aja",
+    "keterangan": "apa aja",
+    "tag" : ["easy"],
+    "imgAndDes" : [{"img1": "img1sfasfds"}],
+    "linkVideo" : "sdsadasdw",
+    "idMaker" : "asdalksdakd"
+
+}
+
+
+### 
+POST  http://localhost:3000/api/lineup/get
+Content-Type: application/json
+
+{
+    "agent": "harbor",
+    "map": "ascent"
+
+}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUsername } from "../../../libs/redux/useSlice";
 import { useRouter } from "next/navigation";
+import Message from "./Message";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -23,8 +24,7 @@ const PoppinsP = Poppins({
 });
 
 export default function Navbar() {
-  const { data: session, status, update } = useSession();
-  console.log(session);
+  const { data: session, status } = useSession();
   const [userData, setUserData] = useState(null);
   const [loadingDone, setLoadingDone] = useState(false);
   const router = useRouter();
@@ -54,7 +54,18 @@ export default function Navbar() {
   return (
     <nav className="flex mx-[15px] md:mx-[20px] pt-[8px] pb-[10px] border-b-[1px] border-white border-opacity-50 items-center justify-between relative">
       <div className="w-1/3 flex gap-[20px] items-center">
-        <img src="/humberger.svg" className="w-[33px] h-fit" />
+        <Link
+          href={status === "authenticated" ? "/main/upload" : "#"}
+          className={`btn rounded-[3px] ${
+            PoppinsP.className
+          } text-slate-800 !text-[.7rem] !px-[10px] !py-[5px] ${
+            status === "authenticated" ? "" : "cursor-not-allowed opacity-50"
+          }`}
+        >
+          <p className="flex items-center gap-[5px]">
+            <span className="material-symbols-outlined">upload</span> upload
+          </p>
+        </Link>
       </div>
 
       <Link

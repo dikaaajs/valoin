@@ -16,13 +16,8 @@ import { v4 } from "uuid";
 import Section1 from "./section1";
 import Section2 from "./section2";
 import Section3 from "./section3";
-
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-  preload: true,
-});
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const allAgent = [
   { name: "astra", uuid: "41fb69c1-4189-7b37-f117-bcaf1e96f1bf" },
@@ -49,6 +44,13 @@ const allAgent = [
   { name: "yoru", uuid: "7f94d92c-4234-0a36-9646-3a87eb8b5c89" },
 ];
 
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  preload: true,
+});
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: "800",
@@ -62,9 +64,11 @@ const inter = Inter({
 
 export default function Page() {
   const idPost = v4();
-  const [page, setPage] = useState(3);
+  const [page, setPage] = useState(1);
   const [loadAbility, setloadAbility] = useState(false);
   const [dataAgent, setDataAgent] = useState(null);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   // data for section1
   const [agent, setAgent] = useState("");
@@ -96,6 +100,46 @@ export default function Page() {
   useEffect(() => {
     localStorage.setItem("lineUpCondition", lineUpCondition);
   }, [lineUpCondition]);
+
+  const handleSubmit = async () => {
+    const coordinat = [
+      localStorage.getItem("coordinatFrom"),
+      localStorage.getItem("coordinatFor"),
+    ];
+    const tag = [difficult];
+    const imgAndDes = [
+      { img1, caption1 },
+      { img2, caption2 },
+      { img3, caption3 },
+    ];
+    const linkVideo = linkYT;
+
+    try {
+      const auth = await axios.post("/api/user/byEmail", {
+        email: session.user.email,
+      });
+      const idMaker = auth.data.user._id;
+      console.log(idMaker);
+      const res = await axios.post("/api/lineup/upload", {
+        agent,
+        ability: ability.key,
+        map,
+        coordinat,
+        judul,
+        keterangan,
+        tag,
+        imgAndDes,
+        linkVideo,
+        idMaker,
+      });
+
+      localStorage.removeItem("coordinatFrom");
+      localStorage.removeItem("coordinatFor");
+      router.push("/main");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const selectAgentHandle = async (e) => {
     setloadAbility(true);
@@ -129,12 +173,17 @@ export default function Page() {
         from: localStorage.getItem("coordinatFrom"),
         for: localStorage.getItem("coordinatFor"),
       };
-      console.log(coordinate.for);
       if (coordinate.from === null || coordinate.for === null) {
         return alert("pilih koordinatnya terlebih dahulu");
       } else {
         setPage(page + 1);
       }
+    }
+    if (page === 3) {
+      setPage(page + 1);
+    }
+    if (page === 4) {
+      handleSubmit();
     }
   };
 
@@ -264,7 +313,7 @@ export default function Page() {
                   onClick={() => setVideoVer(false)}
                 >
                   <span
-                    class={`${
+                    className={`${
                       !videoVer ? "text-white" : "text-black"
                     } material-symbols-outlined block`}
                   >
@@ -279,7 +328,7 @@ export default function Page() {
                   onClick={() => setVideoVer(true)}
                 >
                   <span
-                    class={`${
+                    className={`${
                       videoVer ? "text-white" : "text-black"
                     } material-symbols-outlined`}
                   >
@@ -416,7 +465,7 @@ export default function Page() {
                         id="caption2"
                         className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
                         placeholder={caption2}
-                        onChange={(e) => setcaption2(e.target.value)}
+                        onChange={(e) => setcaption3(e.target.value)}
                       />
                     </div>
                     <div className="flex flex-col gap-[5px] py-[15px]">
@@ -479,7 +528,7 @@ export default function Page() {
           </button>
         )}
         <button className={`btn`} onClick={handleNextButton}>
-          next
+          {page === 4 ? "submit" : "next"}
         </button>
       </div>
     </div>

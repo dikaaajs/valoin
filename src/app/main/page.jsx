@@ -52,15 +52,19 @@ export default function page() {
   };
 
   const selectAgentHandle = async (e) => {
-    console.log(e.target);
-    axios
-      .get(`https://valorant-api.com/v1/agents/${e.target.id}`)
-      .then((response) => {
-        setDataAgent(response.data);
-      });
-    setAgent(e.target.alt);
+    try {
+      const res = await axios.get(
+        `https://valorant-api.com/v1/agents/${e.target.id}`
+      );
+      setDataAgent(res.data.data);
+
+      const lineup = await axios.get();
+
+      setAgent(e.target.alt);
+    } catch (error) {}
   };
 
+  console.log(dataAgent);
   return (
     <div className="py-[100px] w-full relative">
       <div
@@ -106,33 +110,32 @@ export default function page() {
           <button>attacking</button>
           <button className="text-blue-300">defending</button>
         </div>
-        {dataAgent ? (
+        {dataAgent !== null ? (
           <div className="flex gap-[10px] pt-[20px]">
-            {console.log(dataAgent)}
             <button>
               <img
-                src={dataAgent.data.abilities[0].displayIcon}
+                src={dataAgent.abilities[0].displayIcon}
                 className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                 alt=""
               />
             </button>
             <button>
               <img
-                src={dataAgent.data.abilities[1].displayIcon}
+                src={dataAgent.abilities[1].displayIcon}
                 className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                 alt=""
               />
             </button>
             <button>
               <img
-                src={dataAgent.data.abilities[2].displayIcon}
+                src={dataAgent.abilities[2].displayIcon}
                 className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                 alt=""
               />
             </button>
             <button>
               <img
-                src={dataAgent.data.abilities[3].displayIcon}
+                src={dataAgent.abilities[3].displayIcon}
                 className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                 alt=""
               />
