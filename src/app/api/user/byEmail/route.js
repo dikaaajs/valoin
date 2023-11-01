@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    await connectMongoDB("auth");
+    await connectMongoDB();
     const { email } = await req.json();
     const user = await User.findOne({ email });
     return NextResponse.json({ user });
   } catch (error) {
-    console.log(error.message);
+    return NextResponse.json({ msg: error.message });
   }
 }
