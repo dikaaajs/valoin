@@ -9,6 +9,8 @@ const Map = (e) => {
   const [map, setMap] = useState(undefined);
   const editCondition = e.edit ? true : false;
   const img = e.img;
+  const lineup = e.lineup
+  console.log(lineup)
 
   const selectedMap = "/map/" + e.selectedMap + ".png";
   const locationMap = useRef();

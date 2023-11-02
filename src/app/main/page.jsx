@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { Poppins, Inter } from "next/font/google";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 const Map = dynamic(() => import("./map"), { ssr: false });
 
@@ -46,6 +46,8 @@ export default function page() {
   const [map, setMap] = useState("ascent");
   const [agent, setAgent] = useState(undefined);
   const [dataAgent, setDataAgent] = useState(null);
+  const [lineup, setLineup] = useState(null);
+
 
   const selectMapHandle = (e) => {
     setMap(e.target.value);
@@ -57,20 +59,39 @@ export default function page() {
         `https://valorant-api.com/v1/agents/${e.target.id}`
       );
       setDataAgent(res.data.data);
-
-      const lineup = await axios.get();
-
       setAgent(e.target.alt);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
-  console.log(dataAgent);
+  const getLineup = async () => {
+    try {
+      if(agent === undefined) return console.log("agent kosong")
+      const response = await axios.post("/api/lineup/get", {
+        agent,
+        map
+      })
+    setLineup(response.data)
+    } catch(error) {
+      console.log(error.message)
+    }
+  }
+
+  useEffect(
+    () => {
+      getLineup()
+    }
+    ,
+    [map, agent]
+  )
+
   return (
     <div className="py-[100px] w-full relative">
       <div
         className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px]`}
       >
-        <Map selectedMap={map} />
+        <Map selectedMap={map} lineup={lineup} />
       </div>
       <div className="flex flex-wrap gap-[5px] py-[90px] w-[70%] mx-auto justify-center">
         {allAgent.map((e, index) => {

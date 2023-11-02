@@ -29,7 +29,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
+    setPesan("loading ...")
     if (!username || !password || !email) {
       return setPesan("harap isi semua kolom dengan benar!");
     }
@@ -68,7 +68,6 @@ export default function Register() {
       setPesan("gagal mendaftar");
     }
   };
-  console.log(inputError);
   return (
     <div className="py-[50px]">
       <div className="flex w-full">

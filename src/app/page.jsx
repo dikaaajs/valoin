@@ -45,7 +45,6 @@ export default function Home() {
 
   useEffect(() => {
   if(judulBawah !== undefined && judulValoin !== undefined){
-    console.log(judulBawah.current.offsetTop)
       setTinggi(judulBawah.current.offsetTop - judulValoin.current.offsetTop)
     }
   }, [judulBawah])
@@ -58,9 +57,6 @@ export default function Home() {
           <>
           <img src="/ellipse.png" className="absolute left-[40px] z-20" style={{top: judulValoin.current.offsetTop + 15}} />
           <img src="/ellipse.png" className="absolute left-[40px] z-20" style={{top: judulTengah.current.offsetTop + 10 }} id="tengah" />
-          {
-            console.log(judulTengah)
-          }
           <img src="/ellipse.png" className="absolute left-[40px] z-20" style={{top: judulBawah.current.offsetTop }} />
           <div className={`z-[10] absolute top-[120px] left-[-20px] w-[80px] border-white border-b-[0px] border-[4px] bg-opacity-0 rounded-tr-[10px]`} style={{height: `${tinggi + 150}px`}}></div>
           <div className="border-[4px] border-t-[0px] border-r-[0px] h-[50px] border-white w-full absolute rounded-bl-[10px] left-[56px] z-[-1]"  style={{top: `${judulBawah.current.offsetTop - 30}px`}}></div>
