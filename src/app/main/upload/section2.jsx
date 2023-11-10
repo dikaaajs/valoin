@@ -8,6 +8,9 @@ const Section2 = (props) => {
     map,
     agent,
     lineUpCondition,
+    selectMapHandle,
+    selectStatusHandle,
+    status,
   } = props;
   return (
     <div className="w-full relative py-[100px]">
@@ -51,6 +54,35 @@ const Section2 = (props) => {
           }}
           lineUpCondition={lineUpCondition}
         />
+      </div>
+
+      {/* select status */}
+      <div className="w-fit mx-auto text-white py-[30px]">
+        <h2
+          className={`${poppins.className} text-[1rem] text-white text-center`}
+        >
+          status :
+        </h2>
+        <div
+          className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem] `}
+        >
+          <button
+            onClick={() => selectStatusHandle("defender")}
+            className={`${
+              status === "defender" ? "text-blue-400" : "text-white"
+            }`}
+          >
+            defender
+          </button>
+          <button
+            onClick={() => selectStatusHandle("attacker")}
+            className={`${
+              status === "attacker" ? "text-blue-400" : "text-white"
+            }`}
+          >
+            attacker
+          </button>
+        </div>
       </div>
 
       {/* select condition */}

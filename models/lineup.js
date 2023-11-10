@@ -6,6 +6,10 @@ const lineupSchema = new Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
     ability: {
       type: Number,
       required: true,

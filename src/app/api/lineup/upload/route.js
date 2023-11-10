@@ -7,6 +7,7 @@ export async function POST(request) {
     const {
       agent,
       ability,
+      status,
       map,
       coordinat,
       judul,
@@ -23,6 +24,7 @@ export async function POST(request) {
       agent,
       ability,
       map,
+      status,
       judul,
       keterangan,
       tag,

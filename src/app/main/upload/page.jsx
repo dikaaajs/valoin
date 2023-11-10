@@ -67,7 +67,7 @@ export default function Page() {
   const [page, setPage] = useState(1);
   const [loadAbility, setloadAbility] = useState(false);
   const [dataAgent, setDataAgent] = useState(null);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   // data for section1
@@ -77,6 +77,7 @@ export default function Page() {
   // data for section2
   const [map, setMap] = useState("ascent");
   const [lineUpCondition, setLineUpCondition] = useState("from");
+  const [status, setStatus] = useState("defender");
 
   // section 3
   const [judul, setJudul] = useState("VIPER A SITE (JUDUL LINEUP)");
@@ -103,8 +104,8 @@ export default function Page() {
 
   const handleSubmit = async () => {
     const coordinat = [
-      localStorage.getItem("coordinatFrom"),
-      localStorage.getItem("coordinatFor"),
+      JSON.parse(localStorage.getItem("coordinatFrom")),
+      JSON.parse(localStorage.getItem("coordinatFor")),
     ];
     const tag = [difficult];
     const imgAndDes = [
@@ -119,11 +120,11 @@ export default function Page() {
         email: session.user.email,
       });
       const idMaker = auth.data.user._id;
-      console.log(idMaker);
       const res = await axios.post("/api/lineup/upload", {
         agent,
         ability: ability.key,
         map,
+        status,
         coordinat,
         judul,
         keterangan,
@@ -135,7 +136,7 @@ export default function Page() {
 
       localStorage.removeItem("coordinatFrom");
       localStorage.removeItem("coordinatFor");
-      router.push("/main");
+      router.push(`/profile/${auth.data.user.username}`);
     } catch (error) {
       console.log(error.message);
     }
@@ -154,6 +155,10 @@ export default function Page() {
 
   const selectMapHandle = (e) => {
     setMap(e.target.value);
+  };
+
+  const selectStatusHandle = (e) => {
+    setStatus(e);
   };
 
   const selectAbilityHandle = (i) => {
@@ -235,7 +240,10 @@ export default function Page() {
           setLineUpCondition={setLineUpCondition}
           map={map}
           agent={agent}
+          selectMapHandle={selectMapHandle}
           lineUpCondition={lineUpCondition}
+          status={status}
+          selectStatusHandle={selectStatusHandle}
         />
       )}
 

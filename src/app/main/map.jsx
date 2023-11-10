@@ -9,8 +9,7 @@ const Map = (e) => {
   const [map, setMap] = useState(undefined);
   const editCondition = e.edit ? true : false;
   const img = e.img;
-  const lineup = e.lineup
-  console.log(lineup)
+  const lineup = e.lineup;
 
   const selectedMap = "/map/" + e.selectedMap + ".png";
   const locationMap = useRef();
@@ -44,20 +43,21 @@ const Map = (e) => {
 
     setMap(map);
     const markLineUp = (event, condition) => {
-      const coordinat = event.latlng;
+      let coordinat = [event.latlng.lat, event.latlng.lng];
+      console.log(coordinat);
       const lineUpCondition = localStorage.getItem("lineUpCondition");
 
       if (lineUpCondition === "from") {
         if (markFrom !== null) {
           map.removeLayer(markFrom);
         }
-        markFrom = L.marker([coordinat.lat, coordinat.lng], {
+        markFrom = L.marker([coordinat[0], coordinat[1]], {
           icon: L.icon({
             iconUrl: img.agentImg,
             iconSize: [30, 30],
           }),
         }).addTo(map);
-        localStorage.setItem("coordinatFrom", coordinat);
+        localStorage.setItem("coordinatFrom", JSON.stringify(coordinat));
         return;
       }
 
@@ -65,13 +65,13 @@ const Map = (e) => {
         if (markFor !== null) {
           map.removeLayer(markFor);
         }
-        markFor = L.marker([coordinat.lat, coordinat.lng], {
+        markFor = L.marker([coordinat[0], coordinat[1]], {
           icon: L.icon({
             iconUrl: img.abilityImg,
             iconSize: [30, 30],
           }),
         }).addTo(map);
-        localStorage.setItem("coordinatFor", coordinat);
+        localStorage.setItem("coordinatFor", JSON.stringify(coordinat));
         return;
       }
     };

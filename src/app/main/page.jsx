@@ -4,6 +4,7 @@ import axios from "axios";
 import { Poppins, Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Post from "../components/Post";
 const Map = dynamic(() => import("./map"), { ssr: false });
 
 const allAgent = [
@@ -31,6 +32,13 @@ const allAgent = [
   { name: "yoru", uuid: "7f94d92c-4234-0a36-9646-3a87eb8b5c89" },
 ];
 
+const post1 = {
+  judul: "viper a site",
+  keterangan: "default spike",
+  tag: ["easy"],
+  imageUrl: "/viperToxin.png",
+};
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: "800",
@@ -47,7 +55,8 @@ export default function page() {
   const [agent, setAgent] = useState(undefined);
   const [dataAgent, setDataAgent] = useState(null);
   const [lineup, setLineup] = useState(null);
-
+  const [status, setStatus] = useState("defender");
+  const [mode, setMode] = useState("post");
 
   const selectMapHandle = (e) => {
     setMap(e.target.value);
@@ -61,38 +70,176 @@ export default function page() {
       setDataAgent(res.data.data);
       setAgent(e.target.alt);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
 
   const getLineup = async () => {
     try {
-      if(agent === undefined) return console.log("agent kosong")
+      if (agent === undefined) return console.log("agent kosong");
       const response = await axios.post("/api/lineup/get", {
         agent,
-        map
-      })
-    setLineup(response.data)
-    } catch(error) {
-      console.log(error.message)
+        map,
+        status,
+      });
+      console.log(response);
+      setLineup(response.data);
+    } catch (error) {
+      console.log(error.message);
     }
-  }
+  };
 
-  useEffect(
-    () => {
-      getLineup()
-    }
-    ,
-    [map, agent]
-  )
+  useEffect(() => {
+    getLineup();
+  }, [map, agent]);
 
   return (
     <div className="py-[100px] w-full relative">
+      {/* navbar */}
+      <div className="flex justify-between items-center px-[50px]">
+        {/* display data */}
+        <div className="text-white">
+          <h1 className={`${poppins.className} text-[2rem]`}>
+            {map.toUpperCase()}
+          </h1>
+          <div
+            className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
+          >
+            <button
+              className={status === "attacker" ? "text-blue-400" : ""}
+              onClick={() => setStatus("attacker")}
+            >
+              attacker
+            </button>
+            <button
+              className={status === "defender" ? "text-blue-400" : ""}
+              onClick={() => setStatus("defender")}
+            >
+              defender
+            </button>
+          </div>
+          {dataAgent !== null ? (
+            <div className="flex gap-[10px] pt-[20px]">
+              <button>
+                <img
+                  src={dataAgent.abilities[0].displayIcon}
+                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  alt=""
+                />
+              </button>
+              <button>
+                <img
+                  src={dataAgent.abilities[1].displayIcon}
+                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  alt=""
+                />
+              </button>
+              <button>
+                <img
+                  src={dataAgent.abilities[2].displayIcon}
+                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  alt=""
+                />
+              </button>
+              <button>
+                <img
+                  src={dataAgent.abilities[3].displayIcon}
+                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  alt=""
+                />
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
+        {/* maps pick */}
+        <div className="flex flex-col gap-[20px]">
+          <div className="w-fit text-white">
+            <h2 className={`${poppins.className} text-[.8rem] text-white`}>
+              mode :
+            </h2>
+            <div
+              className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
+            >
+              <button
+                className={`${mode === "post" ? "text-blue-400" : ""}`}
+                onClick={() => setMode("post")}
+              >
+                post
+              </button>
+              <button
+                className={`${mode === "map" ? "text-blue-400" : ""}`}
+                onClick={() => setMode("map")}
+              >
+                map
+              </button>
+            </div>
+          </div>
+          <select
+            name="maps"
+            id="selectMap"
+            className={`${inter.className} rounded-[5px] `}
+            onChange={(e) => selectMapHandle(e)}
+          >
+            <option value="ascent">ascent</option>
+            <option value="bind">bind</option>
+            <option value="breeze">breeze</option>
+            <option value="fracture">fracture</option>
+            <option value="haven">haven</option>
+            <option value="icebox">icebox</option>
+            <option value="lotus">lotus</option>
+            <option value="pearl">pearl</option>
+            <option value="split">split</option>
+            <option value="sunset">sunset</option>
+          </select>
+        </div>
+      </div>
+
+      {/* map container */}
       <div
-        className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px]`}
+        className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px] ${
+          mode === "map" ? "" : "hidden"
+        }`}
       >
+        <p className="text-red-500 text-center">
+          mode map sedang tahap pengembangan
+        </p>
         <Map selectedMap={map} lineup={lineup} />
       </div>
+
+      {/* post container */}
+      <div className={`${mode === "post" ? "" : "hidden"}`}>
+        {lineup === null ? (
+          <div className="py-[100px]">
+            <h1 className={`${poppins.className} text-white text-center`}>
+              silahkan pick agent dan map terlebih dahulu
+            </h1>
+          </div>
+        ) : (
+          <div className="w-[90%] mx-auto my-[100px] flex flex-wrap justify-center gap-[30px]">
+            {lineup[0] === undefined && (
+              <div>
+                <h1 className={`${poppins.className} text-white text-center`}>
+                  lineup kosong
+                </h1>
+              </div>
+            )}
+
+            {lineup.map((e, idx) => {
+              const post = {
+                ...e,
+                imageUrl: e.imgAndDes[2].img3,
+              };
+              console.log(e);
+              return <Post post={post} key={idx} />;
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* agent pick */}
       <div className="flex flex-wrap gap-[5px] py-[90px] w-[70%] mx-auto justify-center">
         {allAgent.map((e, index) => {
           return (
@@ -118,73 +265,6 @@ export default function page() {
             </div>
           );
         })}
-      </div>
-
-      {/* display data */}
-      <div className="absolute top-[50px] left-[50px] text-white">
-        <h1 className={`${poppins.className} text-[2rem]`}>
-          {map.toUpperCase()}
-        </h1>
-        <div
-          className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
-        >
-          <button>attacking</button>
-          <button className="text-blue-300">defending</button>
-        </div>
-        {dataAgent !== null ? (
-          <div className="flex gap-[10px] pt-[20px]">
-            <button>
-              <img
-                src={dataAgent.abilities[0].displayIcon}
-                className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                alt=""
-              />
-            </button>
-            <button>
-              <img
-                src={dataAgent.abilities[1].displayIcon}
-                className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                alt=""
-              />
-            </button>
-            <button>
-              <img
-                src={dataAgent.abilities[2].displayIcon}
-                className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                alt=""
-              />
-            </button>
-            <button>
-              <img
-                src={dataAgent.abilities[3].displayIcon}
-                className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
-                alt=""
-              />
-            </button>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
-
-      <div className="absolute top-[50px] right-[50px]">
-        <select
-          name="maps"
-          id="selectMap"
-          className={`${inter.className} rounded-[5px] `}
-          onChange={(e) => selectMapHandle(e)}
-        >
-          <option value="ascent">ascent</option>
-          <option value="bind">bind</option>
-          <option value="breeze">breeze</option>
-          <option value="fracture">fracture</option>
-          <option value="haven">haven</option>
-          <option value="icebox">icebox</option>
-          <option value="lotus">lotus</option>
-          <option value="pearl">pearl</option>
-          <option value="split">split</option>
-          <option value="sunset">sunset</option>
-        </select>
       </div>
     </div>
   );
