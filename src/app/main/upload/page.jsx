@@ -18,6 +18,7 @@ import Section2 from "./section2";
 import Section3 from "./section3";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import CropImg from "@/app/components/CropImg";
 
 const allAgent = [
   { name: "astra", uuid: "41fb69c1-4189-7b37-f117-bcaf1e96f1bf" },
@@ -70,6 +71,10 @@ export default function Page() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  const [imageFile, setImageFile] = useState(null);
+  const [cropDialog, setCropDialog] = useState(false);
+  const [typeImg, setTypeImg] = useState(null);
+
   // data for section1
   const [agent, setAgent] = useState("");
   const [ability, setAbility] = useState("");
@@ -85,13 +90,12 @@ export default function Page() {
     "default spike in a site (keterangan)"
   );
   const [difficult, setDifficult] = useState();
-  const [imageUrl, setBanner] = useState("/viperToxin.png");
+  const [imgEnd, setImgEnd] = useState({ url: "/viperToxin.png" });
 
   // section 4
   const [pakeVideo, setPakeVideo] = useState(false);
-  const [img1, setimg1] = useState("/viperToxin.png");
-  const [img2, setimg2] = useState("/viperToxin.png");
-  const [img3, setimg3] = useState("/viperToxin.png");
+  const [imgStart, setImgStart] = useState({ url: "/viperToxin.png" });
+  const [imgMid, setImgMid] = useState({ url: "/viperToxin.png" });
   const [caption1, setcaption1] = useState("caption untuk gambar 1");
   const [caption2, setcaption2] = useState("caption untuk gambar 2");
   const [caption3, setcaption3] = useState("caption untuk gambar 3");
@@ -108,14 +112,36 @@ export default function Page() {
       JSON.parse(localStorage.getItem("coordinatFor")),
     ];
     const tag = [difficult];
-    const imgAndDes = [
-      { img1, caption1 },
-      { img2, caption2 },
-      { img3, caption3 },
-    ];
+
     const linkVideo = linkYT;
 
     try {
+      // upload img
+      const uploadImg1 = await uploadBytes(
+        ref(storage, `images/${idPost}/start`),
+        imgStart.file
+      );
+      const img1 = await getDownloadURL(uploadImg1.ref);
+
+      const uploadImg2 = await uploadBytes(
+        ref(storage, `images/${idPost}/mid`),
+        imgMid.file
+      );
+      const img2 = await getDownloadURL(uploadImg2.ref);
+
+      const uploadImg3 = await uploadBytes(
+        ref(storage, `images/${idPost}/end`),
+        imgEnd.file
+      );
+      const img3 = await getDownloadURL(uploadImg3.ref);
+
+      const imgAndDes = [
+        { img1, caption1 },
+        { img2, caption2 },
+        { img3, caption3 },
+      ];
+
+      console.log(imgAndDes);
       const auth = await axios.post("/api/user/byEmail", {
         email: session.user.email,
       });
@@ -198,8 +224,24 @@ export default function Page() {
     }
   };
 
+  // image handle
+  const cropImg = () => {};
+
+  const handleFile = (e) => {
+    if (e.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        setImageFile(e.target.result);
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    setCropDialog(true);
+  };
+
   const uploadImg = async (e, typeImage, fungsiSet) => {
-    console.log("jalan ey");
     if (e == null) return;
     const imageRef = ref(storage, `images/${typeImage + "-" + idPost}`);
     try {
@@ -214,7 +256,20 @@ export default function Page() {
 
   const tag = [difficult];
   return (
-    <div className="py-[100px] relative">
+    <div className="py-[100px] relative w-full">
+      {cropDialog && typeImg !== null ? (
+        <CropImg
+          img={imageFile}
+          type={typeImg}
+          setImgEnd={setImgEnd}
+          setImgMid={setImgMid}
+          setImgStart={setImgStart}
+          setCropDialog={setCropDialog}
+        />
+      ) : (
+        <div></div>
+      )}
+
       {/* pilih agent dan ability */}
       {page === 1 && (
         <Section1
@@ -251,7 +306,7 @@ export default function Page() {
       {page === 3 && (
         <Section3
           poppins={poppins}
-          imageUrl={imageUrl}
+          imgEnd={imgEnd}
           tag={tag}
           robotoMono={robotoMono}
           inter={inter}
@@ -259,10 +314,10 @@ export default function Page() {
           setKeterangan={setKeterangan}
           setDifficult={setDifficult}
           difficult={difficult}
-          uploadImg={uploadImg}
+          handleFile={handleFile}
           judul={judul}
           keterangan={keterangan}
-          setBanner={setBanner}
+          setTypeImg={setTypeImg}
         />
       )}
 
@@ -351,19 +406,19 @@ export default function Page() {
                     <p className={`${robotoMono.className} text-[.8rem]`}>
                       1. {caption1}
                     </p>
-                    <img className="w-full" src={img1} />
+                    <img className="w-full" src={imgStart.url} />
                   </div>
                   <div>
                     <p className={`${robotoMono.className} text-[.8rem]`}>
                       2. {caption2}
                     </p>
-                    <img className="w-full" src={img2} />
+                    <img className="w-full" src={imgMid.url} />
                   </div>
                   <div>
                     <p className={`${robotoMono.className} text-[.8rem]`}>
                       3. {caption3}
                     </p>
-                    <img className="w-full" src={img3} />
+                    <img className="w-full" src={imgEnd.url} />
                   </div>
                 </div>
               )}
@@ -417,7 +472,8 @@ export default function Page() {
                         id="gambar1"
                         className="hidden"
                         onChange={(e) => {
-                          uploadImg(e.target.files[0], "img1", setimg1);
+                          handleFile(e);
+                          setTypeImg("imgStart");
                         }}
                       />
                     </div>
@@ -453,7 +509,8 @@ export default function Page() {
                         id="gambar2"
                         className="hidden"
                         onChange={(e) => {
-                          uploadImg(e.target.files[0], "img2", setimg2);
+                          handleFile(e);
+                          setTypeImg("imgMid");
                         }}
                       />
                     </div>
@@ -462,17 +519,17 @@ export default function Page() {
                   <div>
                     <div className="flex flex-col gap-[5px]">
                       <label
-                        htmlFor="caption2"
+                        htmlFor="caption3"
                         className={`text-[.9rem] ${inter.className}`}
                       >
                         titik berdiri*
                       </label>
                       <input
                         type="text"
-                        name="caption2"
+                        name="caption3"
                         id="caption2"
                         className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                        placeholder={caption2}
+                        placeholder={caption3}
                         onChange={(e) => setcaption3(e.target.value)}
                       />
                     </div>
@@ -488,7 +545,8 @@ export default function Page() {
                         id="gamabr3"
                         className="hidden"
                         onChange={(e) => {
-                          uploadImg(e.target.files[0], "img3", setimg3);
+                          handleFile(e);
+                          setTypeImg("imgEnd");
                         }}
                       />
                     </div>

@@ -68,7 +68,7 @@ export default function Post(props) {
       </div>
 
       {/* detail */}
-      <div className={`${mode === "focus" ? "" : "hidden"}`}>
+      <div className={`${mode === "focus" ? "" : "hidden"} text-black`}>
         <div className="flex flex-wrap gap-y-[50px]">
           {/* step 1 */}
           <div className="relative w-1/2">
@@ -79,13 +79,13 @@ export default function Post(props) {
             </p>
             <img className="mx-auto" src={details[0].img1} />
           </div>
-          <div className={`w-1/2 ${robotoMono.className}`}>
+          <div className={`w-1/2 px-[25px] ${robotoMono.className}`}>
             <p>deskripsi :</p>
             <p className="">{details[0].caption1}</p>
           </div>
 
           {/* step 2 */}
-          <div className={`w-1/2 ${robotoMono.className} text-right`}>
+          <div className={`w-1/2 px-[25px] ${robotoMono.className} text-right`}>
             <p>deskripsi :</p>
             <p className="">{details[1].caption2}</p>
           </div>
@@ -106,7 +106,7 @@ export default function Post(props) {
             </p>
             <img className="mx-auto" src={details[2].img3} />
           </div>
-          <div className={`w-1/2 ${robotoMono.className}`}>
+          <div className={`w-1/2 px-[25px] ${robotoMono.className}`}>
             <p>deskripsi :</p>
             <p className="">{details[2].caption3}</p>
           </div>

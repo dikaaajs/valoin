@@ -1,7 +1,7 @@
 const Section3 = (props) => {
   const {
     poppins,
-    imageUrl,
+    imgEnd,
     tag,
     robotoMono,
     inter,
@@ -9,10 +9,10 @@ const Section3 = (props) => {
     setKeterangan,
     setDifficult,
     difficult,
-    uploadImg,
+    handleFile,
     judul,
     keterangan,
-    setBanner,
+    setTypeImg,
   } = props;
   return (
     <div>
@@ -30,7 +30,7 @@ const Section3 = (props) => {
             {judul}
           </h2>
           <div className="relative">
-            <img src={imageUrl} alt="" />
+            <img src={imgEnd.url} alt="" />
             {tag.length !== 0 && (
               <>
                 {tag.map((i) => {
@@ -129,7 +129,7 @@ const Section3 = (props) => {
             {/* upload image */}
             <div className="flex flex-col gap-[5px]">
               <label className={`text-[.9rem] ${inter.className}`}>
-                display image*
+                display image (kondisi akhir dari lineup)*
               </label>
               <label
                 htmlFor="uploadGambar"
@@ -142,7 +142,8 @@ const Section3 = (props) => {
                 id="uploadGambar"
                 className="hidden"
                 onChange={(e) => {
-                  uploadImg(e.target.files[0], "banner", setBanner);
+                  handleFile(e);
+                  setTypeImg("imgEnd");
                 }}
               />
             </div>

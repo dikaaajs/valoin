@@ -54,9 +54,13 @@ export default function page() {
   const [map, setMap] = useState("ascent");
   const [agent, setAgent] = useState(undefined);
   const [dataAgent, setDataAgent] = useState(null);
-  const [lineup, setLineup] = useState(null);
   const [status, setStatus] = useState("defender");
   const [mode, setMode] = useState("post");
+  const [lineup, setLineup] = useState(null);
+  const [ability0, setAbility0] = useState(true);
+  const [ability1, setAbility1] = useState(true);
+  const [ability2, setAbility2] = useState(true);
+  const [ability3, setAbility3] = useState(true);
 
   const selectMapHandle = (e) => {
     setMap(e.target.value);
@@ -82,7 +86,6 @@ export default function page() {
         map,
         status,
       });
-      console.log(response);
       setLineup(response.data);
     } catch (error) {
       console.log(error.message);
@@ -93,6 +96,8 @@ export default function page() {
     getLineup();
   }, [map, agent]);
 
+  useEffect(() => {}, [ability1, ability2, ability3, ability0]);
+
   return (
     <div className="py-[100px] w-full relative">
       {/* navbar */}
@@ -102,6 +107,8 @@ export default function page() {
           <h1 className={`${poppins.className} text-[2rem]`}>
             {map.toUpperCase()}
           </h1>
+
+          {/* status picker */}
           <div
             className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
           >
@@ -118,34 +125,67 @@ export default function page() {
               defender
             </button>
           </div>
+
+          {/* ability filter */}
           {dataAgent !== null ? (
             <div className="flex gap-[10px] pt-[20px]">
-              <button>
+              <button
+                className="w-fit relative"
+                onClick={() => setAbility0(!ability0)}
+              >
                 <img
                   src={dataAgent.abilities[0].displayIcon}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
+                <img
+                  src="/x.png"
+                  className={`absolute top-0 ${!ability0 ? "" : "hidden"}`}
+                />
               </button>
-              <button>
+
+              <button
+                className="w-fit relative"
+                onClick={() => setAbility1(!ability1)}
+              >
                 <img
                   src={dataAgent.abilities[1].displayIcon}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
+                <img
+                  src="/x.png"
+                  className={`absolute top-0 ${!ability1 ? "" : "hidden"}`}
+                />
               </button>
-              <button>
+
+              <button
+                className="w-fit relative"
+                onClick={() => setAbility2(!ability2)}
+              >
                 <img
                   src={dataAgent.abilities[2].displayIcon}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
+                <img
+                  src="/x.png"
+                  className={`absolute top-0 ${!ability2 ? "" : "hidden"}`}
+                />
               </button>
-              <button>
+
+              <button
+                className="w-fit relative"
+                onClick={() => setAbility3(!ability3)}
+              >
                 <img
                   src={dataAgent.abilities[3].displayIcon}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
+                />
+                <img
+                  src="/x.png"
+                  className={`absolute top-0 ${!ability3 ? "" : "hidden"}`}
                 />
               </button>
             </div>
@@ -232,7 +272,6 @@ export default function page() {
                 ...e,
                 imageUrl: e.imgAndDes[2].img3,
               };
-              console.log(e);
               return <Post post={post} key={idx} />;
             })}
           </div>

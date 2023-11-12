@@ -34,6 +34,7 @@ export default function Profile({ params }) {
   const [stats, setStats] = useState(undefined);
   const [itsMe, setItsMe] = useState(undefined);
   const [profile, setProfile] = useState(null);
+  const [lineup, setLineup] = useState(null);
 
   const getInfo = async () => {
     try {
@@ -43,6 +44,10 @@ export default function Profile({ params }) {
       const stats = await axios.post("/api/stats", {
         idUser: res.data.user._id,
       });
+      const lineupRes = await axios.post("/api/lineup/user", {
+        idMaker: res.data.user._id,
+      });
+      setLineup(lineupRes.data);
       setStats(stats.data.stats);
 
       if (status === "authenticated") {
@@ -187,12 +192,24 @@ export default function Profile({ params }) {
           <h1 className={`${PoppinsJudul.className} text-[2rem] pb-[50px]`}>
             lineup :
           </h1>
-          <div className="flex gap-[50px] flex-wrap">
-            <Post post={post1} />
-            <Post post={post1} />
-            <Post post={post1} />
-            <Post post={post1} />
-            <Post post={post1} />
+          <div className="w-[90%] mx-auto my-[100px] flex flex-wrap justify-center gap-[30px]">
+            {lineup[0] === undefined && (
+              <div>
+                <img src="/cry.jpg" alt="" />
+                <h1 className={`${PoppinsJudul.className} text-white`}>
+                  user belum membuat lineup
+                </h1>
+              </div>
+            )}
+
+            {lineup.map((e, idx) => {
+              const post = {
+                ...e,
+                imageUrl: e.imgAndDes[2].img3,
+              };
+              console.log(e);
+              return <Post post={post} key={idx} />;
+            })}
           </div>
         </div>
       </div>
