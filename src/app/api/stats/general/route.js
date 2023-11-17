@@ -1,4 +1,3 @@
-export const dynamic = "static";
 import { NextResponse } from "next/server";
 import connectMongoDB from "../../../../../libs/mongodb";
 import Lineup from "../../../../../models/lineup";
