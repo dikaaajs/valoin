@@ -2,6 +2,7 @@
 import { Poppins, Roboto, Roboto_Mono, Inter } from "next/font/google";
 import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -41,8 +42,20 @@ export default function Home() {
   const judulBawah = useRef();
   const agentSection = useRef();
   const [tinggi, setTinggi] = useState();
+  const [lineupCount, setLineupCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  const [versiApp, setVersiApp] = useState(0);
+
+  const getStats = async () => {
+    const response = await axios.get("/api/stats/general");
+    const data = response.data;
+    setLineupCount(data.lineupCount);
+    setUserCount(data.userCount);
+    setVersiApp(data.versi);
+  };
 
   useEffect(() => {
+    getStats();
     if (judulBawah !== undefined && judulValoin !== undefined) {
       setTinggi(judulBawah.current.offsetTop - judulValoin.current.offsetTop);
     }
@@ -129,21 +142,27 @@ export default function Home() {
           style={{ top: agentSection?.current?.offsetTop - 70 }}
         >
           <div className="text-center">
-            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>234</p>
+            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
+              {lineupCount}
+            </p>
             <h1 className={`${robotoMono.className} text-[.8rem]`}>
               lineup dibuat
             </h1>
           </div>
           <div className="text-center">
-            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>122</p>
+            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
+              {userCount}
+            </p>
             <h1 className={`${robotoMono.className} text-[.8rem]`}>
               user terdaftar
             </h1>
           </div>
           <div className="text-center">
-            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>234</p>
+            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
+              {versiApp}
+            </p>
             <h1 className={`${robotoMono.className} text-[.8rem]`}>
-              lineup dibuat
+              versi aplikasi
             </h1>
           </div>
         </div>

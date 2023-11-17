@@ -41,9 +41,9 @@ export default function Profile({ params }) {
       const res = await axios.post("/api/user/byUsername", {
         username: params.username,
       });
-      const stats = await axios.post("/api/stats", {
-        idUser: res.data.user._id,
-      });
+      const stats = await axios.get(
+        `/api/stats/user?idUser=${res.data.user._id}`
+      );
       const lineupRes = await axios.post("/api/lineup/user", {
         idMaker: res.data.user._id,
       });
