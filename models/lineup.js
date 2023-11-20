@@ -46,6 +46,10 @@ const lineupSchema = new Schema(
       type: String,
       required: true,
     },
+    like: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true }
 );

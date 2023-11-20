@@ -30,7 +30,6 @@ const post1 = {
 export default function Profile({ params }) {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [userData, setUserData] = useState(null);
   const [stats, setStats] = useState(undefined);
   const [itsMe, setItsMe] = useState(undefined);
   const [profile, setProfile] = useState(null);
@@ -38,14 +37,14 @@ export default function Profile({ params }) {
 
   const getInfo = async () => {
     try {
-      const res = await axios.post("/api/user/byUsername", {
+      const user = await axios.post("/api/user/byUsername", {
         username: params.username,
       });
       const stats = await axios.get(
-        `/api/stats/user?idUser=${res.data.user._id}`
+        `/api/stats/user?idUser=${user.data.user._id}`
       );
       const lineupRes = await axios.post("/api/lineup/user", {
-        idMaker: res.data.user._id,
+        idMaker: user.data.user._id,
       });
       setLineup(lineupRes.data);
       setStats(stats.data.stats);
@@ -55,13 +54,13 @@ export default function Profile({ params }) {
           email: session.user.email,
         });
         setItsMe(
-          auth.data.user.username === res.data.user.username ? true : false
+          auth.data.user.username === user.data.user.username ? true : false
         );
       } else {
         setItsMe(false);
       }
 
-      setProfile(res.data.user);
+      setProfile(user.data.user);
     } catch (error) {
       console.log(error.message);
     }
@@ -207,8 +206,7 @@ export default function Profile({ params }) {
                 ...e,
                 imageUrl: e.imgAndDes[2].img3,
               };
-              console.log(e);
-              return <Post post={post} key={idx} />;
+              return <Post post={post} uid={profile._id} key={idx} />;
             })}
           </div>
         </div>

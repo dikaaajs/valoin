@@ -21,7 +21,20 @@ POST  http://localhost:3000/api/lineup/get
 Content-Type: application/json
 
 {
-    "agent": "harbor",
-    "map": "ascent"
+    "agent": "sova",
+    "map": "ascent",
+    "status": "defender"
 
+}
+ 
+###
+GET http://localhost:3000/api/lineup/like/details?idLineup=6550f1afecca264c1700fe4b
+
+###
+POST http://localhost:3000/api/lineup/like
+Content-Type: application/json
+
+{
+    "idUser": "6542efde865e920968193f77",
+    "idLineup": "6550f1afecca264c1700fe4b"
 }

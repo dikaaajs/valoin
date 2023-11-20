@@ -6,10 +6,9 @@ export async function POST(request) {
   try {
     await connectMongoDB();
     const { agent, map, status } = await request.json();
-    console.log(agent);
     const lineup = await Lineup.find({ agent, map, status });
-    return NextResponse.json(lineup);
+    return NextResponse.json(lineup, { status: 200 });
   } catch (error) {
-    console.log(error.message);
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

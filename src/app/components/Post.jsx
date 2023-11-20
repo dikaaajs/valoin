@@ -1,6 +1,10 @@
 "use client";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import { Inter, Poppins, Roboto_Mono } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,16 +22,57 @@ const inter = Inter({
   weight: "500",
 });
 export default function Post(props) {
+  const { data: session, status } = useSession();
   const [mode, setMode] = useState("blur");
+  const [liked, setLiked] = useState(false);
+  const [like, setLike] = useState(props.post.like);
   const { judul, keterangan, imageUrl, tag } = props.post;
   const details = props.post.imgAndDes;
 
+  const handleLikeButton = async () => {
+    if (session === null) return toast.warn("login terlebih dahulu");
+    try {
+      const response = await axios.post("/api/lineup/like", {
+        idUser: props.uid,
+        idLineup: props.post._id,
+      });
+
+      if (response.data.type === "like") {
+        const tmp = [...like];
+        tmp.push(props.uid);
+        setLike(tmp);
+        setLiked(true);
+      } else {
+        console.log("masuk sini");
+        const tmp = like.filter((e) => e !== props.uid);
+        setLike(tmp);
+        setLiked(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkLiked = () => {
+    if (like.includes(props.uid) && props.uid !== undefined) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  };
+
+  useEffect(() => {
+    checkLiked();
+  }, []);
+
+  console.log(like);
   return (
     <div
       className={`bg-white transition-all duration-300 ease-out ${
         mode === "focus" ? "w-[90%]" : "w-[30%]"
       } py-[10px] px-[20px]`}
     >
+      <ToastContainer className={`!${robotoMono.className}`} />
       <h2
         className={`text-[.8rem] ${
           poppins.className
@@ -65,6 +110,19 @@ export default function Post(props) {
         >
           {keterangan}
         </p>
+        <div className="flex gap-[10px] items-center">
+          <span
+            className={`${
+              liked ? "material-symbols-rounded" : "material-symbols-outlined"
+            } cursor-pointer text-black fill-[1]`}
+            onClick={handleLikeButton}
+          >
+            favorite
+          </span>
+          <p className={`${robotoMono.className} text-[.8rem] text-black`}>
+            {like.length} like
+          </p>
+        </div>
       </div>
 
       {/* detail */}
@@ -112,6 +170,8 @@ export default function Post(props) {
           </div>
         </div>
       </div>
+
+      <div className="material-symbol-rounded"></div>
 
       <button
         className={`btn !text-white text-[.8rem] rounded-[3px] ${

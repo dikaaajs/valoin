@@ -32,6 +32,7 @@ export async function POST(request) {
       imgAndDes,
       linkVideo,
       idMaker,
+      like: [],
     });
 
     return NextResponse.json(
