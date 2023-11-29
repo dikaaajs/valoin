@@ -95,6 +95,14 @@ export default function Login() {
               *belum punya akun ? <span className="underline">daftar</span>
             </Link>
           </div>
+          <button
+            className=""
+            onClick={() => {
+              signIn("github");
+            }}
+          >
+            github
+          </button>
         </form>
       </div>
     </div>

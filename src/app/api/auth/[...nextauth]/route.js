@@ -4,6 +4,7 @@ import connectMongoDB from "../../../../../libs/mongodb";
 import User from "../../../../../models/user";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GithubProvider from "next-auth/providers/github";
 import bcrypt from "bcryptjs";
 
 export const authOptions = {
@@ -13,15 +14,15 @@ export const authOptions = {
       credentials: {},
 
       async authorize(credentials) {
+        console.log("authorize");
         const { username, password } = credentials;
         try {
-          await connectMongoDB("auth");
+          await connectMongoDB();
           const findUser = await User.findOne({ username });
 
           if (!findUser) {
             return null;
           }
-          console.log(findUser);
           const passwordMatch = await bcrypt.compare(
             password,
             findUser.password
@@ -30,7 +31,14 @@ export const authOptions = {
             return null;
           }
 
-          return findUser;
+          console.log(findUser._doc.username);
+
+          const user = {
+            ...findUser._doc,
+            name: findUser._doc.username,
+            image: findUser._doc.pp,
+          };
+          return user;
         } catch (error) {
           console.log(error);
         }
@@ -38,14 +46,24 @@ export const authOptions = {
         return null;
       },
     }),
+    GithubProvider({
+      name: "github",
+      clientId: process.env.GITHUB_CLIENT,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
   ],
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/auth/login",
   },
+  callbacks: {
+    async session({ session, token, user }) {
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

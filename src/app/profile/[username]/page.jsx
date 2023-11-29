@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Post from "@/app/components/Post";
 import axios from "axios";
+import Link from "next/link";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -35,32 +36,22 @@ export default function Profile({ params }) {
   const [profile, setProfile] = useState(null);
   const [lineup, setLineup] = useState(null);
 
+  console.log(session);
   const getInfo = async () => {
     try {
-      const user = await axios.post("/api/user/byUsername", {
+      const userRes = await axios.post("/api/user/byUsername", {
         username: params.username,
       });
-      const stats = await axios.get(
-        `/api/stats/user?idUser=${user.data.user._id}`
-      );
+      const userData = userRes.data.user;
+
+      const stats = await axios.get(`/api/stats/user?idUser=${userData._id}`);
       const lineupRes = await axios.post("/api/lineup/user", {
-        idMaker: user.data.user._id,
+        idMaker: userData._id,
       });
       setLineup(lineupRes.data);
       setStats(stats.data.stats);
-
-      if (status === "authenticated") {
-        const auth = await axios.post("/api/user/byEmail", {
-          email: session.user.email,
-        });
-        setItsMe(
-          auth.data.user.username === user.data.user.username ? true : false
-        );
-      } else {
-        setItsMe(false);
-      }
-
-      setProfile(user.data.user);
+      setItsMe(session?.user?.name === userData.username ? true : false);
+      setProfile(userData);
     } catch (error) {
       console.log(error.message);
     }
@@ -100,11 +91,12 @@ export default function Profile({ params }) {
                 </p>
                 <div className="flex gap-[15px]">
                   {itsMe ? (
-                    <button
+                    <Link
                       className={`${robotoMono.className} text-[.7rem] px-[10px] py-[5px] my-[10px] text-[#7F5AF0] border-[#7F5AF0] border-2 bg-opacity-0`}
+                      href={`${profile.username}/edit`}
                     >
                       edit profile
-                    </button>
+                    </Link>
                   ) : (
                     <button
                       className={`${robotoMono.className} text-[.7rem] px-[10px] py-[5px] my-[10px] text-white !bg-[#7F5AF0] border-[#7F5AF0] border-2 flex items-center gap-[10px]`}

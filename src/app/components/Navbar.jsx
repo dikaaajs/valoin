@@ -25,32 +25,7 @@ const PoppinsP = Poppins({
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const [userData, setUserData] = useState(null);
-  const [loadingDone, setLoadingDone] = useState(false);
   const router = useRouter();
-
-  const getData = async () => {
-    try {
-      const user = await axios.post("/api/user/byEmail", {
-        email: session.user?.email,
-      });
-      const data = user.data.user;
-      setUserData(data);
-      setLoadingDone(true);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      getData();
-    }
-  }, [session]);
-
-  if (status === "loading")
-    return <div className="text-white text-center py-[50px]">loading ...</div>;
-
   return (
     <nav className="flex mx-[15px] md:mx-[20px] pt-[8px] pb-[10px] border-b-[1px] border-white border-opacity-50 items-center justify-between relative">
       <div className="w-1/3 flex gap-[20px] items-center">
@@ -80,11 +55,11 @@ export default function Navbar() {
       </Link>
 
       <div className="w-1/3 flex justify-end items-center relative text-[.8rem] gap-[10px]">
-        {status === "authenticated" && loadingDone === true ? (
+        {status === "authenticated" ? (
           <img
-            src={userData?.pp}
+            src={session?.user.image}
             alt="profile picture"
-            onClick={() => router.push(`/profile/${userData?.username}`)}
+            onClick={() => router.push(`/profile/${session?.user.name}`)}
             className="w-[45px] h-[45px] bg-white rounded-full cursor-pointer"
           />
         ) : (
@@ -97,7 +72,7 @@ export default function Navbar() {
             </Link>
             <Link
               className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
-              href={"/auth/login"}
+              href={"/api/auth/signin"}
             >
               login
             </Link>
