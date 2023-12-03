@@ -69,7 +69,7 @@ export default function Navbar() {
             </Link>
             <Link
               className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
-              href={"/api/auth/signin"}
+              href={"/auth/login"}
             >
               login
             </Link>
