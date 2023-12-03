@@ -68,17 +68,20 @@ export default function Home() {
           <>
             <img
               src="/ellipse.png"
+              alt=""
               className="absolute left-[40px] z-20"
               style={{ top: judulValoin.current.offsetTop + 15 }}
             />
             <img
               src="/ellipse.png"
+              alt=""
               className="absolute left-[40px] z-20"
               style={{ top: judulTengah.current.offsetTop + 10 }}
               id="tengah"
             />
             <img
               src="/ellipse.png"
+              alt=""
               className="absolute left-[40px] z-20"
               style={{ top: judulBawah.current.offsetTop }}
             />
@@ -110,7 +113,7 @@ export default function Home() {
           </p>
           <div className={`w-fit mt-[20px] relative ${robotoMono.className}`}>
             <img
-              src="/satchel.png"
+              src="/satchel.webp"
               className="absolute bottom-[-30px] right-[-40px]"
               alt=""
             />
@@ -119,7 +122,7 @@ export default function Home() {
               className={`${robotoMono.className} text-[.8rem] bg-white px-[17px] py-[10px] w-fit flex items-center text-slate-800`}
             >
               coba{" "}
-              <span class="material-symbols-outlined opacity-90">
+              <span className="material-symbols-outlined opacity-90">
                 arrow_forward
               </span>
             </Link>
@@ -127,7 +130,7 @@ export default function Home() {
         </div>
 
         <div>
-          <img src="/jumbotronImg.png" className="w-[450px]" alt="" />
+          <img src="/jumbotronImg.webp" className="w-[450px]" alt="valoin" />
         </div>
       </div>
 
@@ -184,8 +187,8 @@ export default function Home() {
         </div>
         <div className="w-full lg:w-3/5 xl:w-[50%]">
           <img
-            src="/valorantCharacter.jpg"
-            alt=""
+            src="/valorantCharacter.webp"
+            alt="character valorant"
             className="w-full rounded-[3px]"
           />
         </div>
@@ -206,6 +209,7 @@ export default function Home() {
           <img
             src="/addLineup.png"
             className="w-[50%] shadow-xl shadow-[#7F5AF0]"
+            alt="upload your lineup"
           />
           <div className="flex flex-col gap-[10px]">
             <p

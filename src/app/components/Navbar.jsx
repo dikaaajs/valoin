@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { setUsername } from "../../../libs/redux/useSlice";
 import { useRouter } from "next/navigation";
 import Message from "./Message";
 
