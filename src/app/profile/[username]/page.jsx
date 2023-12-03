@@ -36,7 +36,6 @@ export default function Profile({ params }) {
   const [profile, setProfile] = useState(null);
   const [lineup, setLineup] = useState(null);
 
-  console.log(session);
   const getInfo = async () => {
     try {
       const userRes = await axios.post("/api/user/byUsername", {
