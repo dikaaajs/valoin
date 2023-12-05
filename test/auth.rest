@@ -18,3 +18,12 @@ Content-Type: "application/json"
 {
     "email": "zoneandika@gmail.com"
 }
+
+###
+POST http://localhost:3000/api/user/edit
+Content-Type: "application/json"
+
+{
+    "id": "6542f052865e920968193f85",
+    "username": "keqing"
+}
