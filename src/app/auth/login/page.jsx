@@ -32,7 +32,6 @@ export default function Login() {
         redirect: false,
       });
 
-      console.log(res);
       if (res.ok === true) {
         router.replace(`/profile/${username}`);
       }

@@ -23,10 +23,14 @@ export const authOptions = {
           if (!findUser) {
             return null;
           }
-          const passwordMatch = await bcrypt.compare(
-            password,
-            findUser.password
-          );
+          let passwordMatch = await bcrypt.compare(password, findUser.password);
+
+          if (!passwordMatch) {
+            passwordMatch = password === findUser.password;
+          }
+
+          console.log(passwordMatch);
+
           if (!passwordMatch) {
             return null;
           }

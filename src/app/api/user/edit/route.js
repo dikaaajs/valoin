@@ -19,11 +19,11 @@ export async function POST(request) {
     ) {
     }
 
-    await User.updateOne({ _id: id }, { $set: { deskripsi, username, pp } });
-    return NextResponse.json(
-      { message: "berhasil mengupdate data" },
-      { status: 200 }
+    const res = await User.updateOne(
+      { _id: id },
+      { $set: { deskripsi, username, pp } }
     );
+    return NextResponse.json({ currentUsername: username }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

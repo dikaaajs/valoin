@@ -1,8 +1,9 @@
 "use client";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Poppins, Roboto_Mono } from "next/font/google";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -23,15 +24,38 @@ export default function Edit() {
   const [section, setSection] = useState("edit profile");
   const [userData, setUserData] = useState(null);
   const [userDataBefore, setUserDataBefore] = useState(null);
+  const router = useRouter();
 
   const getData = async () => {
     try {
-      console.log(session.user.email);
       const user = await axios.post("/api/user/byEmail", {
         email: session.user?.email,
       });
       setUserData(user.data.user);
       setUserDataBefore(user.data.user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/api/user/edit", {
+        ...userData,
+        id: userData._id,
+      });
+      console.log(res.data.currentUsername);
+      console.log(userData.password);
+      const login = await signIn("credentials", {
+        username: res.data.currentUsername,
+        password: userData.password,
+        redirect: false,
+      });
+
+      if (login.ok === true) {
+        router.replace(`/profile/${res.data.currentUsername}`);
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -116,15 +140,15 @@ export default function Edit() {
 
               <div className="flex gap-[20px] items-start">
                 <label
-                  htmlFor="bio"
+                  htmlFor="deskripsi"
                   className={`${robotoMono.className} text-[.8rem] w-1/4 text-right`}
                 >
-                  bio
+                  deskripsi
                 </label>
                 <textarea
                   className={`form-input border-slate-500 focus:outline-none focus:border-slate-800 focus:ring-0 rounded-[3px] border-opacity-50 py-[5px] text-white text-[.8rem] bg-transparent w-1/2`}
                   type="text"
-                  name="bio"
+                  name="deskripsi"
                   placeholder={userData.deskripsi}
                   onChange={(e) =>
                     setUserData({ ...userData, deskripsi: e.target.value })
@@ -135,6 +159,7 @@ export default function Edit() {
               <div>
                 <button
                   className={`bg-blue-400 text-white px-[15px] py-[7px] rounded-[5px] text-[.8rem] ml-auto block ${robotoMono.className}`}
+                  onClick={handleEditSubmit}
                 >
                   kirim
                 </button>
