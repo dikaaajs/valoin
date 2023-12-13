@@ -1,5 +1,5 @@
 "use client";
-import { Poppins, Roboto, Roboto_Mono, Inter } from "next/font/google";
+import { Poppins, Roboto, Roboto_Mono, Montserrat } from "next/font/google";
 import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
@@ -14,19 +14,14 @@ const PoppinsJudul = Poppins({
 const PoppinsText = Poppins({
   subsets: ["latin"],
   display: "swap",
-  weight: "400",
+  weight: "500",
   preload: true,
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: "500",
-});
-
-const roboto = Roboto({
+const montserrat = Montserrat({
   subsets: ["latin"],
   display: "swap",
-  weight: "500",
+  weight: "700",
   preload: true,
 });
 
@@ -67,30 +62,48 @@ export default function Home() {
         judulValoin.current !== undefined && (
           <>
             <img
-              src="/ellipse.png"
-              alt=""
+              src="/ellipse 1.png"
+              alt="1"
               className="absolute left-[40px] z-20"
               style={{ top: judulValoin.current.offsetTop + 15 }}
             />
+            <h1
+              className={`${montserrat.className} text-black absolute left-[50px] z-30`}
+              style={{ top: judulValoin.current.offsetTop + 20 }}
+            >
+              #1
+            </h1>
             <img
-              src="/ellipse.png"
-              alt=""
+              src="/ellipse 1.png"
+              alt="2"
               className="absolute left-[40px] z-20"
               style={{ top: judulTengah.current.offsetTop + 10 }}
               id="tengah"
             />
+            <h1
+              className={`${montserrat.className} text-black absolute left-[48px] z-30`}
+              style={{ top: judulTengah.current.offsetTop + 15 }}
+            >
+              #2
+            </h1>
             <img
-              src="/ellipse.png"
-              alt=""
+              src="/ellipse 1.png"
+              alt="3"
               className="absolute left-[40px] z-20"
               style={{ top: judulBawah.current.offsetTop }}
             />
+            <h1
+              className={`${montserrat.className} text-black absolute left-[48px] z-30`}
+              style={{ top: judulBawah.current.offsetTop + 7 }}
+            >
+              #3
+            </h1>
             <div
-              className={`z-[10] absolute top-[120px] left-[-20px] w-[80px] border-white border-b-[0px] border-[4px] bg-opacity-0 rounded-tr-[10px]`}
+              className={`z-[10] absolute top-[120px] left-[-20px] w-[80px] border-lime-400 border-b-[0px] border-[3px] bg-opacity-0 rounded-tr-[10px]`}
               style={{ height: `${tinggi + 150}px` }}
             ></div>
             <div
-              className="border-[4px] border-t-[0px] border-r-[0px] h-[50px] border-white w-full absolute rounded-bl-[10px] left-[56px] z-[-1]"
+              className="border-[3px] border-t-[0px] border-r-[0px] h-[50px] border-lime-400 w-full absolute rounded-bl-[10px] left-[56.5px] z-[-1]"
               style={{ top: `${judulBawah.current.offsetTop - 30}px` }}
             ></div>
           </>
@@ -100,31 +113,17 @@ export default function Home() {
       <div className="flex flex-col md:flex-row gap-y-[100px] items-center px-[3%] justify-center md:h-[750px]">
         <div className="w-full lg:w-1/2">
           <h1
-            className={` ${PoppinsJudul.className} text-[3rem] text-white`}
+            className={` ${PoppinsJudul.className} text-[2.5rem] text-white`}
             ref={judulValoin}
           >
-            VALO<span className="text-[#7F5AF0]">IN </span>
+            valoin - temukan lineup valorant mu disini !
           </h1>
-          <p
-            className={`!${inter.className} text-[#94A1B2] text-[.8rem] md:text-[1rem] opacity-70 leading-[18px] md:leading-6`}
-          >
-            susah menghafal lineup ? pakai website ini untuk mendapatkan
-            informasi sekitaran lineup.
-          </p>
           <div className={`w-fit mt-[20px] relative ${robotoMono.className}`}>
-            <img
-              src="/satchel.webp"
-              className="absolute bottom-[-30px] right-[-40px]"
-              alt=""
-            />
             <Link
               href={"/main"}
-              className={`${robotoMono.className} text-[.8rem] bg-white px-[17px] py-[10px] w-fit flex items-center text-slate-800`}
+              className={` text-[1rem] bg-blue-500 hover:scale-125 duration-300 px-[17px] py-[8px] w-fit flex items-center text-white rounded-[5px]`}
             >
-              coba{" "}
-              <span className="material-symbols-outlined opacity-90">
-                arrow_forward
-              </span>
+              mulai
             </Link>
           </div>
         </div>
@@ -136,7 +135,7 @@ export default function Home() {
 
       {/* agent */}
       <div
-        className="h-[850px] bg-[#242629] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left"
+        className="h-[850px] bg-[#2a1f30] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left"
         ref={agentSection}
       >
         {/* stats website */}
@@ -172,24 +171,29 @@ export default function Home() {
 
         <div className="w-full lg:w-2/5 mx-auto">
           <h1
-            className={`${PoppinsJudul.className} text-[2rem] md:text-[2.5rem] leading-[35px]`}
+            className={`${montserrat.className} text-[2rem] md:text-[2.5rem] leading-[35px]`}
             ref={judulTengah}
           >
-            Agent Dalam <span className="text-red-600">Valorant</span>
+            apa itu valoin ?
           </h1>
-          <p
-            className={`${inter.className} text-[.8rem] md:text-[1rem] opacity-70 leading-5 pt-[15px]`}
-          >
-            kamu pemain baru, dan bingung dengan banyaknya ability tiap agent
-            yang berbeda beda ? eitss tenang. Disini kamu bisa memahami ability
-            tiap agent dengan mudah
+          <p className={`text-[1rem] md:text-[1rem] pt-[15px]`}>
+            valoin, tempat utama kamu untuk menemukan dan menguasai lineup
+            terbaik dalam game Valorant. untuk meraih kemenangan dalam
+            pertempuran, strategi dan koordinasi tim sangat penting. Itulah
+            mengapa kami hadir untuk membantu Anda meningkatkan permainan Anda
+            melalui panduan lineup yang tepat.
+          </p>
+          <p className={`text-[1rem] md:text-[1rem] pt-[15px]`}>
+            fitur utama pada website ini ada pada guide lineup menggunakan
+            gambar. jadi kalian tidak perlu memuat video untuk melihat guide
+            lineup
           </p>
         </div>
         <div className="w-full lg:w-3/5 xl:w-[50%]">
           <img
-            src="/valorantCharacter.webp"
+            src="/card-lineup.png"
             alt="character valorant"
-            className="w-full rounded-[3px]"
+            className="rounded-[3px] mx-auto"
           />
         </div>
       </div>
@@ -198,31 +202,32 @@ export default function Home() {
       <div className="h-[700px] px-[20px] md:px-[50px] mb-[200px]">
         <div className="pt-[130px] w-fit px-[50px] bg-[#16161A] mx-auto">
           <h1
-            className={`${PoppinsJudul.className} text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
+            className={`${montserrat.className} text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
             ref={judulBawah}
           >
-            Sharing Lineup
+            Bagikan Lineup mu !
           </h1>
         </div>
 
-        <div className="flex py-[150px] items-center pb-[100px] gap-[30px] px-[20px] md:px-[50px] ">
+        <div className="flex flex-col py-[150px] items-center gap-[50px] px-[20px] md:px-[50px] ">
           <img
             src="/addLineup.png"
-            className="w-[50%] shadow-xl shadow-[#7F5AF0]"
+            className="w-[50%] shadow-xl shadow-[#7F5AF0] py-[20px]"
             alt="upload your lineup"
           />
-          <div className="flex flex-col gap-[10px]">
+          <div className="flex flex-col gap-[20px] justify-center text-center">
             <p
-              className={`${inter.className} text-[.8rem] md:text-[1rem] opacity-70 text-white`}
+              className={`text-[.8rem] md:text-[1rem] text-white w-[80%] mx-auto`}
             >
-              kamu bisa sharing lineup yang kamu punya disini. dengan cara
-              daftar terlebih dahulu
+              ingin berkontribusi dalam pembuatan lineup ? gabunglah bersama
+              kami sebagai creator. cukup dengan daftar kamu bisa membagikan
+              lineup yang kamu punya !
             </p>
             <Link
-              className={`btn rounded-[3px] ${PoppinsText.className} text-slate-800 w-fit`}
+              className={`btn rounded-[3px] ${PoppinsText.className} text-slate-800 w-fit mx-auto`}
               href={"/auth/register"}
             >
-              signup
+              daftar
             </Link>
           </div>
         </div>

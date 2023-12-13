@@ -47,7 +47,7 @@ export default function Navbar() {
         ]} text-[1.5rem] md:text-[2.5rem] w-1/3`}
       >
         <h1 className="text-white text-center">
-          VALO<span className="text-[#7F5AF0]">IN</span>
+          VALO<span className="text-purple-500">IN</span>
         </h1>
       </Link>
 

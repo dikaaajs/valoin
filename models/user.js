@@ -26,6 +26,14 @@ const userSchema = new Schema(
       type: Array,
       required: true,
     },
+    verifyToken: {
+      type: String,
+      default: undefined,
+    },
+    verifyTokenExpiry: {
+      type: Date,
+      default: undefined,
+    },
   },
   { timestamps: true }
 );

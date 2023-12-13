@@ -27,25 +27,46 @@ export default function Register() {
     "akun diperlukan untuk melakukan interaksi pada web. seperti menambahkan lineup, memberi like, memberi dislike, dll"
   );
 
+  const usernameChecker = () => {
+    const regex = /^[a-zA-Z0-9]{1,13}$/;
+    return regex.test(username);
+  };
+
+  const passwordChecker = () => {
+    const regex = /^.{8,}$/;
+    return regex.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setPesan("loading ...")
+    setPesan("loading ...");
     if (!username || !password || !email) {
       return setPesan("harap isi semua kolom dengan benar!");
     }
 
+    if (usernameChecker() === false) {
+      setPesan("username tidak sesuai aturan");
+      let tmp = inputError;
+      tmp[0] = true;
+      setInputError(tmp);
+    } else if (usernameChecker() === true) {
+      let tmp = inputError;
+      tmp[0] = false;
+      setInputError(tmp);
+    }
+
+    if (passwordChecker() === false) {
+      setPesan("password tidak sesuai aturan");
+      let tmp = inputError;
+      tmp[1] = true;
+      setInputError(tmp);
+    } else if (passwordChecker() === true) {
+      let tmp = inputError;
+      tmp[1] = false;
+      setInputError(tmp);
+    }
+
     try {
-      const user = await axios.post("/api/user/byEmail", {
-        email,
-      });
-
-      if (user.data === null) {
-        const update = inputError;
-        update[2] = true;
-        setInputError(update);
-        return setPesan("email sudah digunakan !");
-      }
-
       const res = await axios.post("/api/register", {
         username,
         password,
@@ -55,17 +76,22 @@ export default function Register() {
         tag: ["pemula"],
       });
 
-      const login = await signIn("credentials", {
-        username,
-        password,
-        redirect: false,
-      });
+      if (res.status === 201) {
+        const login = await signIn("credentials", {
+          username,
+          password,
+          redirect: false,
+        });
 
-      if (login.ok === true) {
-        router.replace(`/profile/${username}`);
+        if (login.ok === true) {
+          router.replace(`/profile/${username}`);
+        }
+      } else if (res.status === 409) {
+        setPesan(res.data.message);
       }
     } catch (error) {
-      setPesan("gagal mendaftar");
+      console.log(error);
+      setPesan(error.response.data.message);
     }
   };
   return (
@@ -95,7 +121,15 @@ export default function Register() {
               type="text"
               name="username"
               onChange={(e) => setUsername(e.target.value)}
+              maxLength={14}
             />
+            <p
+              className={`text-red-500 font-semibold ${
+                inputError[0] === false ? "hidden" : ""
+              }`}
+            >
+              username tidak boleh menggunakan symbol dan lebih dari 13 huruf
+            </p>
           </div>
           <div className="flex flex-col">
             <label htmlFor="password" className="font-[600] text-slate-800">
@@ -107,6 +141,13 @@ export default function Register() {
               name="password"
               onChange={(e) => setPassword(e.target.value)}
             />
+            <p
+              className={`text-red-500 font-semibold ${
+                inputError[1] === false ? "hidden" : ""
+              }`}
+            >
+              password minimal memiliki 8 karakter
+            </p>
           </div>
           <div className="flex flex-col">
             <label htmlFor="email" className="font-[600] text-slate-800">
