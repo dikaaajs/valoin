@@ -43,7 +43,6 @@ export default function Post(props) {
         setLike(tmp);
         setLiked(true);
       } else {
-        console.log("masuk sini");
         const tmp = like.filter((e) => e !== props.uid);
         setLike(tmp);
         setLiked(false);
@@ -65,7 +64,6 @@ export default function Post(props) {
     checkLiked();
   }, []);
 
-  console.log(like);
   return (
     <div
       className={`bg-white transition-all duration-300 ease-out ${

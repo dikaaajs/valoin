@@ -65,6 +65,7 @@ export default function Page() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  // image state
   const [imageFile, setImageFile] = useState(null);
   const [cropDialog, setCropDialog] = useState(false);
   const [typeImg, setTypeImg] = useState(null);
@@ -135,7 +136,6 @@ export default function Page() {
         { img3, caption3 },
       ];
 
-      console.log(imgAndDes);
       const auth = await axios.post("/api/user/byEmail", {
         email: session.user.email,
       });
@@ -219,8 +219,6 @@ export default function Page() {
   };
 
   // image handle
-  const cropImg = () => {};
-
   const handleFile = (e) => {
     if (e.target.files[0]) {
       var reader = new FileReader();

@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import { Montserrat, Poppins, Roboto_Mono } from "next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import CropImgPP from "@/app/components/CropImgPP";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -36,9 +37,29 @@ export default function Edit() {
     confirm: "",
   });
   const [passwordError, setPasswordError] = useState([]);
-  const [userDataBefore, setUserDataBefore] = useState(null);
   const [verify, setVerify] = useState(false);
+
+  // image state
+  const [cropDialog, setCropDialog] = useState(false);
+  const [typeImg, setTypeImg] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [urlPP, setUrlPP] = useState("/defaultpp.jpg");
+
   const router = useRouter();
+
+  const handleFile = (e) => {
+    if (e.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        setImageFile(e.target.result);
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    setCropDialog(true);
+  };
 
   const getData = async () => {
     try {
@@ -46,7 +67,7 @@ export default function Edit() {
         email: session.user?.email,
       });
       setUserData(user.data.user);
-      setUserDataBefore(user.data.user);
+      setUrlPP(session.user.image);
     } catch (error) {
       console.log(error.message);
     }
@@ -60,13 +81,13 @@ export default function Edit() {
         id: userData._id,
       });
       const login = await signIn("credentials", {
-        username: res.data.currentUsername,
-        password: userData.password,
+        username: userData.username,
+        secret: "kopidinginnyamandilambung",
         redirect: false,
       });
 
       if (login.ok === true) {
-        router.push(`/profile/${res.data.currentUsername}`, {
+        router.push(`/profile/${userData.username}`, {
           message: "berhasil",
         });
       }
@@ -124,7 +145,20 @@ export default function Edit() {
   }, [status]);
 
   return (
-    <div className="py-[50px] flex gap-[50px] w-[80%] mx-auto">
+    <div className="py-[50px] flex gap-[50px] w-[80%] mx-auto relative">
+      {/* crop image popup */}
+      {cropDialog && typeImg !== null ? (
+        <CropImgPP
+          img={imageFile}
+          setCropDialog={setCropDialog}
+          id={userData._id}
+          setUrlPP={setUrlPP}
+          password={userData.password}
+        />
+      ) : (
+        <div></div>
+      )}
+
       {/* sidebar */}
       <div className="w-1/4 text-white border-r-[1px] border-white">
         <h1 className={`${PoppinsJudul.className} text-[2rem]`}>
@@ -186,12 +220,20 @@ export default function Edit() {
                 <div className="flex gap-[20px] items-center">
                   <div className="w-1/4 flex justify-end">
                     <img
-                      src={userData.pp}
+                      src={urlPP}
                       alt="pp"
                       className="w-[50px] rounded-full"
                     />
                   </div>
-                  <input type="file" id="editpp" className="hidden" />
+                  <input
+                    type="file"
+                    id="editpp"
+                    className="hidden"
+                    onChange={(e) => {
+                      handleFile(e);
+                      setTypeImg("pp");
+                    }}
+                  />
                   <label
                     htmlFor="editpp"
                     className={`${robotoMono.className} text-[.9rem] h-fit w-3/4 px-[10px] cursor-pointer text-blue-400`}

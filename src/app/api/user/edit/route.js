@@ -23,7 +23,11 @@ export async function POST(request) {
       { _id: id },
       { $set: { deskripsi, username, pp } }
     );
-    return NextResponse.json({ currentUsername: username }, { status: 200 });
+    console.log(res);
+    return NextResponse.json(
+      { message: "berhasil mengupdate user !" },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

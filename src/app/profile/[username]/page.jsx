@@ -38,8 +38,6 @@ export default function Profile({ params }) {
   const [profile, setProfile] = useState(null);
   const [lineup, setLineup] = useState(null);
 
-  console.log(router);
-
   const getInfo = async () => {
     try {
       const userRes = await axios.post("/api/user/byUsername", {
@@ -47,12 +45,30 @@ export default function Profile({ params }) {
       });
       const userData = userRes.data.user;
 
-      const stats = await axios.get(`/api/stats/user?idUser=${userData._id}`);
       const lineupRes = await axios.post("/api/lineup/user", {
         idMaker: userData._id,
       });
+
+      let totalTerpilih = 0;
+      let totalLikes = 0;
+
+      for (let i = 0; i < lineupRes.data.length; i++) {
+        totalLikes += lineupRes.data[i].like.length;
+      }
+
+      for (let i = 0; i < lineupRes.data.length; i++) {
+        if (lineupRes.data[i].tag.includes("verify") === true) {
+          totalTerpilih = totalTerpilih + 1;
+        }
+      }
+
+      const tmp = {
+        lineupDibuat: lineupRes.data.length,
+        lineupTerpilih: totalTerpilih,
+        lineupDisukai: totalLikes,
+      };
       setLineup(lineupRes.data);
-      setStats(stats.data.stats);
+      setStats(tmp);
       setItsMe(session?.user?.name === userData.username ? true : false);
       setProfile(userData);
     } catch (error) {
@@ -95,8 +111,8 @@ export default function Profile({ params }) {
                 <div className="flex gap-[15px]">
                   {itsMe ? (
                     <Link
-                      className={`${robotoMono.className} text-[.7rem] px-[10px] py-[5px] my-[10px] text-[#7F5AF0] border-[#7F5AF0] border-2 bg-opacity-0`}
-                      href={`${profile.username}/edit`}
+                      className={`${robotoMono.className} text-[.7rem] px-[15px] py-[10px] my-[10px] text-white bg-[#7F5AF0] rounded-[3px] duration-300 hover:scale-125`}
+                      href={`/profile/edit`}
                     >
                       edit profile
                     </Link>
@@ -151,7 +167,7 @@ export default function Profile({ params }) {
                 </div>
                 <div className="text-center">
                   <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
-                    {stats.disukai}
+                    {stats.lineupDisukai}
                   </p>
                   <h1 className={`${robotoMono.className} text-[.8rem]`}>
                     lineup disukai
