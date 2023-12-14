@@ -14,7 +14,6 @@ export async function POST(request) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const usernameCheck = await User.findOne({ username: username });
     const emailCheck = await User.findOne({ email: email });
-    console.log(usernameCheck);
     if (usernameCheck !== null) {
       return NextResponse.json(
         { message: "username telah dipakai" },

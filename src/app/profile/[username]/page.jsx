@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import Post from "@/app/components/Post";
 import axios from "axios";
 import Link from "next/link";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PoppinsJudul = Poppins({
   subsets: ["latin"],
@@ -35,6 +37,8 @@ export default function Profile({ params }) {
   const [itsMe, setItsMe] = useState(undefined);
   const [profile, setProfile] = useState(null);
   const [lineup, setLineup] = useState(null);
+
+  console.log(router);
 
   const getInfo = async () => {
     try {
@@ -201,6 +205,8 @@ export default function Profile({ params }) {
             })}
           </div>
         </div>
+
+        <ToastContainer />
       </div>
     );
 }

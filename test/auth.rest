@@ -27,3 +27,12 @@ Content-Type: "application/json"
     "id": "6542f052865e920968193f85",
     "username": "keqing"
 }
+###
+POST http://localhost:3000/api/user/resetpass
+Content-Type: "application/json"
+
+{
+    "uid": "65785a1bf4824ba854dd7a3b",
+    "oldPassword": "adachikawai",
+    "newPassword": "adachikawai123"
+}

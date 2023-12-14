@@ -30,6 +30,12 @@ export default function Edit() {
   const { data: session, status } = useSession();
   const [section, setSection] = useState("edit profile");
   const [userData, setUserData] = useState(null);
+  const [dataPassword, setPassword] = useState({
+    newPassword: "",
+    oldPassword: "",
+    confirm: "",
+  });
+  const [passwordError, setPasswordError] = useState([]);
   const [userDataBefore, setUserDataBefore] = useState(null);
   const [verify, setVerify] = useState(false);
   const router = useRouter();
@@ -60,7 +66,9 @@ export default function Edit() {
       });
 
       if (login.ok === true) {
-        router.replace(`/profile/${res.data.currentUsername}`);
+        router.push(`/profile/${res.data.currentUsername}`, {
+          message: "berhasil",
+        });
       }
     } catch (error) {
       console.log(error.message);
@@ -77,6 +85,37 @@ export default function Edit() {
       });
     } catch (error) {
       console.log(error.message);
+    }
+  };
+
+  const handlePassword = async (e) => {
+    e.preventDefault();
+    if (
+      !dataPassword.oldPassword ||
+      !dataPassword.confirm ||
+      !dataPassword.newPassword
+    ) {
+      return alert("harap mengisi semua field");
+    }
+
+    if (dataPassword.newPassword !== dataPassword.confirm) {
+      return setPasswordError(...passwordError, "notMatched");
+    }
+
+    const tmp = passwordError.filter((error) => error !== "notMatched");
+    setPasswordError(tmp);
+
+    try {
+      const res = await axios.post("/api/user/resetpass", {
+        oldPassword: dataPassword.oldPassword,
+        newPassword: dataPassword.newPassword,
+        email: session.user.email,
+      });
+      if (res.status === 201) {
+        router.replace(`/profile/${session.user.name}`);
+      }
+    } catch (error) {
+      alert(error.response.data.message);
     }
   };
 
@@ -102,7 +141,7 @@ export default function Edit() {
               }`}
               onClick={() => setSection("edit profile")}
             >
-              edit profile
+              Edit Profile
             </button>
           </li>
           <li>
@@ -114,7 +153,19 @@ export default function Edit() {
               }`}
               onClick={() => setSection("verify")}
             >
-              verify email
+              Verify Email
+            </button>
+          </li>
+          <li>
+            <button
+              className={`${
+                montserrat.className
+              } w-[85%] rounded-[5px] text-left py-[10px] px-[15px] mr-[10px] text-[1rem] ${
+                section === "resetpass" ? "text-blue-400 bg-slate-50" : ""
+              }`}
+              onClick={() => setSection("resetpass")}
+            >
+              Reset Password
             </button>
           </li>
         </ul>
@@ -225,6 +276,100 @@ export default function Edit() {
               <p>check email kamu ! (refresh ulang untuk melakukan resend)</p>
             </div>
           )}
+        </div>
+      )}
+
+      {/* resetpass section */}
+      {section === "resetpass" && (
+        <div className="text-white w-3/4">
+          <div>
+            <h1 className={`${PoppinsJudul.className} text-[1.5rem]`}>
+              Reset password
+            </h1>
+
+            <div className="flex flex-col gap-[30px] my-[50px]">
+              <div className="flex gap-[20px] items-start">
+                <label
+                  htmlFor="password lama"
+                  className={`${robotoMono.className} text-[.8rem] w-1/4 text-right`}
+                >
+                  password lama
+                </label>
+                <input
+                  className={`form-input border-slate-500 focus:outline-none focus:border-slate-800 focus:ring-0 rounded-[3px] border-opacity-50 py-[5px] text-white text-[.8rem] bg-transparent w-1/2`}
+                  type="password"
+                  name="oldPassword"
+                  placeholder="masukan password saat ini"
+                  onChange={(e) =>
+                    setPassword({
+                      ...dataPassword,
+                      oldPassword: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="flex gap-[20px] items-start">
+                <label
+                  htmlFor="password baru"
+                  className={`${robotoMono.className} text-[.8rem] w-1/4 text-right`}
+                >
+                  password baru
+                </label>
+                <input
+                  className={`form-input border-slate-500 focus:outline-none focus:border-slate-800 focus:ring-0 rounded-[3px] border-opacity-50 py-[5px] text-white text-[.8rem] bg-transparent w-1/2`}
+                  type="password"
+                  name="newPassword"
+                  placeholder="masukan password baru"
+                  onChange={(e) =>
+                    setPassword({
+                      ...dataPassword,
+                      newPassword: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="flex gap-[20px] items-start">
+                <label
+                  htmlFor="confirm"
+                  className={`${robotoMono.className} text-[.8rem] w-1/4 text-right`}
+                >
+                  confirm password
+                </label>
+                <input
+                  className={`form-input border-slate-500 focus:outline-none focus:border-slate-800 focus:ring-0 rounded-[3px] border-opacity-50 py-[5px] text-white text-[.8rem] bg-transparent w-1/2`}
+                  type="password"
+                  name="confirmPassword"
+                  placeholder={"masukan password baru sekali lagi"}
+                  onChange={(e) =>
+                    setPassword({ ...dataPassword, confirm: e.target.value })
+                  }
+                  required
+                />
+                <p
+                  className={`${
+                    passwordError.includes("notMatched") === false
+                      ? "hidden"
+                      : ""
+                  } text-red-600`}
+                >
+                  invalid confirm
+                </p>
+              </div>
+
+              <div>
+                <button
+                  className={`bg-blue-500 text-white px-[15px] py-[8px] rounded-[5px] text-[.8rem] ml-auto block ${robotoMono.className}`}
+                  onClick={handlePassword}
+                >
+                  kirim
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

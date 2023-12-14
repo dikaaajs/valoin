@@ -29,8 +29,6 @@ export const authOptions = {
             passwordMatch = password === findUser.password;
           }
 
-          console.log(passwordMatch);
-
           if (!passwordMatch) {
             return null;
           }

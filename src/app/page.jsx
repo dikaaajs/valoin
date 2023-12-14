@@ -62,7 +62,7 @@ export default function Home() {
         judulValoin.current !== undefined && (
           <>
             <img
-              src="/ellipse 1.png"
+              src="/ellipse.png"
               alt="1"
               className="absolute left-[40px] z-20"
               style={{ top: judulValoin.current.offsetTop + 15 }}
@@ -74,7 +74,7 @@ export default function Home() {
               #1
             </h1>
             <img
-              src="/ellipse 1.png"
+              src="/ellipse.png"
               alt="2"
               className="absolute left-[40px] z-20"
               style={{ top: judulTengah.current.offsetTop + 10 }}
@@ -87,7 +87,7 @@ export default function Home() {
               #2
             </h1>
             <img
-              src="/ellipse 1.png"
+              src="/ellipse.png"
               alt="3"
               className="absolute left-[40px] z-20"
               style={{ top: judulBawah.current.offsetTop }}
@@ -135,7 +135,7 @@ export default function Home() {
 
       {/* agent */}
       <div
-        className="h-[850px] bg-[#2a1f30] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left"
+        className="h-[850px] bg-[#2e2d2e] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left"
         ref={agentSection}
       >
         {/* stats website */}

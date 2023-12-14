@@ -5,13 +5,7 @@ import { Poppins, Inter, Roboto_Mono } from "next/font/google";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { storage } from "../../../../libs/firebase";
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  listAll,
-  list,
-} from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import Section1 from "./section1";
 import Section2 from "./section2";
