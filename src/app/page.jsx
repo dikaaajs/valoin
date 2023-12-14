@@ -133,7 +133,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* agent */}
+      {/* apa itu valoin */}
       <div
         className="h-[850px] bg-[#2e2d2e] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] items-center text-center lg:text-left"
         ref={agentSection}
@@ -189,7 +189,12 @@ export default function Home() {
             lineup
           </p>
         </div>
-        <div className="w-full lg:w-3/5 xl:w-[50%]">
+        <div className="w-full lg:w-3/5 xl:w-[50%] relative hover:scale-110 duration-300 group">
+          <img
+            src="/jett-bingung.png"
+            alt="jett emoji"
+            className="absolute z-[10] top-[-150px] left-[-50px] scale-75 group-hover:rotate-12 duration-200"
+          />
           <img
             src="/card-lineup.png"
             alt="character valorant"
@@ -209,12 +214,19 @@ export default function Home() {
           </h1>
         </div>
 
-        <div className="flex flex-col py-[150px] items-center gap-[50px] px-[20px] md:px-[50px] ">
-          <img
-            src="/addLineup.png"
-            className="w-[50%] shadow-xl shadow-[#7F5AF0] py-[20px]"
-            alt="upload your lineup"
-          />
+        <div className="flex flex-col my-[150px] items-center gap-[50px] px-[20px] md:px-[50px] ">
+          <div className="relative w-[50%]">
+            <img
+              src="/brimstone-meme.png"
+              alt="brimstone meme"
+              className="absolute bottom-[-120px] right-[-170px] scale-50"
+            />
+            <img
+              src="/addLineup.png"
+              className="w-full mx-auto shadow-md shadow-[#7F5AF0] hover:shadow-white hover:shadow-xl duration-300 py-[20px]"
+              alt="upload your lineup"
+            />
+          </div>
           <div className="flex flex-col gap-[20px] justify-center text-center">
             <p
               className={`text-[.8rem] md:text-[1rem] text-white w-[80%] mx-auto`}
@@ -224,7 +236,7 @@ export default function Home() {
               lineup yang kamu punya !
             </p>
             <Link
-              className={`btn rounded-[3px] ${PoppinsText.className} text-slate-800 w-fit mx-auto`}
+              className={`btn rounded-[3px] ${PoppinsText.className} text-slate-800 w-fit mx-auto duration-300 hover:scale-110 hover:text-white hover:bg-blue-400`}
               href={"/auth/register"}
             >
               daftar
@@ -232,6 +244,14 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </main>
   );
 }
