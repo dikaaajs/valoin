@@ -34,6 +34,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.6"
+    "@tailwindcss/forms": "^0.5.6",
+    "next-sitemap": "^4.2.3"
   }
 }
