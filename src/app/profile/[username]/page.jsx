@@ -45,9 +45,11 @@ export default function Profile({ params }) {
       });
       const userData = userRes.data.user;
 
-      const lineupRes = await axios.post("/api/lineup/user", {
+      const lineupRes = await axios.post("/api/lineup/get", {
         idMaker: userData._id,
       });
+
+      console.log(lineupRes);
 
       let totalTerpilih = 0;
       let totalLikes = 0;

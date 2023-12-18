@@ -1,4 +1,4 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose, { Schema, Types, models } from "mongoose";
 
 const lineupSchema = new Schema(
   {
@@ -43,8 +43,9 @@ const lineupSchema = new Schema(
       required: true,
     },
     idMaker: {
-      type: String,
+      type: Types.ObjectId,
       required: true,
+      ref: "User",
     },
     like: {
       type: Array,

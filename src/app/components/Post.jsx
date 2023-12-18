@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Inter, Poppins, Roboto_Mono } from "next/font/google";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,7 +28,10 @@ export default function Post(props) {
   const [liked, setLiked] = useState(false);
   const [like, setLike] = useState(props.post.like);
   const { judul, keterangan, imageUrl, tag } = props.post;
+  const { pp, username } = props.post.userInfo;
   const details = props.post.imgAndDes;
+
+  console.log(props);
 
   const handleLikeButton = async () => {
     if (session === null) return toast.warn("login terlebih dahulu");
@@ -71,15 +75,21 @@ export default function Post(props) {
       } py-[10px] px-[20px]`}
     >
       <ToastContainer className={`!${robotoMono.className}`} />
-      <h2
-        className={`text-[.8rem] ${
+      <div
+        className={`flex gap-[10px] uppercase py-[10px] items-center text-black text-[.8rem] ${
           poppins.className
-        } py-[10px] uppercase text-black ${
-          mode === "focus" ? "text-center py-[40px] text-[1rem]" : ""
-        }`}
+        } ${mode === "focus" ? "justify-center py-[40px] text-[2rem]" : ""}`}
       >
-        {judul}
-      </h2>
+        <Link href={`/profile/${username}`}>
+          <img
+            src={pp}
+            className="rounded-full w-[25px] h-[25px]"
+            alt={username}
+          />
+        </Link>
+
+        <h2 className={`  `}>{judul}</h2>
+      </div>
 
       {/* thumbnail */}
       <div className={`${mode === "focus" ? "hidden" : ""}`}>
