@@ -12,9 +12,7 @@ export async function POST(request) {
       {
         $match: {
           $or: [
-            { agent: agent },
-            { map: map },
-            { status: status },
+            { agent: agent, map: map, status: status },
             { idMaker: new mongoose.Types.ObjectId(idMaker) },
           ],
         },

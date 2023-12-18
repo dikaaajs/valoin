@@ -31,8 +31,6 @@ export default function Post(props) {
   const { pp, username } = props.post.userInfo;
   const details = props.post.imgAndDes;
 
-  console.log(props);
-
   const handleLikeButton = async () => {
     if (session === null) return toast.warn("login terlebih dahulu");
     try {

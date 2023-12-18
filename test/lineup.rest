@@ -21,7 +21,8 @@ POST  http://localhost:3000/api/lineup/get
 Content-Type: application/json
 
 {
-    "idMaker": "65784bfcf4824ba854dd7a25"
+    "agent": "sova",
+    "map": "ascent"
 }
  
 ###

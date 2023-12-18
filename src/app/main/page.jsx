@@ -32,13 +32,6 @@ const allAgent = [
   { name: "yoru", uuid: "7f94d92c-4234-0a36-9646-3a87eb8b5c89" },
 ];
 
-const post1 = {
-  judul: "viper a site",
-  keterangan: "default spike",
-  tag: ["easy"],
-  imageUrl: "/viperToxin.png",
-};
-
 const poppins = Poppins({
   subsets: ["latin"],
   weight: "800",
@@ -57,14 +50,12 @@ export default function page() {
   const [status, setStatus] = useState("defender");
   const [mode, setMode] = useState("post");
   const [lineup, setLineup] = useState(null);
+  const [rawLineup, setRawLineup] = useState(null);
+  const [abilityFilter, setAbilityFilter] = useState([true, true, true, true]);
   const [ability0, setAbility0] = useState(true);
   const [ability1, setAbility1] = useState(true);
   const [ability2, setAbility2] = useState(true);
   const [ability3, setAbility3] = useState(true);
-
-  const selectMapHandle = (e) => {
-    setMap(e.target.value);
-  };
 
   const selectAgentHandle = async (e) => {
     try {
@@ -78,25 +69,62 @@ export default function page() {
     }
   };
 
+  const filterLineup = (field, value, lineup) => {
+    const result = lineup.filter((i) => {
+      if (i[field] === value) {
+        return i;
+      }
+    });
+
+    return result;
+  };
+
   const getLineup = async () => {
     try {
       if (agent === undefined) return console.log("agent kosong");
-      const response = await axios.post("/api/lineup/get", {
+
+      const res = await axios.post("/api/lineup/get", {
         agent,
         map,
         status,
       });
-      setLineup(response.data);
+      setRawLineup(res.data);
+      setLineup(res.data);
     } catch (error) {
       console.log(error.message);
     }
   };
 
+  const selectMapHandle = (e) => {
+    setMap(e.target.value);
+  };
+
+  const handleAbility = (val) => {
+    let tmp = [...abilityFilter];
+    tmp[val] = !tmp[val];
+
+    setAbilityFilter(tmp);
+
+    let wadah = [];
+    tmp.map((i, index) => {
+      if (i === true) {
+        const p = rawLineup.filter((j) => {
+          if (j.ability === index) {
+            return j;
+          }
+        });
+
+        wadah = [...wadah, ...p];
+      }
+    });
+
+    setLineup(wadah);
+  };
+
+  // get data
   useEffect(() => {
     getLineup();
-  }, [map, agent]);
-
-  useEffect(() => {}, [ability1, ability2, ability3, ability0]);
+  }, [map, agent, status]);
 
   return (
     <div className="py-[100px] w-full relative">
@@ -114,13 +142,17 @@ export default function page() {
           >
             <button
               className={status === "attacker" ? "text-blue-400" : ""}
-              onClick={() => setStatus("attacker")}
+              onClick={() => {
+                setStatus("attacker");
+              }}
             >
               attacker
             </button>
             <button
               className={status === "defender" ? "text-blue-400" : ""}
-              onClick={() => setStatus("defender")}
+              onClick={() => {
+                setStatus("defender");
+              }}
             >
               defender
             </button>
@@ -131,61 +163,69 @@ export default function page() {
             <div className="flex gap-[10px] pt-[20px]">
               <button
                 className="w-fit relative"
-                onClick={() => setAbility0(!ability0)}
+                onClick={() => handleAbility(0)}
               >
                 <img
-                  src={dataAgent.abilities[0].displayIcon}
+                  src={`/agent/${agent}/ability/1.png`}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
                   src="/x.png"
-                  className={`absolute top-0 ${!ability0 ? "" : "hidden"}`}
+                  className={`absolute top-0 ${
+                    abilityFilter[0] === false ? "" : "hidden"
+                  }`}
                 />
               </button>
 
               <button
                 className="w-fit relative"
-                onClick={() => setAbility1(!ability1)}
+                onClick={() => handleAbility(1)}
               >
                 <img
-                  src={dataAgent.abilities[1].displayIcon}
+                  src={`/agent/${agent}/ability/2.png`}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
                   src="/x.png"
-                  className={`absolute top-0 ${!ability1 ? "" : "hidden"}`}
+                  className={`absolute top-0 ${
+                    abilityFilter[1] === false ? "" : "hidden"
+                  }`}
                 />
               </button>
 
               <button
                 className="w-fit relative"
-                onClick={() => setAbility2(!ability2)}
+                onClick={() => handleAbility(2)}
               >
                 <img
-                  src={dataAgent.abilities[2].displayIcon}
+                  src={`/agent/${agent}/ability/3.png`}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
                   src="/x.png"
-                  className={`absolute top-0 ${!ability2 ? "" : "hidden"}`}
+                  className={`absolute top-0 ${
+                    abilityFilter[2] === false ? "" : "hidden"
+                  }`}
                 />
               </button>
 
               <button
                 className="w-fit relative"
-                onClick={() => setAbility3(!ability3)}
+                onClick={() => handleAbility(3)}
               >
                 <img
-                  src={dataAgent.abilities[3].displayIcon}
+                  src={`/agent/${agent}/ability/4.png`}
                   className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
                   src="/x.png"
-                  className={`absolute top-0 ${!ability3 ? "" : "hidden"}`}
+                  className={`absolute top-0 ${
+                    abilityFilter[3] === false ? "" : "hidden"
+                  }`}
                 />
               </button>
             </div>
