@@ -4,6 +4,7 @@ import "./globals.css";
 import "material-symbols";
 import { AuthProvider } from "./Providers";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: "valoin: homepage",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
           <Analytics />
+          <SpeedInsights />
           <Footer />
         </AuthProvider>
       </body>
