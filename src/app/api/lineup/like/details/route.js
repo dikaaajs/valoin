@@ -14,10 +14,9 @@ export async function GET(req) {
     const usersData = await User.find({ _id: { $in: users } }).select(
       "username pp"
     );
-    console.log(usersData);
-    return NextResponse.json({ usersData });
+    return NextResponse.json({ usersData }, { status: 200 });
   } catch (error) {
     console.log(error.message);
-    return NextResponse.json({ msg: error.message });
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

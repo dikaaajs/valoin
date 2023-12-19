@@ -7,9 +7,50 @@
   src: url(font/RethinkSans-VariableFont_wght.ttf);
 }
 
+@font-face {
+  font-family: poppins-medium;
+  src: url(font/Poppins-Medium.ttf);
+}
+
+@font-face {
+  font-family: poppins-bold;
+  src: url(font/Poppins-Bold.ttf);
+}
+
+@font-face {
+  font-family: montserrat-bold;
+  src: url(font/Montserrat-Bold.ttf);
+}
+
+@font-face {
+  font-family: robotomono-medium;
+  src: url(font/RobotoMono-Medium.ttf);
+}
+
 p {
   font-family: rethink;
   font-weight: 500;
+}
+
+.font-rethink {
+  font-family: rethink;
+  font-weight: 500;
+}
+
+.font-robotomono-medium {
+  font-family: robotomono-medium
+}
+
+.font-montserrat-bold {
+  font-family: montserrat-bold;
+}
+
+.font-poppins-medium {
+  font-family: poppins-medium;
+}
+
+.font-poppins-bold {
+  font-family: poppins-bold;
 }
 
 body {

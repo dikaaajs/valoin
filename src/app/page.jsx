@@ -1,35 +1,7 @@
 "use client";
-import { Poppins, Roboto_Mono, Montserrat } from "next/font/google";
 import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-
-const PoppinsJudul = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "700",
-  preload: true,
-});
-
-const PoppinsText = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "500",
-  preload: true,
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "700",
-  preload: true,
-});
-
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
 
 export default function Home() {
   const judulValoin = useRef();
@@ -68,7 +40,7 @@ export default function Home() {
               style={{ top: judulValoin.current.offsetTop + 15 }}
             />
             <h1
-              className={`${montserrat.className} text-black absolute left-[50px] z-30`}
+              className={`font-montserrat-bold text-black absolute left-[50px] z-30`}
               style={{ top: judulValoin.current.offsetTop + 20 }}
             >
               #1
@@ -81,7 +53,7 @@ export default function Home() {
               id="tengah"
             />
             <h1
-              className={`${montserrat.className} text-black absolute left-[48px] z-30`}
+              className={`font-montserrat-bold text-black absolute left-[48px] z-30`}
               style={{ top: judulTengah.current.offsetTop + 15 }}
             >
               #2
@@ -93,7 +65,7 @@ export default function Home() {
               style={{ top: judulBawah.current.offsetTop }}
             />
             <h1
-              className={`${montserrat.className} text-black absolute left-[48px] z-30`}
+              className={`font-montserrat-bold text-black absolute left-[48px] z-30`}
               style={{ top: judulBawah.current.offsetTop + 7 }}
             >
               #3
@@ -113,12 +85,12 @@ export default function Home() {
       <div className="flex flex-col md:flex-row gap-y-[100px] items-center px-[3%] justify-center md:h-[750px]">
         <div className="w-full lg:w-1/2">
           <h1
-            className={` ${PoppinsJudul.className} text-[2.5rem] text-white`}
+            className={`font-poppins-bold text-[2.5rem] text-white`}
             ref={judulValoin}
           >
             valoin - temukan lineup valorant mu disini !
           </h1>
-          <div className={`w-fit mt-[20px] relative ${robotoMono.className}`}>
+          <div className={`w-fit mt-[20px] relative font-robotomono-medium`}>
             <Link
               href={"/main"}
               className={` text-[1rem] bg-blue-500 hover:scale-125 duration-300 px-[17px] py-[8px] w-fit flex items-center text-white rounded-[5px]`}
@@ -144,26 +116,20 @@ export default function Home() {
           style={{ top: agentSection?.current?.offsetTop - 70 }}
         >
           <div className="text-center">
-            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
-              {lineupCount}
-            </p>
-            <h1 className={`${robotoMono.className} text-[.8rem]`}>
+            <p className={`font-poppins-bold text-[1.5rem]`}>{lineupCount}</p>
+            <h1 className={`font-robotomono-medium text-[.8rem]`}>
               lineup dibuat
             </h1>
           </div>
           <div className="text-center">
-            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
-              {userCount}
-            </p>
-            <h1 className={`${robotoMono.className} text-[.8rem]`}>
+            <p className={`font-poppins-bold text-[1.5rem]`}>{userCount}</p>
+            <h1 className={`font-robotomono-medium text-[.8rem]`}>
               user terdaftar
             </h1>
           </div>
           <div className="text-center">
-            <p className={`${PoppinsJudul.className} text-[1.5rem]`}>
-              {versiApp}
-            </p>
-            <h1 className={`${robotoMono.className} text-[.8rem]`}>
+            <p className={`font-poppins-bold text-[1.5rem]`}>{versiApp}</p>
+            <h1 className={`font-robotomono-medium text-[.8rem]`}>
               versi aplikasi
             </h1>
           </div>
@@ -171,7 +137,7 @@ export default function Home() {
 
         <div className="w-full lg:w-2/5 mx-auto">
           <h1
-            className={`${montserrat.className} text-[2rem] md:text-[2.5rem] leading-[35px]`}
+            className={`font-montserrat-bold text-[2rem] md:text-[2.5rem] leading-[35px]`}
             ref={judulTengah}
           >
             apa itu valoin ?
@@ -207,7 +173,7 @@ export default function Home() {
       <div className="h-[700px] px-[20px] md:px-[50px] mb-[200px]">
         <div className="pt-[130px] w-fit px-[50px] bg-[#16161A] mx-auto">
           <h1
-            className={`${montserrat.className} text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
+            className={`font-montserrat-bold text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
             ref={judulBawah}
           >
             Bagikan Lineup mu !
@@ -236,7 +202,7 @@ export default function Home() {
               lineup yang kamu punya !
             </p>
             <Link
-              className={`btn rounded-[3px] ${PoppinsText.className} text-slate-800 w-fit mx-auto duration-300 hover:scale-110 hover:text-white hover:bg-blue-400`}
+              className={`btn rounded-[3px] font-poppins-medium text-slate-800 w-fit mx-auto duration-300 hover:scale-110 hover:text-white hover:bg-blue-400`}
               href={"/auth/register"}
             >
               daftar

@@ -1,32 +1,19 @@
 "use client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { Inter, Poppins, Roboto_Mono } from "next/font/google";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: "800",
-  preload: true,
-});
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-  preload: true,
-});
-const inter = Inter({
-  subsets: ["latin"],
-  weight: "500",
-});
 export default function Post(props) {
   const { data: session, status } = useSession();
   const [mode, setMode] = useState("blur");
   const [liked, setLiked] = useState(false);
   const [like, setLike] = useState(props.post.like);
+  const [detailsLikeData, setDetailsLikeData] = useState([]);
+  const [showDetailsLike, setShowDetailsLike] = useState(false);
+
   const { judul, keterangan, imageUrl, tag } = props.post;
   const { pp, username } = props.post.userInfo;
   const details = props.post.imgAndDes;
@@ -54,6 +41,14 @@ export default function Post(props) {
     }
   };
 
+  const handleLikeDetails = async () => {
+    const res = await axios.get(
+      `/api/lineup/like/details?idLineup=${props.post._id}`
+    );
+    setDetailsLikeData(res.data.usersData);
+    setShowDetailsLike(true);
+  };
+
   const checkLiked = () => {
     if (like.includes(props.uid) && props.uid !== undefined) {
       setLiked(true);
@@ -72,11 +67,43 @@ export default function Post(props) {
         mode === "focus" ? "w-[90%]" : "w-[30%]"
       } py-[10px] px-[20px]`}
     >
-      <ToastContainer className={`!${robotoMono.className}`} />
+      <ToastContainer className={`!font-roboromono-medium`} />
+
+      {/* details like */}
+      {showDetailsLike && (
+        <div className="bg-white text-black py-[15px] px-[15px] rounded-[5px] z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30%] shadow-lg">
+          <div className="flex justify-between">
+            <h1 className="font-poppins-bold pb-[10px]">disukai oleh</h1>
+            <span
+              className="material-symbols-outlined cursor-pointer"
+              onClick={() => setShowDetailsLike(false)}
+            >
+              close
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-[10px]">
+            {detailsLikeData.map((i, idx) => {
+              return (
+                <div className="flex gap-[10px] items-center" key={idx}>
+                  <img src={i.pp} alt="pp" className="rounded-full w-[25px] " />
+                  <Link
+                    href={`/profile/${i.username}`}
+                    className="font-rethink !font-[700] text-[.8rem]"
+                  >
+                    {i.username}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div
-        className={`flex gap-[10px] uppercase py-[10px] items-center text-black text-[.8rem] ${
-          poppins.className
-        } ${mode === "focus" ? "justify-center py-[40px] text-[2rem]" : ""}`}
+        className={`flex gap-[10px] uppercase py-[10px] items-center text-black text-[.8rem] font-poppins-bold ${
+          mode === "focus" ? "justify-center py-[40px] text-[2rem]" : ""
+        }`}
       >
         <Link href={`/profile/${username}`}>
           <img
@@ -111,11 +138,7 @@ export default function Post(props) {
             </>
           )}
         </div>
-        <p
-          className={`${robotoMono.className} text-[.8rem] py-[10px] text-black`}
-        >
-          {keterangan}
-        </p>
+        <p className={`text-[.8rem] py-[10px] text-black`}>{keterangan}</p>
         <div className="flex gap-[10px] items-center">
           <span
             className={`${
@@ -125,7 +148,10 @@ export default function Post(props) {
           >
             favorite
           </span>
-          <p className={`${robotoMono.className} text-[.8rem] text-black`}>
+          <p
+            className={`cursor-pointer text-[.8rem] text-black`}
+            onClick={handleLikeDetails}
+          >
             {like.length} like
           </p>
         </div>
@@ -137,25 +163,25 @@ export default function Post(props) {
           {/* step 1 */}
           <div className="relative w-1/2">
             <p
-              className={`${poppins.className} bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
+              className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
             >
               step 1
             </p>
             <img className="mx-auto" src={details[0].img1} />
           </div>
-          <div className={`w-1/2 px-[25px] ${robotoMono.className}`}>
+          <div className={`w-1/2 px-[25px]`}>
             <p>deskripsi :</p>
             <p className="">{details[0].caption1}</p>
           </div>
 
           {/* step 2 */}
-          <div className={`w-1/2 px-[25px] ${robotoMono.className} text-right`}>
+          <div className={`w-1/2 px-[25px] text-right`}>
             <p>deskripsi :</p>
             <p className="">{details[1].caption2}</p>
           </div>
           <div className="relative w-1/2">
             <p
-              className={`${poppins.className} bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
+              className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
             >
               step 2
             </p>
@@ -164,13 +190,13 @@ export default function Post(props) {
 
           <div className="relative w-1/2">
             <p
-              className={`${poppins.className} bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
+              className={`bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
             >
               step 3
             </p>
             <img className="mx-auto" src={details[2].img3} />
           </div>
-          <div className={`w-1/2 px-[25px] ${robotoMono.className}`}>
+          <div className={`w-1/2 px-[25px]`}>
             <p>deskripsi :</p>
             <p className="">{details[2].caption3}</p>
           </div>
@@ -180,9 +206,7 @@ export default function Post(props) {
       <div className="material-symbol-rounded"></div>
 
       <button
-        className={`btn !text-white text-[.8rem] rounded-[3px] ${
-          inter.className
-        } ml-auto block my-[20px] ${
+        className={`btn !text-white text-[.8rem] rounded-[3px] font-robotomono-medium ml-auto block my-[20px] ${
           mode === "focus" ? "!bg-red-500" : "!bg-blue-400"
         }`}
         onClick={() => {

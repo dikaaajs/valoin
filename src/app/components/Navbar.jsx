@@ -1,24 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Message from "./Message";
-
-const PoppinsJudul = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "700",
-  preload: true,
-});
-
-const PoppinsP = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "600",
-  preload: true,
-});
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -28,9 +13,7 @@ export default function Navbar() {
       <div className="w-1/3 flex gap-[20px] items-center">
         <Link
           href={status === "authenticated" ? "/main/upload" : "#"}
-          className={`btn rounded-[3px] ${
-            PoppinsP.className
-          } text-slate-800 !text-[.7rem] !px-[10px] !py-[5px] ${
+          className={`btn rounded-[3px] font-poppins-medium text-slate-800 !text-[.7rem] !px-[10px] !py-[5px] ${
             status === "authenticated" ? "" : "cursor-not-allowed opacity-50"
           }`}
         >
@@ -42,9 +25,7 @@ export default function Navbar() {
 
       <Link
         href={"/"}
-        className={`w-fit ${[
-          PoppinsJudul.className,
-        ]} text-[1.5rem] md:text-[2.5rem] w-1/3`}
+        className={`font-poppins-bold text-[1.5rem] md:text-[2.5rem] w-1/3`}
       >
         <h1 className="text-white text-center">
           VALO<span className="text-purple-500">IN</span>
@@ -62,13 +43,13 @@ export default function Navbar() {
         ) : (
           <>
             <Link
-              className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
+              className={`btn rounded-[3px] font-poppins-medium text-slate-800`}
               href={"/auth/register"}
             >
               signup
             </Link>
             <Link
-              className={`btn rounded-[3px] ${PoppinsP.className} text-slate-800`}
+              className={`btn rounded-[3px] font-poppins-medium text-slate-800`}
               href={"/auth/login"}
             >
               login

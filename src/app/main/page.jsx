@@ -5,6 +5,7 @@ import { Poppins, Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Post from "../components/Post";
+import { useSession } from "next-auth/react";
 const Map = dynamic(() => import("./map"), { ssr: false });
 
 const allAgent = [
@@ -44,18 +45,17 @@ const inter = Inter({
 });
 
 export default function page() {
+  const { data: session, status } = useSession();
+
   const [map, setMap] = useState("ascent");
   const [agent, setAgent] = useState(undefined);
   const [dataAgent, setDataAgent] = useState(null);
-  const [status, setStatus] = useState("defender");
+  const [statusNya, setStatus] = useState("defender");
   const [mode, setMode] = useState("post");
   const [lineup, setLineup] = useState(null);
   const [rawLineup, setRawLineup] = useState(null);
   const [abilityFilter, setAbilityFilter] = useState([true, true, true, true]);
-  const [ability0, setAbility0] = useState(true);
-  const [ability1, setAbility1] = useState(true);
-  const [ability2, setAbility2] = useState(true);
-  const [ability3, setAbility3] = useState(true);
+  const [idUser, setIdUser] = useState(null);
 
   const selectAgentHandle = async (e) => {
     try {
@@ -86,8 +86,16 @@ export default function page() {
       const res = await axios.post("/api/lineup/get", {
         agent,
         map,
-        status,
+        status: statusNya,
       });
+      if (status === "authenticated") {
+        const getId = await axios.post("/api/user/byEmail", {
+          email: session.user.email,
+        });
+
+        const tmpIdUser = getId.data.user._id;
+        setIdUser(tmpIdUser);
+      }
       setRawLineup(res.data);
       setLineup(res.data);
     } catch (error) {
@@ -124,7 +132,7 @@ export default function page() {
   // get data
   useEffect(() => {
     getLineup();
-  }, [map, agent, status]);
+  }, [map, agent, statusNya]);
 
   return (
     <div className="py-[100px] w-full relative">
@@ -136,12 +144,12 @@ export default function page() {
             {map.toUpperCase()}
           </h1>
 
-          {/* status picker */}
+          {/* statusNya picker */}
           <div
             className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
           >
             <button
-              className={status === "attacker" ? "text-blue-400" : ""}
+              className={statusNya === "attacker" ? "text-blue-400" : ""}
               onClick={() => {
                 setStatus("attacker");
               }}
@@ -149,7 +157,7 @@ export default function page() {
               attacker
             </button>
             <button
-              className={status === "defender" ? "text-blue-400" : ""}
+              className={statusNya === "defender" ? "text-blue-400" : ""}
               onClick={() => {
                 setStatus("defender");
               }}
@@ -312,7 +320,7 @@ export default function page() {
                 ...e,
                 imageUrl: e.imgAndDes[2].img3,
               };
-              return <Post post={post} key={idx} />;
+              return <Post post={post} key={idx} uid={idUser} />;
             })}
           </div>
         )}
