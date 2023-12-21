@@ -17,18 +17,17 @@ const Section3 = (props) => {
   return (
     <div>
       <h1
-        className={`${poppins.className} text-[2rem] uppercase text-white text-center`}
+        className={`font-poppins-bold text-[2rem] uppercase text-white text-center`}
       >
         tambahkan informasi
       </h1>
       <div className="w-[80%] flex mx-[50px] my-[70px]">
         {/* display */}
         <div className="bg-white w-1/2 mx-[50px] px-[20px] py-[10px]">
-          <h2
-            className={`text-[.8rem] ${poppins.className} py-[10px] uppercase`}
-          >
+          <h2 className={`text-[.8rem] font-poppins-bold py-[10px] uppercase`}>
             {judul}
           </h2>
+
           <div className="relative">
             <img src={imgEnd.url} alt="" />
             {tag.length !== 0 && (
@@ -49,11 +48,9 @@ const Section3 = (props) => {
               </>
             )}
           </div>
-          <p className={`${robotoMono.className} text-[.8rem] py-[10px]`}>
-            {keterangan}
-          </p>
+          <p className={`text-[.8rem] py-[10px]`}>{keterangan}</p>
           <button
-            className={`btn !bg-blue-400 !text-white text-[.8rem] rounded-[3px] ${inter.className} ml-auto block my-[20px]`}
+            className={`btn !bg-blue-400 !text-white text-[.8rem] rounded-[3px] font-rethink ml-auto block my-[20px]`}
           >
             details
           </button>
@@ -75,7 +72,8 @@ const Section3 = (props) => {
                 name="judul"
                 id="judul"
                 className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                placeholder={judul}
+                placeholder={"judul"}
+                value={judul}
                 onChange={(e) => setJudul(e.target.value)}
               />
             </div>
@@ -88,7 +86,8 @@ const Section3 = (props) => {
               <input
                 type="text"
                 className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                placeholder={keterangan}
+                placeholder={"keterangan"}
+                value={keterangan}
                 onChange={(e) => setKeterangan(e.target.value)}
               />
             </div>

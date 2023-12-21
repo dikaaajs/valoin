@@ -13,6 +13,8 @@ import Section3 from "./section3";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import CropImg from "@/app/components/CropImg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const allAgent = [
   { name: "astra", uuid: "41fb69c1-4189-7b37-f117-bcaf1e96f1bf" },
@@ -80,34 +82,34 @@ export default function Page() {
   const [status, setStatus] = useState("defender");
 
   // section 3
-  const [judul, setJudul] = useState("VIPER A SITE (JUDUL LINEUP)");
-  const [keterangan, setKeterangan] = useState(
-    "default spike in a site (keterangan)"
-  );
+  const [judul, setJudul] = useState("JUDUL");
+  const [keterangan, setKeterangan] = useState("keterangan");
   const [difficult, setDifficult] = useState();
-  const [imgEnd, setImgEnd] = useState({ url: "/viperToxin.png" });
 
   // section 4
   const [pakeVideo, setPakeVideo] = useState(false);
-  const [imgStart, setImgStart] = useState({ url: "/viperToxin.png" });
-  const [imgMid, setImgMid] = useState({ url: "/viperToxin.png" });
-  const [caption1, setcaption1] = useState("caption untuk gambar 1");
-  const [caption2, setcaption2] = useState("caption untuk gambar 2");
-  const [caption3, setcaption3] = useState("caption untuk gambar 3");
+  const [imgStart, setImgStart] = useState({ url: "/contoh-gambar1.jpg" });
+  const [imgMid, setImgMid] = useState({ url: "/contoh-gambar2.jpg" });
+  const [imgEnd, setImgEnd] = useState({ url: "/contoh-gambar3.jpg" });
+  const [caption1, setcaption1] = useState(null);
+  const [caption2, setcaption2] = useState(null);
+  const [caption3, setcaption3] = useState(null);
   const [linkYT, setLinkYT] = useState("8XEq1rtIloU");
   const [videoVer, setVideoVer] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("lineUpCondition", lineUpCondition);
   }, [lineUpCondition]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     const coordinat = [
       JSON.parse(localStorage.getItem("coordinatFrom")),
       JSON.parse(localStorage.getItem("coordinatFor")),
     ];
     const tag = [difficult];
-
     const linkVideo = linkYT;
 
     try {
@@ -156,6 +158,7 @@ export default function Page() {
 
       localStorage.removeItem("coordinatFrom");
       localStorage.removeItem("coordinatFor");
+      setLoading(false);
       router.push(`/profile/${auth.data.user.username}`);
     } catch (error) {
       console.log(error.message);
@@ -188,26 +191,43 @@ export default function Page() {
   const handleNextButton = () => {
     if (page === 1) {
       if (!agent || !ability) {
-        return alert("pilih agent dan ability");
+        return toast.warn("pilih agent dan ability");
       } else {
         setPage(page + 1);
       }
     }
+
     if (page === 2) {
       const coordinate = {
         from: localStorage.getItem("coordinatFrom"),
         for: localStorage.getItem("coordinatFor"),
       };
       if (coordinate.from === null || coordinate.for === null) {
-        return alert("pilih koordinatnya terlebih dahulu");
+        return toast.warn("pilih koordinatnya terlebih dahulu");
       } else {
         setPage(page + 1);
       }
     }
+
     if (page === 3) {
+      if (keterangan === "keterangan" || judul === "JUDUL")
+        return toast.warn("tulis judul dan keterangan");
+
+      if (imgEnd.url === "/contoh-gambar3.jpg")
+        return toast.warn("ganti gambar terlebih dahulu");
+
       setPage(page + 1);
     }
+
     if (page === 4) {
+      if (
+        imgStart.url === "/contoh-gambar1.jpg" ||
+        imgMid.url === "/contoh-gambar.jpg"
+      )
+        return toast.warn("isi gambar terlebih dahulu");
+
+      if (caption1 === null || caption2 === null || caption3 === null)
+        return toast.warn("isi caption terlebih dahulu");
       handleSubmit();
     }
   };
@@ -233,23 +253,29 @@ export default function Page() {
     setCropDialog(true);
   };
 
-  const uploadImg = async (e, typeImage, fungsiSet) => {
-    if (e == null) return;
-    const imageRef = ref(storage, `images/${typeImage + "-" + idPost}`);
-    try {
-      const snapshot = await uploadBytes(imageRef, e);
-      const url = await getDownloadURL(snapshot.ref);
-      console.log(url);
-      fungsiSet(url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const tag = [difficult];
   return (
     <div className="py-[100px] relative w-full">
-      {cropDialog && typeImg !== null ? (
+      {/* popup alert */}
+      <ToastContainer />
+
+      {/* loading */}
+      {loading && (
+        <div className="w-full h-full fixed backdrop-blur-sm bg-white/30 z-40 inset-0">
+          <div className="fixed w-[50%] bg-white rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 backdrop-brightness-50">
+            <img
+              src="/baal.png"
+              className="bottom-0 absolute right-[-29px] w-[35%]"
+            />
+            <h1 className="text-black font-montserrat-bold text-[1.5rem] text-center py-[70px]">
+              tunggu sebentar ...
+            </h1>
+          </div>
+        </div>
+      )}
+
+      {/* cropimage dialog */}
+      {cropDialog && typeImg !== null && (
         <CropImg
           img={imageFile}
           type={typeImg}
@@ -258,8 +284,6 @@ export default function Page() {
           setImgStart={setImgStart}
           setCropDialog={setCropDialog}
         />
-      ) : (
-        <div></div>
       )}
 
       {/* pilih agent dan ability */}
@@ -332,7 +356,7 @@ export default function Page() {
                 }`}
                 id="image"
               >
-                image
+                img
               </button>
               <button
                 onClick={(e) => setPakeVideo(true)}
@@ -372,7 +396,11 @@ export default function Page() {
                       !videoVer ? "text-white" : "text-black"
                     } material-symbols-outlined block`}
                   >
-                    image
+                    <img
+                      src={`/icon/image${!videoVer ? "-white" : ""}.svg`}
+                      className="w-[20px]"
+                      alt=""
+                    />
                   </span>
                 </button>
 
@@ -387,7 +415,11 @@ export default function Page() {
                       videoVer ? "text-white" : "text-black"
                     } material-symbols-outlined`}
                   >
-                    slideshow
+                    <img
+                      src={`/icon/video${videoVer ? "-white" : ""}.svg`}
+                      className="w-[20px]"
+                      alt=""
+                    />
                   </span>
                 </button>
               </div>
@@ -448,7 +480,7 @@ export default function Page() {
                         name="caption1"
                         id="caption1"
                         className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                        placeholder={caption1}
+                        placeholder={"keterangan"}
                         onChange={(e) => setcaption1(e.target.value)}
                       />
                     </div>
@@ -485,7 +517,7 @@ export default function Page() {
                         name="caption2"
                         id="caption2"
                         className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                        placeholder={caption2}
+                        placeholder={"keterangan"}
                         onChange={(e) => setcaption2(e.target.value)}
                       />
                     </div>
@@ -521,7 +553,7 @@ export default function Page() {
                         name="caption3"
                         id="caption2"
                         className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
-                        placeholder={caption3}
+                        placeholder={"keterangan"}
                         onChange={(e) => setcaption3(e.target.value)}
                       />
                     </div>
@@ -585,7 +617,7 @@ export default function Page() {
             prev
           </button>
         )}
-        <button className={`btn`} onClick={handleNextButton}>
+        <button className={`btn `} onClick={handleNextButton}>
           {page === 4 ? "submit" : "next"}
         </button>
       </div>
