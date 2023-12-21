@@ -3,3 +3,6 @@ GET http://localhost:3000/api/stats/general
 
 ###
 GET  http://localhost:3000/api/stats/user?idUser=6542f052865e920968193f85
+
+###
+GET http://localhost:3000/api/user/all

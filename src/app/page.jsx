@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import Leadboard from "./components/Leadboard";
 
 export default function Home() {
   const judulValoin = useRef();
@@ -29,7 +30,8 @@ export default function Home() {
   }, [judulBawah]);
 
   return (
-    <main className="overflow-hidden relative">
+    <main className="overflow-hidden relative w-full">
+      {/* hiasan */}
       {judulBawah.current !== undefined &&
         judulValoin.current !== undefined && (
           <>
@@ -80,6 +82,9 @@ export default function Home() {
             ></div>
           </>
         )}
+
+      {/* leadboard */}
+      <Leadboard />
 
       {/* jumbotron */}
       <div className="flex flex-col md:flex-row gap-y-[100px] items-center px-[3%] justify-center md:h-[750px]">
@@ -210,6 +215,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+
       <br />
       <br />
       <br />
