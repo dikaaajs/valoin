@@ -17,7 +17,7 @@ export default function Navbar() {
           }`}
         >
           <p className="flex items-center gap-[5px]">
-            <span className="material-symbols-outlined">upload</span> upload
+            <img src="/icon/upload.svg" alt="" /> upload
           </p>
         </Link>
       </div>

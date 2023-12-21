@@ -71,15 +71,14 @@ export default function Post(props) {
 
       {/* details like */}
       {showDetailsLike && (
-        <div className="bg-white text-black py-[15px] px-[15px] rounded-[5px] z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30%] shadow-lg">
+        <div className="bg-white text-black py-[15px] px-[15px] rounded-[5px] z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30%] shadow-lg duration-300">
           <div className="flex justify-between">
             <h1 className="font-poppins-bold pb-[10px]">disukai oleh</h1>
-            <span
-              className="material-symbols-outlined cursor-pointer"
+            <img
+              className=" cursor-pointer w-[20px]"
               onClick={() => setShowDetailsLike(false)}
-            >
-              close
-            </span>
+              src="/icon/close.svg"
+            />
           </div>
 
           <div className="flex flex-col gap-[10px]">
@@ -140,14 +139,11 @@ export default function Post(props) {
         </div>
         <p className={`text-[.8rem] py-[10px] text-black`}>{keterangan}</p>
         <div className="flex gap-[10px] items-center">
-          <span
-            className={`${
-              liked ? "material-symbols-rounded" : "material-symbols-outlined"
-            } cursor-pointer text-black fill-[1]`}
+          <img
+            className={`cursor-pointer text-black fill-[1] w-[20px]`}
             onClick={handleLikeButton}
-          >
-            favorite
-          </span>
+            src={`/icon/favorite-${liked ? "active" : "unactive"}.svg`}
+          />
           <p
             className={`cursor-pointer text-[.8rem] text-black`}
             onClick={handleLikeDetails}

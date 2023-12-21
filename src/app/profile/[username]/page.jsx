@@ -120,21 +120,19 @@ export default function Profile({ params }) {
                     </Link>
                   ) : (
                     <button
-                      className={`${robotoMono.className} text-[.7rem] px-[10px] py-[5px] my-[10px] text-white !bg-[#7F5AF0] border-[#7F5AF0] border-2 flex items-center gap-[10px]`}
+                      className={`${robotoMono.className} rounded-md text-[.7rem] px-[10px] py-[7px] my-[10px] text-white !bg-[#7F5AF0] border-[#7F5AF0] border-2 flex items-center gap-[10px]`}
                     >
-                      follow
-                      <span className="material-symbols-outlined">
-                        person_add
-                      </span>
+                      <img src="/icon/follow.svg" className="w-[20px]" alt="" />
+                      ikuti
                     </button>
                   )}
 
                   {itsMe && status === "authenticated" && (
                     <button
                       onClick={() => signOut()}
-                      className="text-white material-symbols-outlined"
+                      className="text-white w-[40px]"
                     >
-                      logout
+                      <img src="/icon/logout.svg" alt="" />
                     </button>
                   )}
                 </div>
