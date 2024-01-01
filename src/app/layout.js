@@ -14,6 +14,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={"relative"}>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8233972067311924"
+          crossorigin="anonymous"
+        ></script>
         <AuthProvider>
           <Navbar />
           {children}
