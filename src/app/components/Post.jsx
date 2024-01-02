@@ -64,7 +64,7 @@ export default function Post(props) {
   return (
     <div
       className={`bg-white transition-all duration-300 ease-out ${
-        mode === "focus" ? "w-[90%]" : "w-[30%]"
+        mode === "focus" ? "md:w-[90%] w-full" : "md:w-[30%] w-full"
       } py-[10px] px-[20px]`}
     >
       <ToastContainer className={`!font-roboromono-medium`} />
@@ -155,52 +155,53 @@ export default function Post(props) {
 
       {/* detail */}
       <div className={`${mode === "focus" ? "" : "hidden"} text-black`}>
-        <div className="flex flex-wrap gap-y-[50px]">
+        <div className="flex flex-col gap-y-[50px] justify-center">
           {/* step 1 */}
-          <div className="relative w-1/2">
-            <p
-              className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
-            >
-              step 1
-            </p>
-            <img className="mx-auto" src={details[0].img1} />
-          </div>
-          <div className={`w-1/2 px-[25px]`}>
-            <p>deskripsi :</p>
-            <p className="">{details[0].caption1}</p>
+          <div className="text-center">
+            <div className="relative md:w-1/2 w-full">
+              <p
+                className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
+              >
+                step 1
+              </p>
+              <img className="mx-auto" src={details[0].img1} />
+            </div>
+            <div className={`md:w-1/2 w-full text-[.7rem] font-poppins-medium`}>
+              <p className="">{details[0].caption1}</p>
+            </div>
           </div>
 
           {/* step 2 */}
-          <div className={`w-1/2 px-[25px] text-right`}>
-            <p>deskripsi :</p>
-            <p className="">{details[1].caption2}</p>
-          </div>
-          <div className="relative w-1/2">
-            <p
-              className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
-            >
-              step 2
-            </p>
-            <img className="mx-auto" src={details[1].img2} />
+          <div className="text-center">
+            <div className="relative md:w-1/2 w-full">
+              <p
+                className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
+              >
+                step 2
+              </p>
+              <img className="mx-auto" src={details[1].img2} />
+            </div>
+            <div className={`md:w-1/2 w-full text-[.7rem] font-poppins-medium`}>
+              <p className="">{details[1].caption2}</p>
+            </div>
           </div>
 
-          <div className="relative w-1/2">
-            <p
-              className={`bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
-            >
-              step 3
-            </p>
-            <img className="mx-auto" src={details[2].img3} />
-          </div>
-          <div className={`w-1/2 px-[25px]`}>
-            <p>deskripsi :</p>
-            <p className="">{details[2].caption3}</p>
+          {/* step 3 */}
+          <div className="text-center">
+            <div className="relative md:w-1/2 w-full">
+              <p
+                className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
+              >
+                step 3
+              </p>
+              <img className="mx-auto" src={details[2].img3} />
+            </div>
+            <div className={`md:w-1/2 w-full text-[.7rem] font-poppins-medium`}>
+              <p className="">{details[2].caption3}</p>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="material-symbol-rounded"></div>
-
       <button
         className={`btn !text-white text-[.8rem] rounded-[3px] font-robotomono-medium ml-auto block my-[20px] ${
           mode === "focus" ? "!bg-red-500" : "!bg-blue-400"

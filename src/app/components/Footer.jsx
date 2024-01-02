@@ -1,5 +1,6 @@
 "use client";
 import { Poppins, Inter } from "next/font/google";
+import Link from "next/link";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -15,7 +16,11 @@ export default function Footer() {
   return (
     <div className="w-full">
       <div className="px-[10px] md:px-[50px] bg-white relative h-fit overflow-hidden bottom-0">
-        <img src="/topography.png" className="absolute right-0 h-full" alt="" />
+        <img
+          src="/topography.png"
+          className="absolute md:right-0 rotate-90 md:rotate-0 bottom-[-20px] md:bottom-0"
+          alt=""
+        />
 
         {/* parent components */}
         {/* support */}
@@ -47,10 +52,18 @@ export default function Footer() {
               <ul
                 className={`${inter.className} text-[.5rem] md:text-[.8rem] `}
               >
-                <li className="underline">tentang valoin</li>
-                <li className="underline">tujuan aplikasi</li>
-                <li className="underline">lineup</li>
-                <li className="underline">valorant</li>
+                <li className="underline">
+                  <Link href={"/blog/about"}>tentang valoin</Link>
+                </li>
+                <li className="underline">
+                  <Link href={"/blog/tujuan"}>tujuan aplikasi</Link>
+                </li>
+                <li className="underline">
+                  <Link href={"/main"}>lineup</Link>
+                </li>
+                <li className="underline">
+                  <Link href={"https://playvalorant.com/"}>Valorant</Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -64,9 +77,12 @@ export default function Footer() {
               <ul
                 className={`${inter.className} text-[.5rem] md:text-[.8rem] `}
               >
-                <li className="underline">cara pake</li>
-                <li className="underline">syarat dan ketentuan</li>
-                <li className="underline">kebijakan privasi</li>
+                <li className="underline">
+                  <Link href={"/blog/howtouse"}>cara pake</Link>
+                </li>
+                <li className="underline">
+                  <Link href={"/blog/privasi"}>kebijakan privasi</Link>
+                </li>
               </ul>
             </div>
           </div>

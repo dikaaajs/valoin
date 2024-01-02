@@ -135,18 +135,18 @@ export default function page() {
   }, [map, agent, statusNya]);
 
   return (
-    <div className="py-[100px] w-full relative">
+    <div className="md:py-[100px] py-[50px] w-full relative">
       {/* navbar */}
-      <div className="flex justify-between items-center px-[50px]">
-        {/* display data */}
+      {/* display data */}
+      <div className="flex justify-between items-start px-[10px] md:px-[50px]">
         <div className="text-white">
-          <h1 className={`${poppins.className} text-[2rem]`}>
+          <h1 className={`font-poppins-bold text-[1.5rem] md:text-[2rem]`}>
             {map.toUpperCase()}
           </h1>
 
           {/* statusNya picker */}
           <div
-            className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
+            className={`px-[10px] py-[5px] flex gap-[10px] md:gap-[20px] border-solid border-white border-[1px] w-fit font-robotomono-medium text-[.6rem] md:text-[.8rem]`}
           >
             <button
               className={statusNya === "attacker" ? "text-blue-400" : ""}
@@ -168,14 +168,14 @@ export default function page() {
 
           {/* ability filter */}
           {dataAgent !== null ? (
-            <div className="flex gap-[10px] pt-[20px]">
+            <div className="flex gap-[10px] py-[10px] md:pt-[20px]">
               <button
                 className="w-fit relative"
                 onClick={() => handleAbility(0)}
               >
                 <img
                   src={`/agent/${agent}/ability/1.png`}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  className="md:w-[2.5rem] w-[1.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
@@ -192,7 +192,7 @@ export default function page() {
               >
                 <img
                   src={`/agent/${agent}/ability/2.png`}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  className="md:w-[2.5rem] w-[1.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
@@ -209,7 +209,7 @@ export default function page() {
               >
                 <img
                   src={`/agent/${agent}/ability/3.png`}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  className="md:w-[2.5rem] w-[1.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
@@ -226,7 +226,7 @@ export default function page() {
               >
                 <img
                   src={`/agent/${agent}/ability/4.png`}
-                  className="w-[2.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
+                  className="md:w-[2.5rem] w-[1.5rem] border-solid border-white border-[1px] py-[5px] px-[5px]"
                   alt=""
                 />
                 <img
@@ -245,11 +245,13 @@ export default function page() {
         {/* maps pick */}
         <div className="flex flex-col gap-[20px]">
           <div className="w-fit text-white">
-            <h2 className={`${poppins.className} text-[.8rem] text-white`}>
+            <h2
+              className={`font-poppins-medium text-[.6rem] md:text-[.8rem] text-white`}
+            >
               mode :
             </h2>
             <div
-              className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit ${inter.className} text-[.8rem]`}
+              className={`px-[10px] py-[5px] flex gap-[20px] border-solid border-white border-[1px] w-fit font-robotomono-medium text-[.6rem] md:text-[.8rem]`}
             >
               <button
                 className={`${mode === "post" ? "text-blue-400" : ""}`}
@@ -268,7 +270,7 @@ export default function page() {
           <select
             name="maps"
             id="selectMap"
-            className={`${inter.className} rounded-[5px] `}
+            className={`font-robotomono-medium text-[.6rem] text-center !py-[5px] rounded-[5px] `}
             onChange={(e) => selectMapHandle(e)}
           >
             <option value="ascent">ascent</option>
@@ -327,7 +329,7 @@ export default function page() {
       </div>
 
       {/* agent pick */}
-      <div className="flex flex-wrap gap-[5px] py-[90px] w-[70%] mx-auto justify-center">
+      <div className="flex flex-wrap gap-[5px] py-[90px] w-[90%] md:w-[70%] mx-auto justify-center">
         {allAgent.map((e, index) => {
           return (
             <div
