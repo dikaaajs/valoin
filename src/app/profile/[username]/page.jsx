@@ -226,7 +226,14 @@ export default function Profile({ params }) {
                 ...e,
                 imageUrl: e.imgAndDes[2].img3,
               };
-              return <Post post={post} uid={profile._id} key={idx} />;
+              return (
+                <Post
+                  post={post}
+                  uid={profile._id}
+                  key={idx}
+                  likeCount={post.like.length}
+                />
+              );
             })}
           </div>
         </div>
