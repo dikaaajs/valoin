@@ -13,10 +13,13 @@ export default function Post(props) {
   const [like, setLike] = useState(props.post.like);
   const [detailsLikeData, setDetailsLikeData] = useState([]);
   const [showDetailsLike, setShowDetailsLike] = useState(false);
+  const [versi, setVersi] = useState("step by step");
 
   const { judul, keterangan, imageUrl, tag } = props.post;
   const { pp, username } = props.post.userInfo;
   const details = props.post.imgAndDes;
+
+  console.log(props);
 
   const handleLikeButton = async () => {
     if (session === null) return toast.warn("login terlebih dahulu");
@@ -63,8 +66,10 @@ export default function Post(props) {
 
   return (
     <div
-      className={`bg-white transition-all duration-300 ease-out ${
-        mode === "focus" ? "md:w-[90%] w-full" : "md:w-[30%] w-full"
+      className={`bg-white transition-all duration-300 ease-out overflow-scroll ${
+        mode === "focus"
+          ? "md:w-[90%] w-[90%] fixed z-50 top-[30px] bottom-[30px] h-[90hv] border-black border-[3px] rounded-md  md:px-[50px]"
+          : "md:w-[30%] w-full"
       } py-[10px] px-[20px]`}
     >
       <ToastContainer className={`!font-roboromono-medium`} />
@@ -104,15 +109,11 @@ export default function Post(props) {
           mode === "focus" ? "justify-center py-[40px] text-[2rem]" : ""
         }`}
       >
-        <Link href={`/profile/${username}`}>
-          <img
-            src={pp}
-            className="rounded-full w-[25px] h-[25px]"
-            alt={username}
-          />
+        <Link href={`/profile/${username}`} className="!w-[30px]">
+          <img src={pp} className="rounded-full w-[30px]" alt={username} />
         </Link>
 
-        <h2 className={`  `}>{judul}</h2>
+        <h2 className={`text-[1em] leading-[25px]`}>{judul}</h2>
       </div>
 
       {/* thumbnail */}
@@ -155,56 +156,95 @@ export default function Post(props) {
 
       {/* detail */}
       <div className={`${mode === "focus" ? "" : "hidden"} text-black`}>
-        <div className="flex flex-col gap-y-[50px] justify-center">
-          {/* step 1 */}
-          <div className="text-center">
-            <div className="relative md:w-1/2 w-full">
-              <p
-                className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
-              >
-                step 1
-              </p>
-              <img className="mx-auto" src={details[0].img1} />
-            </div>
-            <div className={`md:w-1/2 w-full text-[.7rem] font-poppins-medium`}>
-              <p className="">{details[0].caption1}</p>
-            </div>
-          </div>
-
-          {/* step 2 */}
-          <div className="text-center">
-            <div className="relative md:w-1/2 w-full">
-              <p
-                className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
-              >
-                step 2
-              </p>
-              <img className="mx-auto" src={details[1].img2} />
-            </div>
-            <div className={`md:w-1/2 w-full text-[.7rem] font-poppins-medium`}>
-              <p className="">{details[1].caption2}</p>
-            </div>
-          </div>
-
-          {/* step 3 */}
-          <div className="text-center">
-            <div className="relative md:w-1/2 w-full">
-              <p
-                className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px]`}
-              >
-                step 3
-              </p>
-              <img className="mx-auto" src={details[2].img3} />
-            </div>
-            <div className={`md:w-1/2 w-full text-[.7rem] font-poppins-medium`}>
-              <p className="">{details[2].caption3}</p>
-            </div>
-          </div>
+        {/* toogle versi */}
+        <div className="py-[10px] px-[10px] gap-[10px] flex justify-center my-[10px]">
+          <button
+            className={`${
+              versi === "step by step" ? "!bg-blue-500 text-white" : ""
+            } btn`}
+            onClick={() => setVersi("step by step")}
+          >
+            step by step
+          </button>
+          <button
+            className={`${
+              versi === "video" ? "!bg-blue-500 text-white" : ""
+            } btn`}
+            onClick={() => setVersi("video")}
+          >
+            video
+          </button>
         </div>
+
+        {/* step by step */}
+        {versi === "step by step" && (
+          <div className="flex flex-col gap-y-[50px] justify-center">
+            {/* step 1 */}
+            <div className="text-center">
+              <div className="relative w-full md:w-[70%] mx-auto">
+                <p
+                  className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px] text-center`}
+                >
+                  step 1
+                </p>
+                <img className="mx-auto" src={details[0].img1} />
+              </div>
+              <div className={`w-full text-[.7rem] font-poppins-medium`}>
+                <p className="">{details[0].caption1}</p>
+              </div>
+            </div>
+
+            {/* step 2 */}
+            <div className="text-center">
+              <div className="relative w-full md:w-[70%] mx-auto">
+                <p
+                  className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px] text-center`}
+                >
+                  step 2
+                </p>
+                <img className="mx-auto" src={details[1].img2} />
+              </div>
+              <div className={`w-full text-[.7rem] font-poppins-medium`}>
+                <p className="">{details[1].caption2}</p>
+              </div>
+            </div>
+
+            {/* step 3 */}
+            <div className="text-center">
+              <div className="relative w-full md:w-[70%] mx-auto">
+                <p
+                  className={` bg-[#7F5AF0] text-white py-[10px] px-[15px] w-fit skew-y-3 absolute top-[-15px] left-[-10px] text-center`}
+                >
+                  step 3
+                </p>
+                <img className="mx-auto" src={details[2].img3} />
+              </div>
+              <div className={`w-full text-[.7rem] font-poppins-medium`}>
+                <p className="">{details[2].caption3}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* video */}
+        {versi === "video" && (
+          <div className="flex flex-col gap-y-[50px] justify-center">
+            <iframe
+              width="560"
+              height="315"
+              src={`https://www.youtube.com/embed/${props.post.linkVideo}`}
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="mx-auto w-[90%] md:w-[70%]"
+            ></iframe>
+          </div>
+        )}
       </div>
       <button
         className={`btn !text-white text-[.8rem] rounded-[3px] font-robotomono-medium ml-auto block my-[20px] ${
-          mode === "focus" ? "!bg-red-500" : "!bg-blue-400"
+          mode === "focus" ? "!bg-red-500" : "!bg-blue-500"
         }`}
         onClick={() => {
           if (mode === "focus") setMode("blur");
