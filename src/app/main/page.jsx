@@ -322,7 +322,14 @@ export default function page() {
                 ...e,
                 imageUrl: e.imgAndDes[2].img3,
               };
-              return <Post post={post} key={idx} uid={idUser} />;
+              return (
+                <Post
+                  post={post}
+                  key={idx}
+                  uid={idUser}
+                  likeCount={post.like.length}
+                />
+              );
             })}
           </div>
         )}
