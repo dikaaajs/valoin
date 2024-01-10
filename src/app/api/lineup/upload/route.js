@@ -17,7 +17,6 @@ export async function POST(request) {
       linkVideo,
       idMaker,
     } = await request.json();
-    console.log(ability);
     await connectMongoDB();
 
     const lineup = await Lineup.create({

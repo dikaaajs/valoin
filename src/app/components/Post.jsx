@@ -148,6 +148,7 @@ export default function Post(props) {
             className={`cursor-pointer text-[.8rem] text-black`}
             onClick={handleLikeDetails}
           >
+            {console.log(like)}
             {like.length} like
           </p>
         </div>

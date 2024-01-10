@@ -56,17 +56,10 @@ export default function page() {
   const [rawLineup, setRawLineup] = useState(null);
   const [abilityFilter, setAbilityFilter] = useState([true, true, true, true]);
   const [idUser, setIdUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const selectAgentHandle = async (e) => {
-    try {
-      const res = await axios.get(
-        `https://valorant-api.com/v1/agents/${e.target.id}`
-      );
-      setDataAgent(res.data.data);
-      setAgent(e.target.alt);
-    } catch (error) {
-      console.log(error.message);
-    }
+    setAgent(e.target.alt);
   };
 
   const filterLineup = (field, value, lineup) => {
@@ -81,7 +74,9 @@ export default function page() {
 
   const getLineup = async () => {
     try {
-      if (agent === undefined) return console.log("agent kosong");
+      if (agent === undefined) {
+        return setLoading(false);
+      }
 
       const res = await axios.post("/api/lineup/get", {
         agent,
@@ -98,6 +93,7 @@ export default function page() {
       }
       setRawLineup(res.data);
       setLineup(res.data);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -131,11 +127,26 @@ export default function page() {
 
   // get data
   useEffect(() => {
+    setLoading(true);
     getLineup();
   }, [map, agent, statusNya]);
 
   return (
     <div className="md:py-[100px] py-[50px] w-full relative">
+      {/* loading */}
+      {loading && (
+        <div className="w-full h-full fixed backdrop-blur-sm bg-white/30 z-40 inset-0">
+          <div className="fixed w-[50%] bg-white rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 backdrop-brightness-50">
+            <img
+              src="/baal.png"
+              className="bottom-0 absolute right-[-29px] w-[35%]"
+            />
+            <h1 className="text-black font-montserrat-bold text-[1.5rem] text-center py-[70px]">
+              tunggu sebentar ...
+            </h1>
+          </div>
+        </div>
+      )}
       {/* navbar */}
       {/* display data */}
       <div className="flex justify-between items-start px-[10px] md:px-[50px]">
@@ -167,7 +178,7 @@ export default function page() {
           </div>
 
           {/* ability filter */}
-          {dataAgent !== null ? (
+          {agent !== undefined ? (
             <div className="flex gap-[10px] py-[10px] md:pt-[20px]">
               <button
                 className="w-fit relative"
@@ -286,7 +297,6 @@ export default function page() {
           </select>
         </div>
       </div>
-
       {/* map container */}
       <div
         className={`w-[90vw] h-[90vw] md:w-[70vw] md:h-[70vw] lg:w-[40vw] lg:h-[40vw] mx-auto relative cursor-move my-[100px] ${
@@ -298,7 +308,6 @@ export default function page() {
         </p>
         <Map selectedMap={map} lineup={lineup} />
       </div>
-
       {/* post container */}
       <div className={`${mode === "post" ? "" : "hidden"}`}>
         {lineup === null ? (
@@ -327,7 +336,6 @@ export default function page() {
           </div>
         )}
       </div>
-
       {/* agent pick */}
       <div className="flex flex-wrap gap-[5px] py-[90px] w-[90%] md:w-[70%] mx-auto justify-center">
         {allAgent.map((e, index) => {
@@ -336,7 +344,11 @@ export default function page() {
               className={`w-[60px] relative z-[10] cursor-pointer ${
                 agent === e.name ? "agent-active" : ""
               }`}
-              onClick={(evn) => selectAgentHandle(evn)}
+              onClick={(evn) => {
+                if (loading === false) {
+                  selectAgentHandle(evn);
+                }
+              }}
               id={e.name}
               key={index}
             >
