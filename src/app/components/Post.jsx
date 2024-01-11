@@ -8,6 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Post(props) {
   const { data: session, status } = useSession();
+  const {clientUsername, post, likeCount} = props
+  const { judul, keterangan, imageUrl, tag, userInfo, imgAndDes } = post;
+  const { pp, username } = userInfo
+  const details = imgAndDes
+
   const [mode, setMode] = useState("blur");
   const [liked, setLiked] = useState(false);
   const [like, setLike] = useState(props.post.like);
@@ -15,17 +20,12 @@ export default function Post(props) {
   const [showDetailsLike, setShowDetailsLike] = useState(false);
   const [versi, setVersi] = useState("step by step");
 
-  const { judul, keterangan, imageUrl, tag } = props.post;
-  const { pp, username } = props.post.userInfo;
-  const details = props.post.imgAndDes;
-
-  console.log(props);
 
   const handleLikeButton = async () => {
     if (session === null) return toast.warn("login terlebih dahulu");
     try {
       const response = await axios.post("/api/lineup/like", {
-        idUser: props.uid,
+        clientUsername,
         idLineup: props.post._id,
       });
 

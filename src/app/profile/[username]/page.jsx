@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Post from "@/app/components/Post";
+import Lineup from "@/app/components/Lineup";
 import axios from "axios";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,13 +23,6 @@ const robotoMono = Roboto_Mono({
   weight: "400",
   preload: true,
 });
-
-const post1 = {
-  judul: "viper a site",
-  keterangan: "default spike",
-  tag: ["easy"],
-  imageUrl: "/viperToxin.png",
-};
 
 export default function Profile({ params }) {
   const router = useRouter();
@@ -49,26 +43,28 @@ export default function Profile({ params }) {
         idMaker: userData._id,
       });
 
-      console.log(lineupRes);
-
       let totalTerpilih = 0;
       let totalLikes = 0;
 
-      for (let i = 0; i < lineupRes.data.length; i++) {
-        totalLikes += lineupRes.data[i].like.length;
+      // counting total likes
+      console.log(lineupRes)
+      for (let i = 0; i < lineupRes.data.count; i++) {
+        totalLikes += lineupRes.data.result[i].like.length;
       }
 
-      for (let i = 0; i < lineupRes.data.length; i++) {
-        if (lineupRes.data[i].tag.includes("verify") === true) {
+      // counting lineup verified
+      for (let i = 0; i < lineupRes.data.count; i++) {
+        if (lineupRes.data.result[i].tag.includes("verify") === true) {
           totalTerpilih = totalTerpilih + 1;
         }
       }
 
       const tmp = {
-        lineupDibuat: lineupRes.data.length,
+        lineupDibuat: lineupRes.data.count,
         lineupTerpilih: totalTerpilih,
         lineupDisukai: totalLikes,
       };
+
       setLineup(lineupRes.data);
       setStats(tmp);
       setItsMe(session?.user?.name === userData.username ? true : false);
@@ -140,6 +136,7 @@ export default function Profile({ params }) {
                 </div>
               </div>
             </div>
+
             {/* stats */}
             <div className="w-[95%] xl:w-fit md:w-[60%] bg-[#7F5AF0] mx-auto md:mr-0 md:ml-auto py-[50px] px-[50px] xl:px-[80px] relative">
               <div className="bg-white py-[8px] px-[15px] absolute top-[-30px] left-[20px] w-fit skew-y-6">
@@ -212,29 +209,16 @@ export default function Profile({ params }) {
             lineup :
           </h1>
           <div className="w-[90%] mx-auto my-[100px] flex flex-wrap justify-center gap-[30px]">
-            {lineup[0] === undefined && (
+            {lineup.result[0] === undefined ? (
               <div>
                 <img src="/cry.jpg" alt="" />
                 <h1 className={`font-poppins-bold text-white`}>
                   user belum membuat lineup
                 </h1>
               </div>
+            ) : (
+              <Lineup lineup={lineup} clientUsername={session.name} />
             )}
-
-            {lineup.map((e, idx) => {
-              const post = {
-                ...e,
-                imageUrl: e.imgAndDes[2].img3,
-              };
-              return (
-                <Post
-                  post={post}
-                  uid={profile._id}
-                  key={idx}
-                  likeCount={post.like.length}
-                />
-              );
-            })}
           </div>
         </div>
 

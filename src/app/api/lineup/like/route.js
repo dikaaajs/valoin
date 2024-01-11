@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server";
 import connectMongoDB from "../../../../../libs/mongodb";
 import Lineup from "../../../../../models/lineup";
+import User from "../../../../../models/user";
 
 export async function POST(req) {
-  const { idUser, idLineup } = await req.json();
+  const { clientUsername, idLineup } = await req.json();
   await connectMongoDB();
 
   try {
     // Periksa apakah user sudah like postingan ini
     const lineup = await Lineup.findById(idLineup);
+    const client = await User.findOne({username: clientUsername})
+    console.log(client)
+    const idUser = client._id
 
     if (lineup === null) {
       return { status: 404, body: { error: "Lineup not found." } };

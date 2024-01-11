@@ -2,7 +2,7 @@ POST  http://localhost:3000/api/lineup/upload
 Content-Type: application/json
 
 {
-    "agent": "harbor",
+    "agent": "sova",
     "ability": 2,
     "map": "ascent",
     "coordinat": ["dasd", "asdasd"],
@@ -21,9 +21,7 @@ POST  http://localhost:3000/api/lineup/get
 Content-Type: application/json
 
 {
-    "agent": "sova",
-    "map": "ascent",
-    "status": "defender"
+    "idMaker": ""
 }
  
 ###
@@ -34,6 +32,6 @@ POST http://localhost:3000/api/lineup/like
 Content-Type: application/json
 
 {
-    "idUser": "6542efde865e920968193f77",
+    "clientUsername": "kopihanet",
     "idLineup": "6550f1afecca264c1700fe4b"
 }

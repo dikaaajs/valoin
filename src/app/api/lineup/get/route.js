@@ -6,7 +6,10 @@ import mongoose from "mongoose";
 export async function POST(request) {
   try {
     await connectMongoDB();
-    const { agent, map, status, idMaker } = await request.json();
+    const { agent, map, status, idMaker, page, viewProfile } = await request.json();
+
+    const itemPerPage = 8;
+    const skip = (page - 1) * itemPerPage;
 
     const pipeline = [
       {
@@ -49,15 +52,28 @@ export async function POST(request) {
     ];
 
     // Lakukan Aggregation
-    const result = await Lineup.aggregate(pipeline);
-    const response = result.map((i) => {
+    const tmp = await Lineup.aggregate(pipeline);
+
+
+    const response = tmp.map((i) => {
       return {
         ...i,
         userInfo: i.userInfo[0],
       };
     });
 
-    return NextResponse.json(response, { status: 200 });
+    const result = response.slice(skip, itemPerPage)
+    const count = response.length
+
+    if(viewProfile){
+      let likeCount = 0
+      response.forEach((i) => {
+        likeCount += i.like.length
+      })      
+    }
+
+
+    return NextResponse.json({result, count, likeCount}, { status: 200 });
   } catch (error) {
     return NextResponse.json({ msg: error.message }, { status: 500 });
   }

@@ -34,6 +34,8 @@ export default function Login() {
 
       if (res.ok === true) {
         router.replace(`/profile/${username}`);
+      } else {
+        setPesan("password atau username salah");
       }
     } catch (error) {
       console.log(error);
