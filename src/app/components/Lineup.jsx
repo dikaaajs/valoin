@@ -1,8 +1,26 @@
+import { useEffect, useState } from "react";
+import axios from "axios"
 import Post from "@/app/components/Post";
 
 
 export default function Lineup(props) {
 	const {lineup, clientUsername} = props
+  const [uid, setUid] = useState("")
+
+  const getData = async () => {
+    const user = await axios.post("/api/user/getId", {username: props.clientUsername})
+    setUid(user.data.userId)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  if(uid === undefined) return (
+    <div>
+      loading ...
+    </div>
+  )
 
 	return (
 
@@ -18,6 +36,7 @@ export default function Lineup(props) {
                   clientUsername={clientUsername}
                   key={idx}
                   likeCount={post.like.length}
+                  uid={uid}
                 />
               );
             })}

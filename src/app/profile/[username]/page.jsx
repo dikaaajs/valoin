@@ -31,6 +31,7 @@ export default function Profile({ params }) {
   const [itsMe, setItsMe] = useState(undefined);
   const [profile, setProfile] = useState(null);
   const [lineup, setLineup] = useState(null);
+  const [page, setPage] = useState(1);
 
   const getInfo = async () => {
     try {
@@ -41,28 +42,16 @@ export default function Profile({ params }) {
 
       const lineupRes = await axios.post("/api/lineup/get", {
         idMaker: userData._id,
+        viewProfile: true,
+        page,
       });
 
       let totalTerpilih = 0;
-      let totalLikes = 0;
-
-      // counting total likes
-      console.log(lineupRes)
-      for (let i = 0; i < lineupRes.data.count; i++) {
-        totalLikes += lineupRes.data.result[i].like.length;
-      }
-
-      // counting lineup verified
-      for (let i = 0; i < lineupRes.data.count; i++) {
-        if (lineupRes.data.result[i].tag.includes("verify") === true) {
-          totalTerpilih = totalTerpilih + 1;
-        }
-      }
 
       const tmp = {
         lineupDibuat: lineupRes.data.count,
-        lineupTerpilih: totalTerpilih,
-        lineupDisukai: totalLikes,
+        lineupTerpilih: lineupRes.data.verifyCount,
+        lineupDisukai: lineupRes.data.likeCount,
       };
 
       setLineup(lineupRes.data);
@@ -76,7 +65,7 @@ export default function Profile({ params }) {
 
   useEffect(() => {
     getInfo();
-  }, [session]);
+  }, [session, page]);
 
   if (status === "loading" || profile === null || itsMe === undefined)
     return (
@@ -220,6 +209,27 @@ export default function Profile({ params }) {
               <Lineup lineup={lineup} clientUsername={session.name} />
             )}
           </div>
+        </div>
+
+        {/* button nav */}
+        <div className="flex gap-[10px] justify-center">
+          <button
+            className={`btn ${page === 1 ? "opacity-70" : ""}`}
+            onClick={() => {
+              if (page === 1) return;
+              setPage(page - 1);
+            }}
+          >
+            prev
+          </button>
+          <button
+            className={`btn ${page === 2 ? "opacity-70" : ""}`}
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          >
+            prev
+          </button>
         </div>
 
         <ToastContainer />

@@ -21,7 +21,7 @@ export default function Post(props) {
   const [versi, setVersi] = useState("step by step");
 
 
-  const handleLikeButton = async () => {
+  const handleLikeButton = async () => { 
     if (session === null) return toast.warn("login terlebih dahulu");
     try {
       const response = await axios.post("/api/lineup/like", {

@@ -6,10 +6,12 @@ import mongoose from "mongoose";
 export async function POST(request) {
   try {
     await connectMongoDB();
-    const { agent, map, status, idMaker, page, viewProfile } = await request.json();
+    const { agent, map, status, idMaker, page, viewProfile } =
+      await request.json();
 
     const itemPerPage = 8;
-    const skip = (page - 1) * itemPerPage;
+    const itemEnd = itemPerPage * page;
+    const itemStart = (page - 1) * itemPerPage;
 
     const pipeline = [
       {
@@ -54,26 +56,32 @@ export async function POST(request) {
     // Lakukan Aggregation
     const tmp = await Lineup.aggregate(pipeline);
 
+    const response = tmp
+      .map((i) => {
+        return {
+          ...i,
+          userInfo: i.userInfo[0],
+        };
+      })
+      .slice(itemStart, itemEnd);
 
-    const response = tmp.map((i) => {
-      return {
-        ...i,
-        userInfo: i.userInfo[0],
-      };
-    });
+    const count = response.length;
+    let likeCount = 0;
+    let verifyCount = 0;
 
-    const result = response.slice(skip, itemPerPage)
-    const count = response.length
-
-    if(viewProfile){
-      let likeCount = 0
-      response.forEach((i) => {
-        likeCount += i.like.length
-      })      
+    if (viewProfile) {
+      tmp.forEach((i) => {
+        likeCount += i.like.length;
+        if (i.tag.includes("verify")) {
+          verifyCount += 1;
+        }
+      });
     }
 
-
-    return NextResponse.json({result, count, likeCount}, { status: 200 });
+    return NextResponse.json(
+      { result: response, count, likeCount, verifyCount },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json({ msg: error.message }, { status: 500 });
   }
