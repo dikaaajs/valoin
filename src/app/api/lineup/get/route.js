@@ -6,8 +6,11 @@ import mongoose from "mongoose";
 export async function POST(request) {
   try {
     await connectMongoDB();
-    const { agent, map, status, idMaker, page, viewProfile } =
+    let { agent, map, status, idMaker, page, viewProfile } =
       await request.json();
+
+    page = page === undefined ? 1 : page;
+    viewProfile = viewProfile === undefined ? false : viewProfile;
 
     const itemPerPage = 8;
     const itemEnd = itemPerPage * page;

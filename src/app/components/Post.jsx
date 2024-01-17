@@ -1,17 +1,15 @@
 "use client";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Post(props) {
-  const { data: session, status } = useSession();
-  const {clientUsername, post, likeCount} = props
+  const { clientUsername, post, likeCount } = props;
   const { judul, keterangan, imageUrl, tag, userInfo, imgAndDes } = post;
-  const { pp, username } = userInfo
-  const details = imgAndDes
+  const { pp, username } = userInfo;
+  const details = imgAndDes;
 
   const [mode, setMode] = useState("blur");
   const [liked, setLiked] = useState(false);
@@ -20,9 +18,8 @@ export default function Post(props) {
   const [showDetailsLike, setShowDetailsLike] = useState(false);
   const [versi, setVersi] = useState("step by step");
 
-
-  const handleLikeButton = async () => { 
-    if (session === null) return toast.warn("login terlebih dahulu");
+  const handleLikeButton = async () => {
+    if (clientUsername === null) return toast.warn("login terlebih dahulu");
     try {
       const response = await axios.post("/api/lineup/like", {
         clientUsername,
@@ -53,7 +50,7 @@ export default function Post(props) {
   };
 
   const checkLiked = () => {
-    if (like.includes(props.uid) && props.uid !== undefined) {
+    if (props.post.like.includes(props.uid) && props.uid !== undefined) {
       setLiked(true);
     } else {
       setLiked(false);
@@ -62,7 +59,7 @@ export default function Post(props) {
 
   useEffect(() => {
     checkLiked();
-  }, []);
+  }, [props, like]);
 
   return (
     <div
@@ -76,24 +73,24 @@ export default function Post(props) {
 
       {/* details like */}
       {showDetailsLike && (
-        <div className="bg-white text-black py-[15px] px-[15px] rounded-[5px] z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30%] shadow-lg duration-300">
-          <div className="flex justify-between">
-            <h1 className="font-poppins-bold pb-[10px]">disukai oleh</h1>
+        <div className="bg-white text-black py-[20px] px-[15px] rounded-[5px] z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] md:w-[30%] shadow-md shadow-slate-800 duration-300">
+          <div className="flex justify-between pt-[10px] pb-[10px] border-black border-b-[1px]">
+            <h1 className="font-poppins-bold pb-[10px] text-center">disukai</h1>
             <img
-              className=" cursor-pointer w-[20px]"
+              className=" cursor-pointer w-[20px] h-[20px]"
               onClick={() => setShowDetailsLike(false)}
-              src="/icon/close.svg"
+              src="/close.svg"
             />
           </div>
 
-          <div className="flex flex-col gap-[10px]">
+          <div className="flex flex-col gap-[10px] py-[20px]">
             {detailsLikeData.map((i, idx) => {
               return (
                 <div className="flex gap-[10px] items-center" key={idx}>
                   <img src={i.pp} alt="pp" className="rounded-full w-[25px] " />
                   <Link
                     href={`/profile/${i.username}`}
-                    className="font-rethink !font-[700] text-[.8rem]"
+                    className="font-robotomono-medium text-[.7rem] underline underline-offset-4"
                   >
                     {i.username}
                   </Link>
@@ -234,7 +231,7 @@ export default function Post(props) {
               height="315"
               src={`https://www.youtube.com/embed/${props.post.linkVideo}`}
               title="YouTube video player"
-              frameborder="0"
+              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
               className="mx-auto w-[90%] md:w-[70%]"

@@ -206,7 +206,7 @@ export default function Profile({ params }) {
                 </h1>
               </div>
             ) : (
-              <Lineup lineup={lineup} clientUsername={session.name} />
+              <Lineup lineup={lineup} clientUsername={session.user.name} />
             )}
           </div>
         </div>

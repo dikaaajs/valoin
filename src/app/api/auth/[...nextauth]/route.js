@@ -41,7 +41,9 @@ export const authOptions = {
             ...findUser._doc,
             name: findUser._doc.username,
             image: findUser._doc.pp,
+            uid: findUser._doc._id,
           };
+
           return user;
         } catch (error) {
           console.log(error);
@@ -63,7 +65,9 @@ export const authOptions = {
     signIn: "/auth/login",
   },
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, user }) {
+      console.log(user);
+
       return session;
     },
   },

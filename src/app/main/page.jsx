@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Post from "../components/Post";
 import { useSession } from "next-auth/react";
+import Lineup from "../components/Lineup";
+import Loading from "../components/Loading";
 const Map = dynamic(() => import("./map"), { ssr: false });
 
 const allAgent = [
@@ -91,7 +93,7 @@ export default function page() {
         const tmpIdUser = getId.data.user._id;
         setIdUser(tmpIdUser);
       }
-      setRawLineup(res.data);
+      setRawLineup(res.data.result);
       setLineup(res.data);
       setLoading(false);
     } catch (error) {
@@ -134,19 +136,8 @@ export default function page() {
   return (
     <div className="md:py-[100px] py-[50px] w-full relative">
       {/* loading */}
-      {loading && (
-        <div className="w-full h-full fixed backdrop-blur-sm bg-white/30 z-40 inset-0">
-          <div className="fixed w-[50%] bg-white rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 backdrop-brightness-50">
-            <img
-              src="/baal.png"
-              className="bottom-0 absolute right-[-29px] w-[35%]"
-            />
-            <h1 className="text-black font-montserrat-bold text-[1.5rem] text-center py-[70px]">
-              tunggu sebentar ...
-            </h1>
-          </div>
-        </div>
-      )}
+      {loading && <Loading />}
+
       {/* navbar */}
       {/* display data */}
       <div className="flex justify-between items-start px-[10px] md:px-[50px]">
@@ -318,7 +309,7 @@ export default function page() {
           </div>
         ) : (
           <div className="w-[90%] mx-auto my-[100px] flex flex-wrap justify-center gap-[30px]">
-            {lineup[0] === undefined && (
+            {lineup.result[0] === undefined && (
               <div>
                 <h1 className={`${poppins.className} text-white text-center`}>
                   lineup kosong
@@ -326,20 +317,7 @@ export default function page() {
               </div>
             )}
 
-            {lineup.map((e, idx) => {
-              const post = {
-                ...e,
-                imageUrl: e.imgAndDes[2].img3,
-              };
-              return (
-                <Post
-                  post={post}
-                  key={idx}
-                  uid={idUser}
-                  likeCount={post.like.length}
-                />
-              );
-            })}
+            <Lineup lineup={lineup} clientUsername={session.user.name} />
           </div>
         )}
       </div>

@@ -10,9 +10,8 @@ export async function POST(req) {
   try {
     // Periksa apakah user sudah like postingan ini
     const lineup = await Lineup.findById(idLineup);
-    const client = await User.findOne({username: clientUsername})
-    console.log(client)
-    const idUser = client._id
+    const client = await User.findOne({ username: clientUsername });
+    const idUser = client._id;
 
     if (lineup === null) {
       return { status: 404, body: { error: "Lineup not found." } };
