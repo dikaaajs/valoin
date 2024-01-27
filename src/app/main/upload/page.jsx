@@ -551,7 +551,7 @@ export default function Page() {
                       <input
                         type="text"
                         name="caption3"
-                        id="caption2"
+                        id="caption3"
                         className={`bg-transparent text-[.8rem] rounded-[5px] ${robotoMono.className}`}
                         placeholder={"keterangan"}
                         onChange={(e) => setcaption3(e.target.value)}

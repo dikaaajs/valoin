@@ -8,8 +8,8 @@ export async function GET(req) {
     await connectMongoDB("");
     const idUser = req.nextUrl.searchParams.get("idUser");
     const stats = await Stats.findOne({ idUser });
-    return NextResponse.json({ stats });
+    return NextResponse.json({ stats }, { status: 200 });
   } catch (error) {
-    console.log(error);
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

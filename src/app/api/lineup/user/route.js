@@ -15,6 +15,6 @@ export async function POST(request) {
     }));
     return NextResponse.json(updatedLineup, { status: 200 });
   } catch (error) {
-    console.log(error.message);
+    return NextResponse.json({ msg: err.message }, { status: 500 });
   }
 }

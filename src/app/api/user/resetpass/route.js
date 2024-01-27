@@ -5,13 +5,11 @@ import bcrypt from "bcryptjs";
 
 export async function POST(request) {
   const { oldPassword, newPassword, email } = await request.json();
-  console.log(oldPassword);
 
   try {
     await connectMongoDB();
     const user = await User.findOne({ email });
     const passwordMatch = await bcrypt.compare(oldPassword, user.password);
-    console.log(passwordMatch);
 
     if (passwordMatch) {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -34,6 +32,6 @@ export async function POST(request) {
       { status: 400 }
     );
   } catch (error) {
-    console.log(error.message);
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

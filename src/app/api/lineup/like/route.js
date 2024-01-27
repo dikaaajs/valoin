@@ -37,9 +37,8 @@ export async function GET(req) {
   await connectMongoDB();
   try {
     const lineup = await Lineup.findById(idLineup);
-    return NextRequest.json({ msg: "berhasil" });
+    return NextResponse.json({ msg: "berhasil" }, { status: 200 });
   } catch (error) {
-    console.log(error.message);
-    return NextRequest.json({ msg: error.message });
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

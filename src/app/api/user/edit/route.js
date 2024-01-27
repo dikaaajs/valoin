@@ -23,7 +23,6 @@ export async function POST(request) {
       { _id: id },
       { $set: { deskripsi, username, pp } }
     );
-    console.log(res);
     return NextResponse.json(
       { message: "berhasil mengupdate user !" },
       { status: 200 }

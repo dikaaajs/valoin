@@ -11,8 +11,11 @@ export async function GET(req) {
     const userCount = await User.count();
     const versi = "v1.0.0(beta)";
 
-    return NextResponse.json({ lineupCount, userCount, versi });
+    return NextResponse.json(
+      { lineupCount, userCount, versi },
+      { status: 200 }
+    );
   } catch (error) {
-    console.log(error);
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

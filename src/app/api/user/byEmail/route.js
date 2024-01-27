@@ -8,8 +8,8 @@ export async function POST(req) {
     await connectMongoDB();
     const { email } = await req.json();
     const user = await User.findOne({ email });
-    return NextResponse.json({ user });
+    return NextResponse.json({ user }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ msg: error.message });
+    return NextResponse.json({ msg: error.message }, { status: 500 });
   }
 }

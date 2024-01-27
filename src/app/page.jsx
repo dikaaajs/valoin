@@ -82,7 +82,7 @@ export default function Home() {
         )} */}
 
       {/* jumbotron */}
-      <div className="flex flex-col md:flex-row md:gap-y-[100px] gap-y-[30px] items-center px-[3%] py-[100px] justify-center md:h-[750px]">
+      <div className="flex flex-col md:flex-row md:gap-y-[100px] gap-y-[30px] items-center px-[3%] py-[100px] justify-center">
         <div className="w-full lg:w-1/2 order-2">
           <h1
             className={`font-poppins-bold text-[2rem] md:text-[2.5rem] text-center md:text-left text-white`}
@@ -99,7 +99,7 @@ export default function Home() {
         </div>
 
         <div className="order-1">
-          <img src="/jumbotronImg.webp" className="w-[95%]" alt="valoin" />
+          <img src="/right main (1).webp" className="w-[95%]" alt="valoin" />
         </div>
       </div>
 
@@ -167,12 +167,12 @@ export default function Home() {
         </div>
         <div className="w-[80%] md:w-full lg:w-3/5 xl:w-[50%] relative hover:scale-110 duration-300 group top-[150px] md:top-0">
           <img
-            src="/jett-bingung.png"
+            src="/jett-bingung.webp"
             alt="jett emoji"
             className="absolute z-[10] top-[-50px] left-0 w-[50%] md:w-[35%] group-hover:rotate-12 duration-200"
           />
           <img
-            src="/card-lineup.png"
+            src="/card-lineup.webp"
             alt="character valorant"
             className="rounded-[3px] mx-auto"
           />
@@ -193,12 +193,12 @@ export default function Home() {
         <div className="flex flex-col my-[150px] items-center gap-[50px] px-[20px] md:px-[50px] ">
           <div className="relative w-full md:w-[50%] h-auto">
             <img
-              src="/brimstone-meme.png"
+              src="/brimstone-meme.webp"
               alt="brimstone meme"
               className="absolute bottom-[0px] right-[0px] w-[50%]"
             />
             <img
-              src="/addLineup.png"
+              src="/addLineup.webp"
               className="w-full mx-auto shadow-md shadow-[#7F5AF0] hover:shadow-white hover:shadow-xl duration-300 py-[20px]"
               alt="upload your lineup"
             />
