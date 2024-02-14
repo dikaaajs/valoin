@@ -63,7 +63,7 @@ export default function Post(props) {
 
   return (
     <div
-      className={`bg-white transition-all duration-300 ease-out overflow-scroll ${
+      className={`bg-white transition-all duration-300 ease-out overflow-y-scroll  ${
         mode === "focus"
           ? "md:w-[90%] w-[90%] fixed z-50 top-[30px] bottom-[30px] h-[90hv] border-black border-[3px] rounded-md  md:px-[50px]"
           : "md:w-[30%] w-full"
@@ -117,23 +117,20 @@ export default function Post(props) {
       <div className={`${mode === "focus" ? "hidden" : ""}`}>
         <div className="relative">
           <img src={imageUrl} alt="" />
-          {tag.length !== 0 && (
-            <>
-              {tag.map((i) => {
-                if (i === undefined) {
-                  return;
-                }
-                return (
-                  <div
-                    key={i}
-                    className={`text-[.7rem] text-black bg-white rounded-[5px] px-[10px] py-[5px] absolute bottom-2 right-2`}
-                  >
-                    {i}
-                  </div>
-                );
-              })}
-            </>
-          )}
+
+          <div className="flex text-[.7rem] absolute bottom-2 right-2 gap-[10px]">
+            {tag.map((i) => {
+              console.log(i);
+              return (
+                <div
+                  key={i}
+                  className={` text-black bg-white rounded-[5px] px-[10px] py-[5px]`}
+                >
+                  {i}
+                </div>
+              );
+            })}
+          </div>
         </div>
         <p className={`text-[.8rem] py-[10px] text-black`}>{keterangan}</p>
         <div className="flex gap-[10px] items-center">
@@ -239,6 +236,8 @@ export default function Post(props) {
           </div>
         )}
       </div>
+
+      {/* close button */}
       <button
         className={`btn !text-white text-[.8rem] rounded-[3px] font-robotomono-medium ml-auto block my-[20px] ${
           mode === "focus" ? "!bg-red-500" : "!bg-blue-500"
@@ -249,6 +248,15 @@ export default function Post(props) {
         }}
       >
         {mode === "focus" ? "close" : "detail"}
+      </button>
+      <button>
+        <img
+          src="/close-2.svg"
+          className={`w-[50px] absolute top-[20px] right-[20px] ${
+            mode === "focus" ? "" : "hidden"
+          }`}
+          onClick={() => setMode("blur")}
+        />
       </button>
     </div>
   );

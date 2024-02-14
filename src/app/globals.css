@@ -58,7 +58,7 @@ body {
 }
 
 .btn {
-  @apply bg-white py-[10px] px-[25px]
+  @apply bg-white py-[5px] px-[15px] md:py-[10px] md:px-[25px] font-rethink
 }
 
 .glass-effect {

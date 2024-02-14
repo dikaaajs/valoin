@@ -118,9 +118,9 @@ export default function Home() {
               {lineupCount}
             </p>
             <h1
-              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem]`}
+              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem] underline`}
             >
-              lineup dibuat
+              <Link href="/main">lineup dibuat</Link>
             </h1>
           </div>
           <div className="text-center">
@@ -128,9 +128,9 @@ export default function Home() {
               {userCount}
             </p>
             <h1
-              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem]`}
+              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem] underline`}
             >
-              user terdaftar
+              <Link href="/profile">user terdaftar</Link>
             </h1>
           </div>
           <div className="text-center">
