@@ -42,5 +42,5 @@ POST http://localhost:3000/api/user/getAll
 Content-Type: "application/json"
 
 {
-    "page": "2"
+    "page": "1"
 }
