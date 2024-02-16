@@ -30,57 +30,6 @@ export default function Home() {
 
   return (
     <main className="overflow-hidden relative">
-      {/* {judulBawah.current !== undefined &&
-        judulValoin.current !== undefined && (
-          <>
-            <img
-              src="/ellipse.png"
-              alt="1"
-              className="absolute left-[40px] z-20"
-              style={{ top: judulValoin.current.offsetTop + 15 }}
-            />
-            <h1
-              className={`font-montserrat-bold text-black absolute left-[50px] z-30`}
-              style={{ top: judulValoin.current.offsetTop + 20 }}
-            >
-              #1
-            </h1>
-            <img
-              src="/ellipse.png"
-              alt="2"
-              className="absolute left-[40px] z-20"
-              style={{ top: judulTengah.current.offsetTop + 10 }}
-              id="tengah"
-            />
-            <h1
-              className={`font-montserrat-bold text-black absolute left-[48px] z-30`}
-              style={{ top: judulTengah.current.offsetTop + 15 }}
-            >
-              #2
-            </h1>
-            <img
-              src="/ellipse.png"
-              alt="3"
-              className="absolute left-[40px] z-20"
-              style={{ top: judulBawah.current.offsetTop }}
-            />
-            <h1
-              className={`font-montserrat-bold text-black absolute left-[48px] z-30`}
-              style={{ top: judulBawah.current.offsetTop + 7 }}
-            >
-              #3
-            </h1>
-            <div
-              className={`z-[10] absolute top-[120px] left-[-20px] w-[80px] border-lime-400 border-b-[0px] border-[3px] bg-opacity-0 rounded-tr-[10px]`}
-              style={{ height: `${tinggi + 150}px` }}
-            ></div>
-            <div
-              className="border-[3px] border-t-[0px] border-r-[0px] h-[50px] border-lime-400 w-full absolute rounded-bl-[10px] left-[56.5px] z-[-1]"
-              style={{ top: `${judulBawah.current.offsetTop - 30}px` }}
-            ></div>
-          </>
-        )} */}
-
       {/* jumbotron */}
       <div className="flex flex-col md:flex-row md:gap-y-[100px] gap-y-[30px] items-center px-[3%] py-[100px] justify-center">
         <div className="w-full lg:w-1/2 order-2">
