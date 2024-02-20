@@ -9,7 +9,7 @@ export async function GET(req) {
     await connectMongoDB();
     const lineupCount = await Lineup.count();
     const userCount = await User.count();
-    const versi = "v1.0.0(beta)";
+    const versi = "v1.0.0";
 
     return NextResponse.json(
       { lineupCount, userCount, versi },
