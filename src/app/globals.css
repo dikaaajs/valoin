@@ -32,6 +32,14 @@ p {
   font-weight: 500;
 }
 
+.headline-2 {
+  @apply text-white text-center text-[1.5rem] uppercase font-poppins-bold py-[10px]
+}
+
+.headline-3 {
+  @apply text-white text-center text-[1.2rem] uppercase font-montserrat-bold py-[10px]
+}
+
 .font-rethink {
   font-family: rethink;
   font-weight: 500;
