@@ -87,6 +87,9 @@ body {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
 
+.tdrotation {
+  transform: rotate3d(0, 1, 0, 180deg);
+}
 
 /*.agent-active {
   @apply bg-[#FFFFFF]

@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "./Providers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Navbar2 from "./components/Navbar2";
 
 export const metadata = {
   title: "valoin: homepage",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
         ></script>
         <AuthProvider>
           <Navbar />
+          <Navbar2 />
           {children}
           <Analytics />
           <SpeedInsights />
