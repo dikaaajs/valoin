@@ -97,7 +97,9 @@ export default function Footer() {
                 className={`${inter.className} text-[.5rem] md:text-[.8rem] flex gap-[5px]`}
               >
                 <li className="underline">
-                  <img src="/logo/instagram.svg" alt="" />
+                  <Link href={"https://www.instagram.com/dikaaa.js/"}>
+                    <img src="/logo/instagram.svg" alt="" />
+                  </Link>
                 </li>
                 <li className="underline">
                   <img src="/logo/facebook.svg" alt="" />

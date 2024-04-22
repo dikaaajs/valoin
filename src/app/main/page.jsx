@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { Poppins, Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
@@ -8,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Lineup from "../components/Lineup";
 import Loading from "../components/Loading";
 import { allAgent } from "../agent";
+import { getLineup } from "../func/getLineup";
 const Map = dynamic(() => import("./map"), { ssr: false });
 
 const poppins = Poppins({
@@ -16,97 +16,62 @@ const poppins = Poppins({
   preload: true,
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: "500",
-});
-
 export default function page() {
   const { data: session, status } = useSession();
 
   const [map, setMap] = useState("ascent");
   const [agent, setAgent] = useState(undefined);
-  const [dataAgent, setDataAgent] = useState(null);
-  const [statusNya, setStatus] = useState("defender");
+  const [condition, setCondition] = useState("defender");
+  const [clientId, setClientId] = useState(null);
+
+  const [dataLineup, setDataLineup] = useState(null);
+  const [filteredLineup, setFilteredLineup] = useState(null);
+
   const [mode, setMode] = useState("post");
-  const [lineup, setLineup] = useState(null);
-  const [rawLineup, setRawLineup] = useState(null);
   const [abilityFilter, setAbilityFilter] = useState([true, true, true, true]);
-  const [idUser, setIdUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const selectAgentHandle = async (e) => {
-    setAgent(e.target.alt);
-  };
+  const handleAbilityFilter = (value) => {
+    let filter = [...abilityFilter];
+    filter[value] = !filter[value];
+    setAbilityFilter(filter);
 
-  const filterLineup = (field, value, lineup) => {
-    const result = lineup.filter((i) => {
-      if (i[field] === value) {
-        return i;
+    let filteredLineup = [];
+    const lineups = dataLineup.result;
+    for (let lineup of lineups) {
+      const ability = lineup.ability;
+
+      if (filter[0] && ability === 0) {
+        filteredLineup.push(lineup);
       }
-    });
-
-    return result;
-  };
-
-  const getLineup = async () => {
-    try {
-      if (agent === undefined) {
-        return setLoading(false);
+      if (filter[1] && ability === 1) {
+        filteredLineup.push(lineup);
       }
-
-      const res = await axios.post("/api/lineup/get", {
-        agent,
-        map,
-        status: statusNya,
-      });
-      if (status === "authenticated") {
-        const getId = await axios.post("/api/user/byEmail", {
-          email: session.user.email,
-        });
-
-        const tmpIdUser = getId.data.user._id;
-        setIdUser(tmpIdUser);
+      if (filter[2] && ability === 2) {
+        filteredLineup.push(lineup);
       }
-      setRawLineup(res.data.result);
-      setLineup(res.data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error.message);
+      if (filter[3] && ability === 3) {
+        filteredLineup.push(lineup);
+      }
     }
-  };
-
-  const selectMapHandle = (e) => {
-    setMap(e.target.value);
-  };
-
-  const handleAbility = (val) => {
-    let tmp = [...abilityFilter];
-    tmp[val] = !tmp[val];
-
-    setAbilityFilter(tmp);
-
-    let wadah = [];
-    tmp.map((i, index) => {
-      if (i === true) {
-        const p = rawLineup.filter((j) => {
-          if (j.ability === index) {
-            return j;
-          }
-        });
-
-        wadah = [...wadah, ...p];
-      }
-    });
-
-    setLineup(wadah);
+    setFilteredLineup(filteredLineup);
   };
 
   // get data
   useEffect(() => {
     setLoading(true);
-    getLineup();
-  }, [map, agent, statusNya]);
+    getLineup(
+      { statusAuth: status, session },
+      { agent, map, condition },
+      {
+        setDataLineup,
+        setFilteredLineup,
+        setLoading,
+        setClientId,
+      },
+      { page: 1 }
+    );
+  }, [map, agent, condition]);
 
   return (
     <div className="md:py-[100px] py-[50px] w-full relative">
@@ -121,22 +86,22 @@ export default function page() {
             {map.toUpperCase()}
           </h1>
 
-          {/* statusNya picker */}
+          {/* condition picker */}
           <div
             className={`px-[10px] py-[5px] flex gap-[10px] md:gap-[20px] border-solid border-white border-[1px] w-fit font-robotomono-medium text-[.6rem] md:text-[.8rem]`}
           >
             <button
-              className={statusNya === "attacker" ? "text-blue-400" : ""}
+              className={condition === "attacker" ? "text-blue-400" : ""}
               onClick={() => {
-                setStatus("attacker");
+                setCondition("attacker");
               }}
             >
               attacker
             </button>
             <button
-              className={statusNya === "defender" ? "text-blue-400" : ""}
+              className={condition === "defender" ? "text-blue-400" : ""}
               onClick={() => {
-                setStatus("defender");
+                setCondition("defender");
               }}
             >
               defender
@@ -148,7 +113,7 @@ export default function page() {
             <div className="flex gap-[10px] py-[10px] md:pt-[20px]">
               <button
                 className="w-fit relative"
-                onClick={() => handleAbility(0)}
+                onClick={() => handleAbilityFilter(0)}
               >
                 <img
                   src={`/agent/${agent}/ability/1.png`}
@@ -165,7 +130,7 @@ export default function page() {
 
               <button
                 className="w-fit relative"
-                onClick={() => handleAbility(1)}
+                onClick={() => handleAbilityFilter(1)}
               >
                 <img
                   src={`/agent/${agent}/ability/2.png`}
@@ -182,7 +147,7 @@ export default function page() {
 
               <button
                 className="w-fit relative"
-                onClick={() => handleAbility(2)}
+                onClick={() => handleAbilityFilter(2)}
               >
                 <img
                   src={`/agent/${agent}/ability/3.png`}
@@ -199,7 +164,7 @@ export default function page() {
 
               <button
                 className="w-fit relative"
-                onClick={() => handleAbility(3)}
+                onClick={() => handleAbilityFilter(3)}
               >
                 <img
                   src={`/agent/${agent}/ability/4.png`}
@@ -219,7 +184,7 @@ export default function page() {
           )}
         </div>
 
-        {/* maps pick */}
+        {/* mode pick */}
         <div className="flex flex-col gap-[20px]">
           <div className="w-fit text-white">
             <h2
@@ -248,7 +213,7 @@ export default function page() {
             name="maps"
             id="selectMap"
             className={`font-robotomono-medium text-[.6rem] text-center !py-[5px] rounded-[5px] `}
-            onChange={(e) => selectMapHandle(e)}
+            onChange={(e) => setMap(e.target.value)}
           >
             <option value="ascent">ascent</option>
             <option value="bind">bind</option>
@@ -273,11 +238,12 @@ export default function page() {
         <p className="text-red-500 text-center">
           mode map sedang tahap pengembangan
         </p>
-        <Map selectedMap={map} lineup={lineup} />
+        <Map selectedMap={map} lineup={filteredLineup} />
       </div>
+
       {/* post container */}
       <div className={`${mode === "post" ? "" : "hidden"}`}>
-        {lineup === null ? (
+        {filteredLineup === null ? (
           <div className="py-[100px]">
             <h1 className={`${poppins.className} text-white text-center`}>
               silahkan pick agent dan map terlebih dahulu
@@ -285,18 +251,23 @@ export default function page() {
           </div>
         ) : (
           <div className="w-[90%] mx-auto my-[100px] flex flex-wrap justify-center gap-[30px]">
-            {lineup.result[0] === undefined && (
+            {filteredLineup[0] === undefined ? (
               <div>
                 <h1 className={`${poppins.className} text-white text-center`}>
                   lineup kosong
                 </h1>
               </div>
+            ) : (
+              <Lineup
+                lineup={filteredLineup}
+                clientUsername={session?.user?.name}
+                clientId={clientId}
+              />
             )}
-
-            <Lineup lineup={lineup} clientUsername={session.user.name} />
           </div>
         )}
       </div>
+
       {/* agent pick */}
       <div className="flex flex-wrap gap-[5px] py-[90px] w-[90%] md:w-[70%] mx-auto justify-center">
         {allAgent.map((e, index) => {
@@ -307,7 +278,7 @@ export default function page() {
               }`}
               onClick={(evn) => {
                 if (loading === false) {
-                  selectAgentHandle(evn);
+                  setAgent(evn.target.alt);
                 }
               }}
               id={e.name}

@@ -11,7 +11,6 @@ export async function POST(request) {
 
     page = page === undefined ? 1 : page;
     viewProfile = viewProfile === undefined ? false : viewProfile;
-
     const itemPerPage = 8;
     const itemEnd = itemPerPage * page;
     const itemStart = (page - 1) * itemPerPage;

@@ -5,35 +5,33 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Post(props) {
-  const { clientUsername, post, likeCount } = props;
-  const { judul, keterangan, imageUrl, tag, userInfo, imgAndDes } = post;
+export default function Post({ clientUsername, clientId, post }) {
+  const { judul, keterangan, tag, userInfo, imgAndDes, like } = post;
   const { pp, username } = userInfo;
   const details = imgAndDes;
 
   const [mode, setMode] = useState("blur");
   const [liked, setLiked] = useState(false);
-  const [like, setLike] = useState(props.post.like);
+  const [likesId, setLikesId] = useState(like);
   const [detailsLikeData, setDetailsLikeData] = useState([]);
   const [showDetailsLike, setShowDetailsLike] = useState(false);
   const [versi, setVersi] = useState("step by step");
 
   const handleLikeButton = async () => {
-    if (clientUsername === null) return toast.warn("login terlebih dahulu");
+    if (clientUsername === undefined)
+      return toast.warn("login terlebih dahulu");
     try {
       const response = await axios.post("/api/lineup/like", {
         clientUsername,
-        idLineup: props.post._id,
+        idLineup: post._id,
       });
 
+      // type can be like or unlike
       if (response.data.type === "like") {
-        const tmp = [...like];
-        tmp.push(props.uid);
-        setLike(tmp);
+        setLikesId(response.data.updateLikesId);
         setLiked(true);
       } else {
-        const tmp = like.filter((e) => e !== props.uid);
-        setLike(tmp);
+        setLikesId(response.data.updateLikesId);
         setLiked(false);
       }
     } catch (error) {
@@ -43,23 +41,24 @@ export default function Post(props) {
 
   const handleLikeDetails = async () => {
     const res = await axios.get(
-      `/api/lineup/like/details?idLineup=${props.post._id}`
+      `/api/lineup/like/details?idLineup=${post._id}`
     );
     setDetailsLikeData(res.data.usersData);
     setShowDetailsLike(true);
   };
 
   const checkLiked = () => {
-    if (props.post.like.includes(props.uid) && props.uid !== undefined) {
+    if (likesId.includes(clientId) && clientId !== undefined) {
       setLiked(true);
     } else {
       setLiked(false);
     }
+    setLikesId(like);
   };
 
   useEffect(() => {
     checkLiked();
-  }, [props, like]);
+  }, [like, likesId]);
 
   return (
     <div
@@ -101,6 +100,7 @@ export default function Post(props) {
         </div>
       )}
 
+      {/* header */}
       <div
         className={`flex gap-[10px] uppercase py-[10px] items-center text-black text-[.8rem] font-poppins-bold ${
           mode === "focus" ? "justify-center py-[40px] text-[2rem]" : ""
@@ -116,11 +116,10 @@ export default function Post(props) {
       {/* thumbnail */}
       <div className={`${mode === "focus" ? "hidden" : ""}`}>
         <div className="relative">
-          <img src={imageUrl} alt="" />
+          <img src={imgAndDes[2].img3} alt="" />
 
           <div className="flex text-[.7rem] absolute bottom-2 right-2 gap-[10px]">
             {tag.map((i) => {
-              console.log(i);
               return (
                 <div
                   key={i}
@@ -143,7 +142,7 @@ export default function Post(props) {
             className={`cursor-pointer text-[.8rem] text-black`}
             onClick={handleLikeDetails}
           >
-            {props.likeCount} like
+            {likesId.length} like
           </p>
         </div>
       </div>
@@ -226,7 +225,7 @@ export default function Post(props) {
             <iframe
               width="560"
               height="315"
-              src={`https://www.youtube.com/embed/${props.post.linkVideo}`}
+              src={`https://www.youtube.com/embed/${post.linkVideo}`}
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

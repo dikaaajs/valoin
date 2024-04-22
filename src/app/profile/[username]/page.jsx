@@ -1,28 +1,14 @@
 "use client";
-import { Poppins, Roboto_Mono } from "next/font/google";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Post from "@/app/components/Post";
 import Lineup from "@/app/components/Lineup";
 import axios from "axios";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const PoppinsJudul = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "700",
-  preload: true,
-});
-
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-  preload: true,
-});
+import { getLineup } from "@/app/func/getLineup";
+import Loading from "@/app/components/Loading";
 
 export default function Profile({ params }) {
   const router = useRouter();
@@ -30,8 +16,12 @@ export default function Profile({ params }) {
   const [stats, setStats] = useState(undefined);
   const [itsMe, setItsMe] = useState(undefined);
   const [profile, setProfile] = useState(null);
-  const [lineup, setLineup] = useState(null);
   const [page, setPage] = useState(1);
+
+  const [dataLineup, setDataLineup] = useState(null);
+  const [filteredLineup, setFilteredLineup] = useState();
+  const [loading, setLoading] = useState(false);
+  const [clientId, setClientId] = useState();
 
   const getInfo = async () => {
     try {
@@ -40,22 +30,20 @@ export default function Profile({ params }) {
       });
       const userData = userRes.data.user;
 
-      const lineupRes = await axios.post("/api/lineup/get", {
-        idMaker: userData._id,
-        viewProfile: true,
-        page,
-      });
+      const lineupRes = await getLineup(
+        { statusAuth: status, session },
+        { idMaker: userData._id },
+        { setLoading, setClientId, setDataLineup, setFilteredLineup },
+        { page, viewProfile: true }
+      );
 
-      let totalTerpilih = 0;
-
-      const tmp = {
+      const statsLineupRes = {
         lineupDibuat: lineupRes.data.count,
         lineupTerpilih: lineupRes.data.verifyCount,
         lineupDisukai: lineupRes.data.likeCount,
       };
 
-      setLineup(lineupRes.data);
-      setStats(tmp);
+      setStats(statsLineupRes);
       setItsMe(session?.user?.name === userData.username ? true : false);
       setProfile(userData);
     } catch (error) {
@@ -67,14 +55,13 @@ export default function Profile({ params }) {
     getInfo();
   }, [session, page]);
 
-  if (status === "loading" || profile === null || itsMe === undefined)
-    return (
-      <div className="flex items-center h-screen text-center justify-center">
-        <h1 className={`text-[2rem] font-poppins-bold text-white`}>
-          loading ...
-        </h1>
-      </div>
-    );
+  if (
+    status === "loading" ||
+    profile === null ||
+    itsMe === undefined ||
+    loading
+  )
+    return <Loading />;
 
   if (itsMe !== undefined)
     return (
@@ -198,7 +185,7 @@ export default function Profile({ params }) {
             lineup :
           </h1>
           <div className="w-[90%] mx-auto my-[100px] flex flex-wrap justify-center gap-[30px]">
-            {lineup.result[0] === undefined ? (
+            {filteredLineup[0] === undefined ? (
               <div>
                 <img src="/cry.jpg" alt="" />
                 <h1 className={`font-poppins-bold text-white`}>
@@ -206,7 +193,11 @@ export default function Profile({ params }) {
                 </h1>
               </div>
             ) : (
-              <Lineup lineup={lineup} clientUsername={session.user.name} />
+              <Lineup
+                lineup={filteredLineup}
+                clientUsername={session?.user?.name}
+                clientId={clientId}
+              />
             )}
           </div>
         </div>

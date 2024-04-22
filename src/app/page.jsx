@@ -1,33 +1,8 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
+import StatsWeb from "./components/StatsWeb";
 
 export default function Home() {
-  const judulValoin = useRef();
-  const judulTengah = useRef();
-  const judulBawah = useRef();
-  const agentSection = useRef();
-  const [tinggi, setTinggi] = useState();
-  const [lineupCount, setLineupCount] = useState(0);
-  const [userCount, setUserCount] = useState(0);
-  const [versiApp, setVersiApp] = useState(0);
-
-  const getStats = async () => {
-    const response = await axios.get("/api/stats/general");
-    const data = response.data;
-    setLineupCount(data.lineupCount);
-    setUserCount(data.userCount);
-    setVersiApp(data.versi);
-  };
-
-  useEffect(() => {
-    getStats();
-    if (judulBawah !== undefined && judulValoin !== undefined) {
-      setTinggi(judulBawah.current.offsetTop - judulValoin.current.offsetTop);
-    }
-  }, [judulBawah]);
-
   return (
     <main className="overflow-hidden relative">
       {/* jumbotron */}
@@ -35,7 +10,6 @@ export default function Home() {
         <div className="w-full lg:w-1/2 order-2">
           <h1
             className={`font-poppins-bold text-[2rem] md:text-[2.5rem] text-center md:text-left text-white`}
-            ref={judulValoin}
           >
             valoin - temukan lineup valorant mu disini !
           </h1>
@@ -53,51 +27,12 @@ export default function Home() {
       </div>
 
       {/* apa itu valoin */}
-      <div
-        className="h-[850px] bg-[#2e2d2e] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] py-[100px] items-center text-center lg:text-left"
-        ref={agentSection}
-      >
-        {/* stats website */}
-        <div
-          className="bg-white h-[100px] md:h-[150px] w-[90%] md:w-[80%] lg:w-[70%] rounded-[10px] mx-auto absolute top-[-70px] left-1/2 transform -translate-x-1/2 text-black flex gap-[15px] md:gap-[90px] justify-center px-[20px] items-center"
-          style={{ top: agentSection?.current?.offsetTop - 70 }}
-        >
-          <div className="text-center">
-            <p className={`font-poppins-bold text-[1rem] md:text-[1.5rem]`}>
-              {lineupCount}
-            </p>
-            <h1
-              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem] underline`}
-            >
-              <Link href="/main">lineup dibuat</Link>
-            </h1>
-          </div>
-          <div className="text-center">
-            <p className={`font-poppins-bold text-[1rem] md:text-[1.5rem]`}>
-              {userCount}
-            </p>
-            <h1
-              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem] underline`}
-            >
-              <Link href="/profile">user terdaftar</Link>
-            </h1>
-          </div>
-          <div className="text-center">
-            <p className={`font-poppins-bold text-[1rem] md:text-[1.5rem]`}>
-              {versiApp}
-            </p>
-            <h1
-              className={`font-robotomono-medium text-[.6rem] md:text-[.8rem]`}
-            >
-              versi aplikasi
-            </h1>
-          </div>
-        </div>
+      <div className="h-[850px] relative bg-[#2e2d2e] text-white flex flex-col lg:flex-row gap-[20px] px-[20px] md:px-[50px] py-[100px] items-center text-center lg:text-left">
+        <StatsWeb />
 
         <div className="w-full lg:w-2/5 mx-auto">
           <h1
             className={`font-montserrat-bold text-[2rem] md:text-[2.5rem] leading-[35px]`}
-            ref={judulTengah}
           >
             apa itu valoin ?
           </h1>
@@ -133,7 +68,6 @@ export default function Home() {
         <div className="pt-[130px] w-fit md:px-[50px] bg-[#16161A] mx-auto">
           <h1
             className={`font-montserrat-bold text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
-            ref={judulBawah}
           >
             Bagikan Lineup mu !
           </h1>
@@ -169,6 +103,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+
       <br />
       <br />
     </main>

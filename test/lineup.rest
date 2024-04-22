@@ -23,7 +23,8 @@ Content-Type: application/json
 {
     "map": "ascent",
     "agent": "sova",
-    "status": "attacker"
+    "status": "attacker",
+    "page": 1
 }
  
 ###
