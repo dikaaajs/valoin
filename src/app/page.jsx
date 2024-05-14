@@ -69,7 +69,7 @@ export default function Home() {
           <h1
             className={`font-montserrat-bold text-[2rem] md:text-[2.5rem] leading-[35px] text-white text-center `}
           >
-            Bagikan Lineup mu !
+            Share Lineup !
           </h1>
         </div>
 
